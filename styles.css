@@ -71,14 +71,17 @@ header {
 .logo img {
     height: 80px;
     max-width: 300px;
+    display: block;
     object-fit: contain;
     filter: blur(0.5px);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     transform-style: preserve-3d;
-    box-shadow: 
+    backface-visibility: hidden;
+    box-shadow:
         -4px 4px 8px rgba(0, 0, 0, 0.3),
         -8px 8px 16px rgba(0, 0, 0, 0.2),
         0 0 20px rgba(184, 36, 47, 0.3);
+    border-radius: 12px;
 }
 
 .logo img:hover {
