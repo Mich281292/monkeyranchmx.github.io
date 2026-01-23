@@ -177,6 +177,27 @@ header {
 .flyer-section {
     padding: 60px 20px;
     background-color: var(--bg-primary);
+    background-image: url('motocross1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+}
+
+.flyer-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.45);
+    pointer-events: none;
+}
+
+.flyer-section .container {
+    position: relative;
+    z-index: 1;
 }
 
 .flyer-box {
@@ -202,6 +223,11 @@ header {
     height: auto;
     display: block;
     object-fit: cover;
+    border: 4px solid #b8242f;
+    box-shadow:
+        0 10px 25px rgba(184, 36, 47, 0.3),
+        0 20px 40px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .flyer-action {
