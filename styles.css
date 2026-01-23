@@ -173,6 +173,37 @@ header {
     color: var(--header-bg);
 }
 
+/* Flyer Section */
+.flyer-section {
+    padding: 60px 20px;
+    background-color: var(--bg-primary);
+}
+
+.flyer-box {
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.15),
+        0 0 1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.flyer-box:hover {
+    transform: translateY(-8px);
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.2),
+        0 0 1px rgba(184, 36, 47, 0.2);
+}
+
+.flyer-box img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
 .about p {
     font-size: 1.1rem;
     color: var(--text-secondary);
