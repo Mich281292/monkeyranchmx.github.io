@@ -204,6 +204,11 @@ header {
     object-fit: cover;
 }
 
+.flyer-action {
+    text-align: center;
+    margin-top: 2rem;
+}
+
 .about p {
     font-size: 1.1rem;
     color: var(--text-secondary);
