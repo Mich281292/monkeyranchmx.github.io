@@ -57,26 +57,67 @@ document.querySelector('.cta-button').addEventListener('click', function() {
 document.querySelector('.contact-form').addEventListener('submit', function(e) {
     e.preventDefault();
     
-    const formData = new FormData(this);
+    const nombre = this.querySelector('input[placeholder="Tu nombre"]').value.trim();
+    const email = this.querySelector('input[placeholder="Tu email"]').value.trim();
+    const mensaje = this.querySelector('textarea[placeholder="Tu mensaje"]').value.trim();
     const inputs = this.querySelectorAll('input, textarea');
     
-    // Validate form
+    // Client-side validation
     let isValid = true;
     inputs.forEach(input => {
         if (!input.value.trim()) {
             isValid = false;
             input.style.borderColor = '#ff6b6b';
         } else {
-            input.style.borderColor = '#ddd';
+            input.style.borderColor = 'var(--border-color)';
         }
     });
     
-    if (isValid) {
-        alert('¡Gracias por tu mensaje! Nos pondremos en contacto pronto.');
-        this.reset();
-    } else {
+    if (!isValid) {
         alert('Por favor, completa todos los campos del formulario.');
+        return;
     }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert('Por favor, ingresa un email válido.');
+        return;
+    }
+
+    // Submit to backend
+    const submitBtn = this.querySelector('.submit-btn');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Enviando...';
+    submitBtn.disabled = true;
+
+    fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ nombre, email, mensaje })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            this.reset();
+            inputs.forEach(input => {
+                input.style.borderColor = 'var(--border-color)';
+            });
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al enviar el mensaje. Por favor, intenta de nuevo.');
+    })
+    .finally(() => {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    });
 });
 
 // Add scroll animation for service cards
