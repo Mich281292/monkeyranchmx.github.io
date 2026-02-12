@@ -91,7 +91,7 @@ document.querySelector('.contact-form').addEventListener('submit', function(e) {
     submitBtn.textContent = 'Enviando...';
     submitBtn.disabled = true;
 
-    fetch('/api/contact', {
+    fetch('https://monkey-ranch-api.onrender.com/api/contact', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
