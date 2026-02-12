@@ -378,7 +378,8 @@ header {
 }
 
 .contact-form input,
-.contact-form textarea {
+.contact-form textarea,
+.contact-form select {
     padding: 12px;
     border: 2px solid var(--border-color);
     border-radius: 5px;
@@ -390,7 +391,8 @@ header {
 }
 
 .contact-form input:focus,
-.contact-form textarea:focus {
+.contact-form textarea:focus,
+.contact-form select:focus {
     outline: none;
     border-color: var(--header-bg);
 }

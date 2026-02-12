@@ -28,11 +28,25 @@
         <section id="inscription" class="inscription-section">
             <div class="container">
                 <h1>Formulario de Inscripción</h1>
-                <p class="section-description">Completa tus datos para inscribirte en Monkey Ranch</p>
+                <p class="section-description">Completa tus datos para inscribirte en  la carrera en Monkey Ranch</p>
                 <form class="contact-form" id="inscriptionForm">
                     <input type="text" placeholder="Tu nombre" required>
                     <input type="email" placeholder="Tu email" required>
                     <input type="tel" placeholder="Tu teléfono" required>
+                    <select placeholder="Cantidad de personas" required>
+                        <option value="">¿Cuantas personas ingresan contigo?</option>
+                        <option value="1">1 persona</option>
+                        <option value="2">2 personas</option>
+                        <option value="3">3 personas</option>
+                        <option value="4">4 personas</option>
+                        <option value="5">5 personas</option>
+                        <option value="6">6 personas</option>
+                        <option value="7">7 personas</option>
+                        <option value="8">8 personas</option>
+                        <option value="9">9 personas</option>
+                        <option value="10">10 personas</option>
+                        <option value="10+">Más de 10 personas</option>
+                    </select>
                     <textarea placeholder="Tu mensaje" rows="5" required></textarea>
                     <button type="submit" class="submit-btn">Inscribirse</button>
                 </form>
@@ -70,8 +84,9 @@
             const nombre = this.querySelector('input[placeholder="Tu nombre"]').value.trim();
             const email = this.querySelector('input[placeholder="Tu email"]').value.trim();
             const telefono = this.querySelector('input[placeholder="Tu teléfono"]').value.trim();
+            const cantidadPersonas = this.querySelector('select').value;
             const mensaje = this.querySelector('textarea[placeholder="Tu mensaje"]').value.trim();
-            const inputs = this.querySelectorAll('input, textarea');
+            const inputs = this.querySelectorAll('input, textarea, select');
             
             // Validación cliente
             let isValid = true;
@@ -114,7 +129,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nombre, email, mensaje: `Teléfono: ${telefono}\n\n${mensaje}` })
+                body: JSON.stringify({ nombre, email, mensaje: `Teléfono: ${telefono}\nCantidad de personas: ${cantidadPersonas}\n\n${mensaje}` })
             })
             .then(response => response.json())
             .then(data => {
