@@ -33,7 +33,7 @@
                     <input type="text" placeholder="Tu nombre" required>
                     <input type="email" placeholder="Tu email" required>
                     <input type="tel" placeholder="Tu teléfono" required>
-                    <select placeholder="Cantidad de personas" required>
+                    <select id="cantidadPersonasSelect" placeholder="Cantidad de personas" required>
                         <option value="">¿Cuantas personas ingresan contigo?</option>
                         <option value="1">1 persona</option>
                         <option value="2">2 personas</option>
@@ -48,6 +48,7 @@
                         <option value="10+">Más de 10 personas</option>
                     </select>
                     <textarea placeholder="Tu mensaje" rows="5" required></textarea>
+                    <div id="personasContainer"></div>
                     <button type="submit" class="submit-btn">Inscribirse</button>
                 </form>
             </div>
@@ -77,20 +78,61 @@
 
     <script src="script.js"></script>
     <script>
+        const cantidadPersonasSelect = document.getElementById('cantidadPersonasSelect');
+        const personasContainer = document.getElementById('personasContainer');
+        const inscriptionForm = document.getElementById('inscriptionForm');
+
+        // Generar formularios de personas dinámicamente
+        cantidadPersonasSelect.addEventListener('change', function() {
+            const cantidad = this.value;
+            personasContainer.innerHTML = '';
+
+            if (cantidad && cantidad !== '10+') {
+                for (let i = 1; i <= parseInt(cantidad); i++) {
+                    const personaForm = document.createElement('div');
+                    personaForm.className = 'persona-form';
+                    personaForm.innerHTML = `
+                        <h3>Persona ${i}</h3>
+                        <input type="text" placeholder="Nombre de la persona ${i}" class="persona-nombre" required>
+                        <input type="number" placeholder="Edad" class="persona-edad" min="1" max="120" required>
+                        <select class="persona-sexo" required>
+                            <option value="">Selecciona sexo</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Femenino">Femenino</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                        <select class="persona-rol" required>
+                            <option value="">Selecciona rol</option>
+                            <option value="Espectador">Espectador</option>
+                            <option value="Mecánico">Mecánico</option>
+                            <option value="Piloto extra">Piloto extra</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    `;
+                    personasContainer.appendChild(personaForm);
+                }
+            } else if (cantidad === '10+') {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert-message';
+                alertDiv.textContent = 'Por favor, contacta directamente para grupos de más de 10 personas.';
+                personasContainer.appendChild(alertDiv);
+            }
+        });
+
         // Manejo del formulario de inscripción
-        document.getElementById('inscriptionForm').addEventListener('submit', function(e) {
+        inscriptionForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
             const nombre = this.querySelector('input[placeholder="Tu nombre"]').value.trim();
             const email = this.querySelector('input[placeholder="Tu email"]').value.trim();
             const telefono = this.querySelector('input[placeholder="Tu teléfono"]').value.trim();
-            const cantidadPersonas = this.querySelector('select').value;
+            const cantidadPersonas = cantidadPersonasSelect.value;
             const mensaje = this.querySelector('textarea[placeholder="Tu mensaje"]').value.trim();
-            const inputs = this.querySelectorAll('input, textarea, select');
+            const mainInputs = this.querySelectorAll('input[placeholder], textarea[placeholder], #cantidadPersonasSelect');
             
             // Validación cliente
             let isValid = true;
-            inputs.forEach(input => {
+            mainInputs.forEach(input => {
                 if (!input.value.trim()) {
                     isValid = false;
                     input.style.borderColor = '#ff6b6b';
@@ -100,7 +142,7 @@
             });
             
             if (!isValid) {
-                alert('Por favor, completa todos los campos del formulario.');
+                alert('Por favor, completa todos los campos del formulario principal.');
                 return;
             }
 
@@ -118,6 +160,43 @@
                 return;
             }
 
+            // Recopilar datos de personas
+            const personas = [];
+            const personasInputs = this.querySelectorAll('.persona-form');
+            
+            personasInputs.forEach((forma, index) => {
+                const personaNombre = forma.querySelector('.persona-nombre').value.trim();
+                const personaEdad = forma.querySelector('.persona-edad').value.trim();
+                const personaSexo = forma.querySelector('.persona-sexo').value;
+                const personaRol = forma.querySelector('.persona-rol').value;
+
+                if (!personaNombre || !personaEdad || !personaSexo || !personaRol) {
+                    isValid = false;
+                    if (!personaNombre) forma.querySelector('.persona-nombre').style.borderColor = '#ff6b6b';
+                    if (!personaEdad) forma.querySelector('.persona-edad').style.borderColor = '#ff6b6b';
+                    if (!personaSexo) forma.querySelector('.persona-sexo').style.borderColor = '#ff6b6b';
+                    if (!personaRol) forma.querySelector('.persona-rol').style.borderColor = '#ff6b6b';
+                }
+
+                personas.push({
+                    nombre: personaNombre,
+                    edad: personaEdad,
+                    sexo: personaSexo,
+                    rol: personaRol
+                });
+            });
+
+            if (!isValid) {
+                alert('Por favor, completa todos los campos de las personas.');
+                return;
+            }
+
+            // Buil mensaje con datos de personas
+            let personasDetalles = '';
+            personas.forEach((p, i) => {
+                personasDetalles += `\nPersona ${i + 1}:\n  - Nombre: ${p.nombre}\n  - Edad: ${p.edad}\n  - Sexo: ${p.sexo}\n  - Rol: ${p.rol}`;
+            });
+
             // Enviar al backend
             const submitBtn = this.querySelector('.submit-btn');
             const originalText = submitBtn.textContent;
@@ -129,14 +208,19 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nombre, email, mensaje: `Teléfono: ${telefono}\nCantidad de personas: ${cantidadPersonas}\n\n${mensaje}` })
+                body: JSON.stringify({ 
+                    nombre, 
+                    email, 
+                    mensaje: `Teléfono: ${telefono}\nCantidad de personas: ${cantidadPersonas}\n${personasDetalles}\n\nMensaje: ${mensaje}` 
+                })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     alert('¡Inscripción completada! Te contactaremos pronto.');
                     this.reset();
-                    inputs.forEach(input => {
+                    personasContainer.innerHTML = '';
+                    mainInputs.forEach(input => {
                         input.style.borderColor = 'var(--border-color)';
                     });
                 } else {
