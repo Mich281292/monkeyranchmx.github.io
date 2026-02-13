@@ -33,6 +33,26 @@
                     <input type="text" placeholder="Tu nombre" required>
                     <input type="email" placeholder="Tu email" required>
                     <input type="tel" placeholder="Tu teléfono" required>
+                    <select id="categoriaSelect" placeholder="Categoria" required>
+                        <option value="">¿Categoria a la que ingresas?</option>
+                        <option value="50cc mini">50cc mini</option>
+                        <option value="50cc Jr">50cc Jr</option>
+                        <option value="65cc Jr">65cc Jr</option>
+                        <option value="85cc Mini">85cc Mini</option>
+                        <option value="85cc Mini">85cc Mini</option>
+                        <option value="125 B">125 B</option>
+                        <option value="125 A">125 A</option>
+                        <option value="Femenil Juvenil">Femenil Juvenil</option>
+                        <option value="Femenil Elite">Femenil Elite</option>
+                        <option value="N3">N3</option>
+                        <option value="N2">N2</option>
+                        <option value="MXB Open">MXB Open</option>
+                        <option value="Veteranos 30">Veteranos 30</option>
+                        <option value="Veteranos 40">Veteranos 40</option>
+                        <option value="Veteranos 50">Veteranos 50</option>
+                        <option value="Mx2">Mx2</option>
+                        <option value="Mx1 Open">Mx1 Open</option>
+                    </select>
                     <select id="cantidadPersonasSelect" placeholder="Cantidad de personas" required>
                         <option value="">¿Cuantas personas ingresan contigo?</option>
                         <option value="1">1 persona</option>
@@ -47,6 +67,7 @@
                         <option value="10">10 personas</option>
                         <option value="10+">Más de 10 personas</option>
                     </select>
+                    <div id="personasContainer"></div>
                     <select id="cantidadVehiculosSelect" placeholder="Cantidad de vehiculos" required>
                         <option value="">¿Con cuantos vehiculos ingresas?</option>
                         <option value="1">1 vehiculo</option>
@@ -61,9 +82,8 @@
                         <option value="10">10 vehiculos</option>
                         <option value="10+">Más de 10 vehiculos</option>
                     </select>
-                    <textarea placeholder="Tu mensaje" rows="5" required></textarea>
-                    <div id="personasContainer"></div>
                     <div id="vehiculosContainer"></div>
+                    <textarea placeholder="Tu mensaje" rows="5" required></textarea>
                     <button type="submit" class="submit-btn">Inscribirse</button>
                 </form>
             </div>
@@ -169,10 +189,11 @@
             const nombre = this.querySelector('input[placeholder="Tu nombre"]').value.trim();
             const email = this.querySelector('input[placeholder="Tu email"]').value.trim();
             const telefono = this.querySelector('input[placeholder="Tu teléfono"]').value.trim();
+            const categoria = this.querySelector('#categoriaSelect').value;
             const cantidadPersonas = cantidadPersonasSelect.value;
             const cantidadVehiculos = cantidadVehiculosSelect.value;
             const mensaje = this.querySelector('textarea[placeholder="Tu mensaje"]').value.trim();
-            const mainInputs = this.querySelectorAll('input[placeholder], textarea[placeholder], #cantidadPersonasSelect, #cantidadVehiculosSelect');
+            const mainInputs = this.querySelectorAll('input[placeholder], textarea[placeholder], #categoriaSelect, #cantidadPersonasSelect, #cantidadVehiculosSelect');
             
             // Validación cliente
             let isValid = true;
@@ -291,7 +312,7 @@
                 body: JSON.stringify({ 
                     nombre, 
                     email, 
-                    mensaje: `Teléfono: ${telefono}\nCantidad de personas: ${cantidadPersonas}\nCantidad de vehiculos: ${cantidadVehiculos}\n${personasDetalles}\n${vehiculosDetalles}\n\nMensaje: ${mensaje}` 
+                    mensaje: `Teléfono: ${telefono}\nCategoria: ${categoria}\nCantidad de personas: ${cantidadPersonas}\nCantidad de vehiculos: ${cantidadVehiculos}\n${personasDetalles}\n${vehiculosDetalles}\n\nMensaje: ${mensaje}` 
                 })
             })
             .then(response => response.json())
