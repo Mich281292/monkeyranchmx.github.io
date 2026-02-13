@@ -417,8 +417,9 @@ header {
 .inscription-section {
     padding: 60px 20px;
     background-image: url('monkey-qro.jpeg');
-    background-size: cover;
-    background-position: center;
+    background-size: auto;
+    background-position: top left;
+    background-repeat: repeat;
     background-attachment: fixed;
     position: relative;
     min-height: 100vh;
