@@ -479,6 +479,16 @@ body.dark-mode .inscription-section .section-description {
     margin-right: auto;
 }
 
+#vehiculosContainer {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .persona-form {
     margin-bottom: 2rem;
     padding: 1.5rem;
@@ -487,7 +497,21 @@ body.dark-mode .inscription-section .section-description {
     border: 2px solid var(--border-color);
 }
 
+.vehiculo-form {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+}
+
 .persona-form h3 {
+    color: var(--header-bg);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.vehiculo-form h3 {
     color: var(--header-bg);
     margin-bottom: 1rem;
     font-weight: 600;
@@ -509,8 +533,30 @@ body.dark-mode .inscription-section .section-description {
     box-sizing: border-box;
 }
 
+.vehiculo-form input,
+.vehiculo-form select {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
 .persona-form input:focus,
 .persona-form select:focus {
+    outline: none;
+    border-color: var(--header-bg);
+}
+
+.vehiculo-form input:focus,
+.vehiculo-form select:focus {
     outline: none;
     border-color: var(--header-bg);
 }

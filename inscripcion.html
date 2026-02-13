@@ -47,8 +47,23 @@
                         <option value="10">10 personas</option>
                         <option value="10+">Más de 10 personas</option>
                     </select>
+                    <select id="cantidadVehiculosSelect" placeholder="Cantidad de vehiculos" required>
+                        <option value="">¿Con cuantos vehiculos ingresas?</option>
+                        <option value="1">1 vehiculo</option>
+                        <option value="2">2 vehiculos</option>
+                        <option value="3">3 vehiculos</option>
+                        <option value="4">4 vehiculos</option>
+                        <option value="5">5 vehiculos</option>
+                        <option value="6">6 vehiculos</option>
+                        <option value="7">7 vehiculos</option>
+                        <option value="8">8 vehiculos</option>
+                        <option value="9">9 vehiculos</option>
+                        <option value="10">10 vehiculos</option>
+                        <option value="10+">Más de 10 vehiculos</option>
+                    </select>
                     <textarea placeholder="Tu mensaje" rows="5" required></textarea>
                     <div id="personasContainer"></div>
+                    <div id="vehiculosContainer"></div>
                     <button type="submit" class="submit-btn">Inscribirse</button>
                 </form>
             </div>
@@ -79,7 +94,9 @@
     <script src="script.js"></script>
     <script>
         const cantidadPersonasSelect = document.getElementById('cantidadPersonasSelect');
+        const cantidadVehiculosSelect = document.getElementById('cantidadVehiculosSelect');
         const personasContainer = document.getElementById('personasContainer');
+        const vehiculosContainer = document.getElementById('vehiculosContainer');
         const inscriptionForm = document.getElementById('inscriptionForm');
 
         // Generar formularios de personas dinámicamente
@@ -119,6 +136,32 @@
             }
         });
 
+        // Generar formularios de vehiculos dinamicamente
+        cantidadVehiculosSelect.addEventListener('change', function() {
+            const cantidad = this.value;
+            vehiculosContainer.innerHTML = '';
+
+            if (cantidad && cantidad !== '10+') {
+                for (let i = 1; i <= parseInt(cantidad); i++) {
+                    const vehiculoForm = document.createElement('div');
+                    vehiculoForm.className = 'vehiculo-form';
+                    vehiculoForm.innerHTML = `
+                        <h3>Vehiculo ${i}</h3>
+                        <input type="text" placeholder="Marca" class="vehiculo-marca" required>
+                        <input type="text" placeholder="Modelo" class="vehiculo-modelo" required>
+                        <input type="number" placeholder="Año" class="vehiculo-ano" min="1900" max="2100" required>
+                        <input type="text" placeholder="Numero de placa" class="vehiculo-placa" required>
+                    `;
+                    vehiculosContainer.appendChild(vehiculoForm);
+                }
+            } else if (cantidad === '10+') {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert-message';
+                alertDiv.textContent = 'Por favor, contacta directamente para grupos de mas de 10 vehiculos.';
+                vehiculosContainer.appendChild(alertDiv);
+            }
+        });
+
         // Manejo del formulario de inscripción
         inscriptionForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -127,8 +170,9 @@
             const email = this.querySelector('input[placeholder="Tu email"]').value.trim();
             const telefono = this.querySelector('input[placeholder="Tu teléfono"]').value.trim();
             const cantidadPersonas = cantidadPersonasSelect.value;
+            const cantidadVehiculos = cantidadVehiculosSelect.value;
             const mensaje = this.querySelector('textarea[placeholder="Tu mensaje"]').value.trim();
-            const mainInputs = this.querySelectorAll('input[placeholder], textarea[placeholder], #cantidadPersonasSelect');
+            const mainInputs = this.querySelectorAll('input[placeholder], textarea[placeholder], #cantidadPersonasSelect, #cantidadVehiculosSelect');
             
             // Validación cliente
             let isValid = true;
@@ -191,10 +235,46 @@
                 return;
             }
 
+            // Recopilar datos de vehiculos
+            const vehiculos = [];
+            const vehiculosInputs = this.querySelectorAll('.vehiculo-form');
+
+            vehiculosInputs.forEach((forma) => {
+                const vehiculoMarca = forma.querySelector('.vehiculo-marca').value.trim();
+                const vehiculoModelo = forma.querySelector('.vehiculo-modelo').value.trim();
+                const vehiculoAno = forma.querySelector('.vehiculo-ano').value.trim();
+                const vehiculoPlaca = forma.querySelector('.vehiculo-placa').value.trim();
+
+                if (!vehiculoMarca || !vehiculoModelo || !vehiculoAno || !vehiculoPlaca) {
+                    isValid = false;
+                    if (!vehiculoMarca) forma.querySelector('.vehiculo-marca').style.borderColor = '#ff6b6b';
+                    if (!vehiculoModelo) forma.querySelector('.vehiculo-modelo').style.borderColor = '#ff6b6b';
+                    if (!vehiculoAno) forma.querySelector('.vehiculo-ano').style.borderColor = '#ff6b6b';
+                    if (!vehiculoPlaca) forma.querySelector('.vehiculo-placa').style.borderColor = '#ff6b6b';
+                }
+
+                vehiculos.push({
+                    marca: vehiculoMarca,
+                    modelo: vehiculoModelo,
+                    ano: vehiculoAno,
+                    placa: vehiculoPlaca
+                });
+            });
+
+            if (!isValid) {
+                alert('Por favor, completa todos los campos de los vehiculos.');
+                return;
+            }
+
             // Buil mensaje con datos de personas
             let personasDetalles = '';
             personas.forEach((p, i) => {
                 personasDetalles += `\nPersona ${i + 1}:\n  - Nombre: ${p.nombre}\n  - Edad: ${p.edad}\n  - Sexo: ${p.sexo}\n  - Rol: ${p.rol}`;
+            });
+
+            let vehiculosDetalles = '';
+            vehiculos.forEach((v, i) => {
+                vehiculosDetalles += `\nVehiculo ${i + 1}:\n  - Marca: ${v.marca}\n  - Modelo: ${v.modelo}\n  - Año: ${v.ano}\n  - Numero de placa: ${v.placa}`;
             });
 
             // Enviar al backend
@@ -211,7 +291,7 @@
                 body: JSON.stringify({ 
                     nombre, 
                     email, 
-                    mensaje: `Teléfono: ${telefono}\nCantidad de personas: ${cantidadPersonas}\n${personasDetalles}\n\nMensaje: ${mensaje}` 
+                    mensaje: `Teléfono: ${telefono}\nCantidad de personas: ${cantidadPersonas}\nCantidad de vehiculos: ${cantidadVehiculos}\n${personasDetalles}\n${vehiculosDetalles}\n\nMensaje: ${mensaje}` 
                 })
             })
             .then(response => response.json())
@@ -220,6 +300,7 @@
                     alert('¡Inscripción completada! Te contactaremos pronto.');
                     this.reset();
                     personasContainer.innerHTML = '';
+                    vehiculosContainer.innerHTML = '';
                     mainInputs.forEach(input => {
                         input.style.borderColor = 'var(--border-color)';
                     });
