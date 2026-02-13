@@ -479,6 +479,12 @@ body.dark-mode .inscription-section .section-description {
     margin-right: auto;
 }
 
+#personasContainer:empty {
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+}
+
 #vehiculosContainer {
     margin: 2rem 0;
     padding: 1.5rem;
@@ -487,6 +493,12 @@ body.dark-mode .inscription-section .section-description {
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
+}
+
+#vehiculosContainer:empty {
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
 }
 
 .persona-form {
