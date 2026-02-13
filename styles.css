@@ -27,6 +27,8 @@ body.dark-mode {
 
 body {
     font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.2px;
     line-height: 1.6;
     color: var(--text-primary);
     background-color: var(--bg-primary);
@@ -426,6 +428,15 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .inscription-section {
+        background-attachment: scroll;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
 }
 
 .inscription-section::before {
