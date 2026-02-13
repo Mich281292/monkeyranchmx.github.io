@@ -2,6 +2,7 @@
 const themeToggle = document.getElementById('themeToggle');
 const htmlElement = document.documentElement;
 const body = document.body;
+const header = document.querySelector('header');
 
 // Check for saved theme preference or system preference
 const savedTheme = localStorage.getItem('theme');
@@ -46,15 +47,22 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // CTA Button click handler
-document.querySelector('.cta-button').addEventListener('click', function() {
-    const servicesSection = document.querySelector('#services');
-    servicesSection.scrollIntoView({
-        behavior: 'smooth'
+const ctaButton = document.querySelector('.cta-button');
+if (ctaButton) {
+    ctaButton.addEventListener('click', function() {
+        const servicesSection = document.querySelector('#services');
+        if (servicesSection) {
+            servicesSection.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
     });
-});
+}
 
 // Contact form submission
-document.querySelector('.contact-form').addEventListener('submit', function(e) {
+const contactForm = document.querySelector('#contactForm');
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
     e.preventDefault();
     
     const nombre = this.querySelector('input[placeholder="Tu nombre"]').value.trim();
@@ -118,7 +126,8 @@ document.querySelector('.contact-form').addEventListener('submit', function(e) {
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
     });
-});
+    });
+}
 
 // Add scroll animation for service cards
 const observerOptions = {
@@ -141,5 +150,19 @@ document.querySelectorAll('.service-card').forEach(card => {
     card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
     observer.observe(card);
 });
+
+// Shrink header and straighten logo on scroll
+if (header) {
+    const toggleHeaderCompact = () => {
+        if (window.scrollY > 40) {
+            header.classList.add('header-compact');
+        } else {
+            header.classList.remove('header-compact');
+        }
+    };
+
+    toggleHeaderCompact();
+    window.addEventListener('scroll', toggleHeaderCompact, { passive: true });
+}
 
 console.log('Monkey Ranch website loaded successfully!');
