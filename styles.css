@@ -71,8 +71,8 @@ header {
 }
 
 .logo img {
-    height: 80px;
-    max-width: 300px;
+    height: 110px;
+    max-width: 360px;
     display: block;
     object-fit: contain;
     filter: blur(0.5px);
@@ -84,10 +84,11 @@ header {
         -8px 8px 16px rgba(0, 0, 0, 0.2),
         0 0 20px rgba(184, 36, 47, 0.3);
     border-radius: 12px;
+    transform: rotate(-45deg) translateX(-65px) translateY(32px);
 }
 
 .logo img:hover {
-    transform: rotateY(15deg) rotateX(-5deg) scale(1.05);
+    transform: translateX(-65px) translateY(32px) rotate(0deg) scale(1.12);
 }
 
 .nav-links {
