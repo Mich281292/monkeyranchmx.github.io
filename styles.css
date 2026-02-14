@@ -46,7 +46,7 @@ header {
     background-color: transparent;
     color: #b8242f;
     position: sticky;
-    top: 0;
+    top: 65px;
     z-index: 100;
     border-radius: 0 0 14px 14px;
     box-shadow: none;
@@ -54,7 +54,7 @@ header {
 }
 
 .navbar {
-    padding: 0.5rem 0;
+    padding: 0.25rem 0;
 }
 
 .navbar .container {
@@ -69,7 +69,7 @@ header {
 }
 
 .logo img {
-    height: 80px;
+    height: 60px;
     max-width: 360px;
     display: block;
     object-fit: contain;
@@ -91,7 +91,7 @@ header.header-compact .navbar {
 }
 
 header.header-compact .logo img {
-    height: 65px;
+    height: 50px;
     max-width: 300px;
 }
 
@@ -132,7 +132,7 @@ header.header-compact .logo img:hover {
 /* Contact Bar - Barra fija en la parte superior */
 .contact-bar {
     position: fixed;
-    top: 128px;
+    top: 0;
     left: 0;
     right: 0;
     z-index: 1300;
@@ -336,7 +336,7 @@ body.has-top-contact {
 /* Contact tab - aparece cuando la barra está cerrada */
 .contact-tab {
     position: fixed;
-    top: 128px;
+    top: 50px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1299;
@@ -476,16 +476,20 @@ body.has-top-contact {
     overflow: hidden;
     background-color: black;
     box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.15),
-        0 0 1px rgba(0, 0, 0, 0.1);
+        0 0 20px rgba(184, 36, 47, 0.8),
+        0 0 40px rgba(184, 36, 47, 0.6),
+        0 0 60px rgba(184, 36, 47, 0.4),
+        0 10px 30px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .flyer-box:hover {
     transform: translateY(-8px);
     box-shadow:
-        0 20px 40px rgba(0, 0, 0, 0.2),
-        0 0 1px rgba(184, 36, 47, 0.2);
+        0 0 30px rgba(184, 36, 47, 1),
+        0 0 50px rgba(184, 36, 47, 0.8),
+        0 0 70px rgba(184, 36, 47, 0.6),
+        0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
 .flyer-box img {
