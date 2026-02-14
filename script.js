@@ -194,4 +194,75 @@ if (contactTab && contactBar) {
     }
 }
 
+// VIP Form submission
+const vipForm = document.querySelector('#vipForm');
+if (vipForm) {
+    vipForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const nombre = this.querySelector('input[placeholder="Tu nombre"]').value.trim();
+        const email = this.querySelector('input[placeholder="Tu correo"]').value.trim();
+        const whatsapp = this.querySelector('input[placeholder="Tu WhatsApp"]').value.trim();
+        const boletos = this.querySelector('#boletosSelect').value;
+        const inputs = this.querySelectorAll('input, select');
+        
+        // Client-side validation
+        let isValid = true;
+        inputs.forEach(input => {
+            if (!input.value.trim()) {
+                isValid = false;
+                input.style.borderColor = '#ff6b6b';
+            } else {
+                input.style.borderColor = 'var(--border-color)';
+            }
+        });
+        
+        if (!isValid) {
+            alert('Por favor, completa todos los campos del formulario.');
+            return;
+        }
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert('Por favor, ingresa un email válido.');
+            return;
+        }
+
+        // Submit to backend
+        const submitBtn = this.querySelector('.submit-btn');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Enviando...';
+        submitBtn.disabled = true;
+
+        fetch('https://monkey-ranch-api.onrender.com/api/contact', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ nombre, email, whatsapp, boletos })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                this.reset();
+                inputs.forEach(input => {
+                    input.style.borderColor = 'var(--border-color)';
+                });
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al enviar el formulario. Por favor, intenta de nuevo.');
+        })
+        .finally(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        });
+    });
+}
+
 console.log('Monkey Ranch website loaded successfully!');

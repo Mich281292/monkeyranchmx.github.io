@@ -692,10 +692,10 @@ body.has-top-contact {
 /* Inscription Section */
 .inscription-section {
     padding: 60px 20px;
-    background-image: url('monkey-qro.jpeg');
-    background-size: auto;
-    background-position: top left;
-    background-repeat: repeat;
+    background-image: url('fondonew1.jpeg');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
     background-attachment: fixed;
     position: relative;
     min-height: 100vh;
@@ -947,4 +947,69 @@ footer {
     .services-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* VIP Section */
+.vip-section {
+    padding: 60px 20px;
+    background-image: url('fondonew1.jpeg');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .vip-section {
+        background-attachment: scroll;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+}
+
+.vip-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.45);
+    z-index: 1;
+}
+
+.vip-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+.vip-section h1 {
+    font-weight: 700;
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+.vip-section .section-description {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: #f0f0f0;
+}
+
+@media (prefers-color-scheme: dark) {
+    .vip-section .section-description {
+        color: #f0f0f0;
+    }
+}
+
+body.dark-mode .vip-section .section-description {
+    color: #f0f0f0;
 }
