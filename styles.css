@@ -136,9 +136,98 @@ header.header-compact .logo img:hover {
     transform: scale(1.2);
 }
 
+/* Secondary Navbar */
+.secondary-navbar {
+    background-color: #2d5016;
+    padding: 0.75rem 0;
+    border-bottom: 3px solid #ff9800;
+    position: sticky;
+    top: 68px;
+    z-index: 99;
+    transition: top 0.3s ease;
+}
+
+header.header-compact ~ .secondary-navbar {
+    top: 50px;
+}
+
+.navbar-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.nav-item {
+    color: white;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: color 0.3s, transform 0.2s;
+    padding: 0.5rem 0.8rem;
+}
+
+.nav-item:hover {
+    color: #ff9800;
+}
+
+.btn-inscribirse {
+    background-color: #ff9800;
+    color: white;
+    border-radius: 4px;
+    padding: 0.6rem 1.2rem;
+}
+
+.btn-inscribirse:hover {
+    background-color: #e68900;
+    color: white;
+}
+
+.social-nav {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.social-nav a {
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.social-nav a:hover {
+    color: #ff9800;
+}
+
+@media (max-width: 768px) {
+    .secondary-navbar {
+        top: 64px;
+    }
+
+    .navbar-right {
+        gap: 0.8rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav-item {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.6rem;
+    }
+
+    .btn-inscribirse {
+        padding: 0.5rem 1rem;
+    }
+
+    .social-nav {
+        gap: 0.6rem;
+    }
+}
+
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, rgba(184, 36, 47, 0.3) 0%, rgba(231, 76, 60, 0.3) 100%), url('monkeyspace.jpg') center top/cover no-repeat;
+    background: linear-gradient(135deg, rgba(184, 36, 47, 0.3) 0%, rgba(231, 76, 60, 0.3) 100%), url('fondonew1.jpeg') center top/cover no-repeat;
     background-attachment: fixed;
     color: white;
     padding: 100px 20px;
