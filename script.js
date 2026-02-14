@@ -165,4 +165,33 @@ if (header) {
     window.addEventListener('scroll', toggleHeaderCompact, { passive: true });
 }
 
+// Contact Bar Toggle Functionality
+const contactBar = document.getElementById('contactBar');
+const contactTab = document.getElementById('contactTab');
+const closeContactBtn = document.getElementById('closeContact');
+const callBtn = document.getElementById('callBtn');
+
+if (contactTab && contactBar) {
+    // Open contact bar
+    contactTab.addEventListener('click', function() {
+        contactBar.style.display = 'flex';
+        contactTab.classList.remove('show');
+    });
+    
+    // Close contact bar
+    if (closeContactBtn) {
+        closeContactBtn.addEventListener('click', function() {
+            contactBar.style.display = 'none';
+            contactTab.classList.add('show');
+        });
+    }
+    
+    // Phone button action
+    if (callBtn) {
+        callBtn.addEventListener('click', function() {
+            window.location.href = 'tel:+525542121718';
+        });
+    }
+}
+
 console.log('Monkey Ranch website loaded successfully!');

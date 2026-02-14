@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monkey Ranch</title>
     <link rel="icon" type="image/png" href="icono-monkey.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -25,24 +26,50 @@
         </nav>
     </header>
 
-    <nav class="secondary-navbar">
-        <div class="container navbar-right">
-            <a href="#news" class="nav-item">📰 Noticias</a>
-            <div class="social-nav">
-                <a href="https://www.facebook.com/MonkeyRanchqro" target="_blank" title="Facebook">f</a>
-                <a href="https://www.instagram.com/monkeyranchqro" target="_blank" title="Instagram">📷</a>
+    <nav class="contact-bar" id="contactBar" role="region" aria-label="Barra de contacto">
+        <div class="contact-bar-inner">
+            <div class="contact-info">
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/MonkeyRanchqro" class="social-icon" title="Facebook" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="https://www.instagram.com/monkeyranchqro" class="social-icon" title="Instagram" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://wa.me/525542121718" class="social-icon whatsapp-icon" title="WhatsApp" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
             </div>
-            <a href="inscripcion.html" class="nav-item btn-inscribirse">Inscribirse</a>
-            <a href="#vip" class="nav-item">Experiencia VIP</a>
+            <div class="contact-actions-right">
+                <a class="contact-cta email" href="mailto:contacto@monkeyranch.com" title="Email">
+                    <i class="fa fa-envelope"></i>
+                    <span>contacto@monkeyranch.com</span>
+                </a>
+                <button class="contact-action-phone" id="callBtn" aria-label="Llamar">
+                    <i class="fa fa-phone"></i>
+                    <span>+52 442 121 1718</span>
+                </button>
+                <a href="inscripcion.html" class="contact-action inscripcion-btn" title="Inscribirse">
+                    <i class="fa fa-edit"></i>
+                    <span>Inscribirse</span>
+                </a>
+                <button class="contact-close" id="closeContact" aria-label="Cerrar barra de contacto">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
         </div>
     </nav>
+
+    <div class="contact-tab" id="contactTab" role="button" tabindex="0" aria-label="Abrir barra de contacto">
+        <i class="fa fa-phone"></i>
+        <span>Contacto</span>
+    </div>
 
     <main>
         <section id="home" class="hero">
             <div class="hero-content">
-                <h1>Bienvenido a Monkey Ranch</h1>
-                <p></p>
-                <button class="cta-button">Explorar</button>
+                <!-- <button class="cta-button">Explorar</button> -->
             </div>
         </section>
 

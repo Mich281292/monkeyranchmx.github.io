@@ -43,16 +43,13 @@ body {
 
 /* Header & Navigation */
 header {
-    background-color: var(--header-bg);
-    color: white;
+    background-color: transparent;
+    color: #b8242f;
     position: sticky;
     top: 0;
     z-index: 100;
     border-radius: 0 0 14px 14px;
-    box-shadow:
-        0 10px 20px rgba(0, 0, 0, 0.25),
-        0 22px 44px rgba(184, 36, 47, 0.08),
-        inset 0 -3px 8px rgba(0,0,0,0.12);
+    box-shadow: none;
     transition: padding 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -113,19 +110,19 @@ header.header-compact .logo img:hover {
 }
 
 .nav-links a {
-    color: white;
+    color: #b8242f;
     text-decoration: none;
     transition: color 0.3s;
 }
 
 .nav-links a:hover {
-    color: #a8d5a8;
+    color: #ff9800;
 }
 
 .theme-toggle {
     background: none;
     border: none;
-    color: white;
+    color: #b8242f;
     font-size: 1.5rem;
     cursor: pointer;
     transition: transform 0.3s;
@@ -136,98 +133,264 @@ header.header-compact .logo img:hover {
     transform: scale(1.2);
 }
 
-/* Secondary Navbar */
-.secondary-navbar {
-    background-color: #2d5016;
-    padding: 0.75rem 0;
-    border-bottom: 3px solid #ff9800;
-    position: sticky;
-    top: 68px;
-    z-index: 99;
-    transition: top 0.3s ease;
-}
-
-header.header-compact ~ .secondary-navbar {
-    top: 50px;
-}
-
-.navbar-right {
+/* Contact Bar - Barra fija en la parte superior */
+.contact-bar {
+    position: fixed;
+    top: 128px;
+    left: 0;
+    right: 0;
+    z-index: 1300;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.contact-bar-inner {
+    display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 10px;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 12px 20px;
+    border: none;
+    border-bottom: 2px solid #b8242f;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    width: 100%;
+    justify-content: space-between;
 }
 
-.nav-item {
-    color: white;
-    text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 600;
-    transition: color 0.3s, transform 0.2s;
-    padding: 0.5rem 0.8rem;
-}
-
-.nav-item:hover {
-    color: #ff9800;
-}
-
-.btn-inscribirse {
-    background-color: #ff9800;
-    color: white;
-    border-radius: 4px;
-    padding: 0.6rem 1.2rem;
-}
-
-.btn-inscribirse:hover {
-    background-color: #e68900;
-    color: white;
-}
-
-.social-nav {
+.contact-info {
     display: flex;
-    gap: 0.8rem;
+    align-items: center;
+    gap: 15px;
 }
 
-.social-nav a {
+.social-icons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(184, 36, 47, 0.15);
+    color: #b8242f;
+    text-decoration: none;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+    background: #b8242f;
     color: white;
-    font-size: 0.9rem;
+    transform: scale(1.1);
+}
+
+.contact-actions-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contact-action {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 28px;
+    color: white;
     font-weight: 600;
     text-decoration: none;
-    transition: color 0.3s;
+    font-size: 13px;
+    transition: all 0.3s ease;
 }
 
-.social-nav a:hover {
-    color: #ff9800;
+.contact-action i {
+    color: #b8242f;
+    font-size: 16px;
 }
 
-@media (max-width: 768px) {
-    .secondary-navbar {
-        top: 64px;
-    }
+.contact-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 28px;
+    background: rgba(184, 36, 47, 0.15);
+    color: #b8242f;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
 
-    .navbar-right {
-        gap: 0.8rem;
+.contact-cta i {
+    font-size: 16px;
+}
+
+.contact-cta span {
+    font-size: 12px;
+    color: #b8242f;
+}
+
+.contact-cta.email:hover {
+    background: #b8242f;
+    color: white;
+}
+
+.contact-cta.email:hover span {
+    color: white;
+}
+
+.contact-cta.email:hover i {
+    color: white;
+}
+
+.contact-action-phone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 28px;
+    background: rgba(184, 36, 47, 0.15);
+    color: #b8242f;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+.contact-action-phone i {
+    color: #b8242f;
+    font-size: 16px;
+}
+
+.contact-action-phone span {
+    color: #b8242f;
+}
+
+.contact-action-phone:hover {
+    background: #b8242f;
+    color: white;
+}
+
+.contact-action-phone:hover i {
+    color: white;
+}
+
+.contact-action-phone:hover span {
+    color: white;
+}
+
+.inscripcion-btn {
+    background: rgba(184, 36, 47, 0.15);
+    color: #b8242f;
+}
+
+.inscripcion-btn:hover {
+    background: #b8242f;
+    color: white;
+}
+
+.inscripcion-btn:hover i {
+    color: white;
+}
+
+.inscripcion-btn:hover span {
+    color: white;
+}
+
+.contact-close {
+    background: transparent;
+    border: none;
+    color: #bbb;
+    padding: 6px 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.contact-close:hover {
+    color: #b8242f;
+}
+
+.contact-close i {
+    font-size: 16px;
+}
+
+/* Evitar que el contenido quede debajo de la barra */
+body.has-top-contact {
+    padding-top: 200px;
+}
+
+/* Contact tab - aparece cuando la barra está cerrada */
+.contact-tab {
+    position: fixed;
+    top: 128px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1299;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid rgba(184, 36, 47, 0.3);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    padding: 10px 20px;
+    color: #b8242f;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.contact-tab i {
+    font-size: 16px;
+    color: #b8242f;
+}
+
+.contact-tab:hover {
+    background: rgba(184, 36, 47, 0.1);
+    box-shadow: none;
+}
+
+.contact-tab.show {
+    display: flex;
+}
+
+@media (max-width: 640px) {
+    .contact-bar-inner {
+        padding: 10px 12px;
         flex-wrap: wrap;
-        justify-content: center;
     }
-
-    .nav-item {
-        font-size: 0.85rem;
-        padding: 0.4rem 0.6rem;
+    
+    .contact-action-phone span,
+    .contact-cta span {
+        display: none;
     }
-
-    .btn-inscribirse {
-        padding: 0.5rem 1rem;
-    }
-
-    .social-nav {
-        gap: 0.6rem;
+    
+    .contact-actions-right {
+        gap: 6px;
     }
 }
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, rgba(184, 36, 47, 0.3) 0%, rgba(231, 76, 60, 0.3) 100%), url('fondonew1.jpeg') center top/cover no-repeat;
+    background: url('fondonew1.jpeg') center top/cover no-repeat;
     background-attachment: fixed;
     color: white;
     padding: 100px 20px;
@@ -252,21 +415,24 @@ header.header-compact ~ .secondary-navbar {
 }
 
 .cta-button {
-    background-color: #ff9800;
-    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 28px;
+    background: rgba(184, 36, 47, 0.15);
+    color: #b8242f;
     border: none;
-    padding: 15px 40px;
-    font-size: 1.1rem;
-    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-    font-weight: 700;
-    display: inline-block;
-    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.3s ease;
 }
 
 .cta-button:hover {
-    background-color: #e68900;
+    background: #b8242f;
+    color: white;
     transform: scale(1.05);
 }
 
@@ -287,11 +453,12 @@ header.header-compact ~ .secondary-navbar {
 /* Flyer Section */
 .flyer-section {
     padding: 60px 20px;
-    background-color: var(--bg-primary);
-    background-image: url('motocross1.jpg');
-    background-size: cover;
-    background-position: center;
+    background-color: transparent;
+    background-image: url('fondonew1.jpeg');
     background-attachment: fixed;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
     position: relative;
 }
 
@@ -302,7 +469,7 @@ header.header-compact ~ .secondary-navbar {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.45);
+    background-color: transparent;
     pointer-events: none;
 }
 
