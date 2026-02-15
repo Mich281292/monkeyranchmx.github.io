@@ -1,7 +1,8 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const sqlite3 = require('sqlite3').verbose();
+const { Pool } = require('pg');
 const path = require('path');
 
 const app = express();
@@ -13,34 +14,39 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname)));
 
-// Database setup
-const dbPath = path.join(__dirname, 'contacts.db');
-const db = new sqlite3.Database(dbPath, (err) => {
+// PostgreSQL Database setup
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/monkey_ranch',
+    ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
+});
+
+// Test connection and initialize
+pool.connect((err, client, release) => {
     if (err) {
-        console.error('Error opening database:', err);
+        console.error('Error connecting to PostgreSQL:', err);
     } else {
-        console.log('Connected to SQLite database');
+        console.log('Connected to PostgreSQL database');
+        release();
         initializeDatabase();
     }
 });
 
 // Initialize database tables
-function initializeDatabase() {
-    db.run(`
-        CREATE TABLE IF NOT EXISTS contacts (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nombre TEXT NOT NULL,
-            email TEXT NOT NULL,
-            mensaje TEXT NOT NULL,
-            fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-    `, (err) => {
-        if (err) {
-            console.error('Error creating table:', err);
-        } else {
-            console.log('Contacts table ready');
-        }
-    });
+async function initializeDatabase() {
+    try {
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS contacts (
+                id SERIAL PRIMARY KEY,
+                nombre VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                mensaje TEXT NOT NULL,
+                fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+        console.log('Contacts table ready');
+    } catch (err) {
+        console.error('Error creating table:', err);
+    }
 }
 
 // Routes
@@ -49,7 +55,7 @@ app.get('/', (req, res) => {
 });
 
 // POST endpoint for contact form
-app.post('/api/contact', (req, res) => {
+app.post('/api/contact', async (req, res) => {
     const { nombre, email, mensaje } = req.body;
 
     // Validation
@@ -70,44 +76,43 @@ app.post('/api/contact', (req, res) => {
     }
 
     // Insert into database
-    db.run(
-        'INSERT INTO contacts (nombre, email, mensaje) VALUES (?, ?, ?)',
-        [nombre, email, mensaje],
-        function(err) {
-            if (err) {
-                console.error('Error inserting contact:', err);
-                return res.status(500).json({
-                    success: false,
-                    message: 'Error al guardar el contacto'
-                });
-            }
+    try {
+        const result = await pool.query(
+            'INSERT INTO contacts (nombre, email, mensaje) VALUES ($1, $2, $3) RETURNING id',
+            [nombre, email, mensaje]
+        );
 
-            res.status(201).json({
-                success: true,
-                message: '¡Gracias por tu mensaje! Nos pondremos en contacto pronto.',
-                id: this.lastID
-            });
-        }
-    );
+        res.status(201).json({
+            success: true,
+            message: '¡Gracias por tu mensaje! Nos pondremos en contacto pronto.',
+            id: result.rows[0].id
+        });
+    } catch (err) {
+        console.error('Error inserting contact:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al guardar el contacto'
+        });
+    }
 });
 
 // GET endpoint to fetch all contacts (admin use)
-app.get('/api/contacts', (req, res) => {
-    db.all('SELECT * FROM contacts ORDER BY fecha_creacion DESC', (err, rows) => {
-        if (err) {
-            console.error('Error fetching contacts:', err);
-            return res.status(500).json({
-                success: false,
-                message: 'Error al obtener contactos'
-            });
-        }
+app.get('/api/contacts', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM contacts ORDER BY fecha_creacion DESC');
 
         res.json({
             success: true,
-            count: rows.length,
-            data: rows
+            count: result.rows.length,
+            data: result.rows
         });
-    });
+    } catch (err) {
+        console.error('Error fetching contacts:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al obtener contactos'
+        });
+    }
 });
 
 // Start server
@@ -116,13 +121,12 @@ app.listen(PORT, () => {
 });
 
 // Handle graceful shutdown
-process.on('SIGINT', () => {
-    db.close((err) => {
-        if (err) {
-            console.error('Error closing database:', err);
-        } else {
-            console.log('Database connection closed');
-        }
-        process.exit(0);
-    });
+process.on('SIGINT', async () => {
+    try {
+        await pool.end();
+        console.log('Database connection closed');
+    } catch (err) {
+        console.error('Error closing database:', err);
+    }
+    process.exit(0);
 });
