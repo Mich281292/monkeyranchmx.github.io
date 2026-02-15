@@ -200,20 +200,30 @@ if (vipForm) {
     vipForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        const nombre = this.querySelector('input[placeholder="Tu nombre"]').value.trim();
-        const email = this.querySelector('input[placeholder="Tu correo"]').value.trim();
-        const whatsapp = this.querySelector('input[placeholder="Tu WhatsApp"]').value.trim();
-        const boletos = this.querySelector('#boletosSelect').value;
-        const inputs = this.querySelectorAll('input, select');
+        const nombreInput = this.querySelector('input[placeholder="Tu nombre"]');
+        const emailInput = this.querySelector('input[placeholder="Tu correo"]');
+        const whatsappInput = this.querySelector('input[placeholder="Tu WhatsApp"]');
+        const boletosSelect = this.querySelector('#boletosSelect');
+        const nombre = nombreInput.value.trim();
+        const email = emailInput.value.trim();
+        const whatsapp = whatsappInput.value.trim();
+        const boletos = boletosSelect.value;
         
         // Client-side validation
         let isValid = true;
-        inputs.forEach(input => {
-            if (!input.value.trim()) {
+        const fields = [
+            { element: nombreInput, value: nombre },
+            { element: emailInput, value: email },
+            { element: whatsappInput, value: whatsapp },
+            { element: boletosSelect, value: boletos }
+        ];
+
+        fields.forEach(field => {
+            if (!field.value) {
                 isValid = false;
-                input.style.borderColor = '#ff6b6b';
+                field.element.style.borderColor = '#ff6b6b';
             } else {
-                input.style.borderColor = 'var(--border-color)';
+                field.element.style.borderColor = 'var(--border-color)';
             }
         });
         
