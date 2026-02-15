@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Experiencia VIP - Monkey Ranch</title>
+    <title>Motocross - Monkey Ranch</title>
     <link rel="icon" type="image/png" href="icono-monkey.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
@@ -21,6 +21,7 @@
                     <li><a href="index.html#home">Inicio</a></li>
                     <li><a href="index.html#about">Acerca de</a></li>
                     <li><a href="index.html#services">Servicios</a></li>
+                    <li><a href="vip.html">Experiencia VIP</a></li>
                     <li><a href="inscripcion.html">Inscripción</a></li>
                     <li><a href="index.html#contact">Contacto</a></li>
                     <li><button class="theme-toggle" id="themeToggle">🌙</button></li>
@@ -39,7 +40,7 @@
                     <a href="https://www.instagram.com/monkeyranchqro" class="social-icon" title="Instagram" target="_blank" rel="noopener noreferrer">
                         <i class="fab fa-instagram"></i>
                     </a>
-                    <a href="https://wa.me/525542121718" class="social-icon whatsapp-icon" title="WhatsApp" target="_blank" rel="noopener noreferrer">
+                    <a href="https://wa.me/4422222222" class="social-icon whatsapp-icon" title="WhatsApp" target="_blank" rel="noopener noreferrer">
                         <i class="fab fa-whatsapp"></i>
                     </a>
                 </div>
@@ -51,7 +52,7 @@
                 </a>
                 <button class="contact-action-phone" id="callBtn" aria-label="Llamar">
                     <i class="fa fa-phone"></i>
-                    <span>+52 442 121 1718</span>
+                    <span>+52 442 222 2222</span>
                 </button>
                 <a href="inscripcion.html" class="contact-action inscripcion-btn" title="Inscribirse">
                     <i class="fa fa-edit"></i>
@@ -70,61 +71,69 @@
     </div>
 
     <main>
-        <section id="vip" class="vip-section">
+        <section id="motocross" class="vip-section">
             <div class="container">
-                <!-- <h1>Experiencia VIP</h1>
-                <p class="section-description">Regístrate para acceder a nuestra experiencia VIP en Monkey Ranch</p> -->
-                
+                <h1>Motocross</h1>
+                <p class="section-description">Vive la adrenalina de nuestra pista y eventos en Monkey Ranch.</p>
+
                 <div class="vip-carousel">
                     <button class="carousel-btn carousel-btn-prev" id="prevBtn" aria-label="Tarjeta anterior">
                         <i class="fas fa-chevron-left"></i>
                     </button>
-                    
+
                     <div class="vip-cards-container">
-                        <div class="vip-card active">
-                            <h3>Vive la Experiencia Premium</h3>
-                            <p>Acceso exclusivo a las mejores instalaciones de Monkey Ranch con servicios VIP personalizados.</p>
-                            <button class="cta-button">Comprar Accesos</button>
+                        <div class="vip-card active" style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url('motocross/motocross1.jpg') center/cover no-repeat;">
+                            <h3>Accion en pista</h3>
+                            <p>Entrenamientos y practica en un circuito de primer nivel.</p>
                         </div>
-                        
-                        <div class="vip-card">
-                            <h3>Disfruta la Terraza VIP</h3>
-                            <p>Relájate en nuestra exclusiva terraza con vistas panorámicas y servicio de primera clase.</p>
-                            <button class="cta-button">Comprar Accesos</button>
+                        <div class="vip-card" style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url('motocross/pits1.jpg') center/cover no-repeat;">
+                            <h3>Pits y equipo</h3>
+                            <p>Zona de pits preparada para equipos y pilotos.</p>
+                        </div>
+                        <div class="vip-card" style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url('motocross/finish1.jpg') center/cover no-repeat;">
+                            <h3>Linea de meta</h3>
+                            <p>Momentos intensos en cada final de carrera.</p>
+                        </div>
+                        <div class="vip-card" style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url('motocross/familia1.jpg') center/cover no-repeat;">
+                            <h3>Ambiente familiar</h3>
+                            <p>Un espacio para disfrutar en familia y con amigos.</p>
+                        </div>
+                        <div class="vip-card" style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url('motocross/premiacion2.jpg') center/cover no-repeat;">
+                            <h3>Premiacion</h3>
+                            <p>Reconocimiento a los mejores en cada competencia.</p>
+                        </div>
+                        <div class="vip-card" style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url('motocross/Premiaciones.jpg') center/cover no-repeat;">
+                            <h3>Podio</h3>
+                            <p>Celebramos cada logro con nuestros pilotos.</p>
                         </div>
                     </div>
-                    
+
                     <button class="carousel-btn carousel-btn-next" id="nextBtn" aria-label="Tarjeta siguiente">
                         <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
-                
-                <form class="contact-form vip-form" id="vipForm">
-                    <p class="form-header-text">Por favor llena los datos</p>
-                    <input type="text" placeholder="Tu nombre" required>
-                    <input type="email" placeholder="Tu correo" required>
-                    <input type="tel" placeholder="Tu WhatsApp" required>
-                    <select id="boletosSelect" required>
-                        <option value="">¿Cuántos boletos deseas comprar?</option>
-                        <option value="1">1 boleto</option>
-                        <option value="2">2 boletos</option>
-                        <option value="3">3 boletos</option>
-                        <option value="4">4 boletos</option>
-                        <option value="5">5 boletos</option>
-                        <option value="6">6 boletos</option>
-                        <option value="7">7 boletos</option>
-                        <option value="8">8 boletos</option>
-                        <option value="9">9 boletos</option>
-                        <option value="10">10 boletos</option>
-                        <option value="10+">10 o más</option>
-                    </select>
-                    <button type="submit" class="submit-btn">Registrarse</button>
-                </form>
             </div>
         </section>
     </main>
 
     <footer>
+        <div class="social-media">
+            <h3>Síguenos</h3>
+            <div class="social-links">
+                <a href="https://www.facebook.com/MonkeyRanchqro" target="_blank" aria-label="Facebook">
+                    <span class="social-icon">f</span>
+                </a>
+                <a href="https://www.twitter.com" target="_blank" aria-label="Twitter">
+                    <span class="social-icon">𝕏</span>
+                </a>
+                <a href="https://www.instagram.com/monkeyranchqro" target="_blank" aria-label="Instagram">
+                    <span class="social-icon">📷</span>
+                </a>
+                <a href="https://www.youtube.com" target="_blank" aria-label="YouTube">
+                    <span class="social-icon">▶</span>
+                </a>
+            </div>
+        </div>
         <p>&copy; 2026 Monkey Ranch. Todos los derechos reservados.</p>
     </footer>
 

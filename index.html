@@ -13,14 +13,16 @@
         <nav class="navbar">
             <div class="container">
                 <div class="logo">
-                    <img src="logo1.png" alt="Monkey Ranch Logo">
+                    <a href="index.html">
+                        <img src="logo1.png" alt="Monkey Ranch Logo">
+                    </a>
                 </div>
                 <ul class="nav-links">
                     <li><a href="#home">Inicio</a></li>
                     <li><a href="#about">Acerca de</a></li>
                     <li><a href="#services">Servicios</a></li>
-                    <li><a href="#contact">Contacto</a></li>
                     <li><a href="vip.html">Experiencia VIP</a></li>
+                    <li><a href="#contact">Contacto</a></li>
                     <li><button class="theme-toggle" id="themeToggle">🌙</button></li>
                 </ul>
             </div>
@@ -148,5 +150,15 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        // Hacer el motocross card clickeable
+        const motocrossCard = document.querySelector('.motocross-card');
+        if (motocrossCard) {
+            motocrossCard.style.cursor = 'pointer';
+            motocrossCard.addEventListener('click', function() {
+                window.location.href = 'motocross.html';
+            });
+        }
+    </script>
 </body>
 </html>

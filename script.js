@@ -265,4 +265,70 @@ if (vipForm) {
     });
 }
 
+// Flyer section background on scroll
+const heroSection = document.querySelector('.hero');
+const flyerSection = document.querySelector('.flyer-section');
+
+if (heroSection && flyerSection) {
+    window.addEventListener('scroll', function() {
+        const heroRect = heroSection.getBoundingClientRect();
+        const flyerRect = flyerSection.getBoundingClientRect();
+        
+        // Cuando flyer llega al 50% del hero
+        const heroMidpoint = heroRect.top + (heroRect.height * 0.5);
+        
+        if (flyerRect.top <= heroMidpoint) {
+            flyerSection.classList.add('dark-background');
+        } else {
+            flyerSection.classList.remove('dark-background');
+        }
+    });
+}
+
+// VIP Carousel functionality
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const vipCards = document.querySelectorAll('.vip-card');
+let currentCardIndex = 0;
+
+function updateCarousel() {
+    vipCards.forEach((card, index) => {
+        card.classList.remove('active');
+        if (index === currentCardIndex) {
+            card.classList.add('active');
+        }
+    });
+}
+
+function nextCard() {
+    currentCardIndex = (currentCardIndex + 1) % vipCards.length;
+    updateCarousel();
+}
+
+function prevCard() {
+    currentCardIndex = (currentCardIndex - 1 + vipCards.length) % vipCards.length;
+    updateCarousel();
+}
+
+if (prevBtn && nextBtn) {
+    prevBtn.addEventListener('click', prevCard);
+    nextBtn.addEventListener('click', nextCard);
+    
+    // Auto-change cards every 6 seconds
+    setInterval(nextCard, 6000);
+}
+
+// VIP Form show/hide functionality
+const vipFormElement = document.getElementById('vipForm');
+const comprarBtns = document.querySelectorAll('.vip-card .cta-button');
+
+comprarBtns.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        vipFormElement.classList.add('show');
+        // Scroll to form
+        vipFormElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+});
+
 console.log('Monkey Ranch website loaded successfully!');
