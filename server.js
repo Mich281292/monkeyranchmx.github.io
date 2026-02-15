@@ -34,6 +34,7 @@ pool.connect((err, client, release) => {
 // Initialize database tables
 async function initializeDatabase() {
     try {
+        // Contacts table (general contact form)
         await pool.query(`
             CREATE TABLE IF NOT EXISTS contacts (
                 id SERIAL PRIMARY KEY,
@@ -44,8 +45,37 @@ async function initializeDatabase() {
             )
         `);
         console.log('Contacts table ready');
+
+        // VIP registrations table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS vip_registrations (
+                id SERIAL PRIMARY KEY,
+                nombre VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                whatsapp VARCHAR(50) NOT NULL,
+                boletos VARCHAR(50) NOT NULL,
+                fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+        console.log('VIP registrations table ready');
+
+        // Inscriptions table (motocross/trackday)
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS inscriptions (
+                id SERIAL PRIMARY KEY,
+                nombre VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                telefono VARCHAR(50) NOT NULL,
+                categoria VARCHAR(100),
+                cantidad_personas VARCHAR(50),
+                cantidad_vehiculos VARCHAR(50),
+                mensaje TEXT,
+                fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+        console.log('Inscriptions table ready');
     } catch (err) {
-        console.error('Error creating table:', err);
+        console.error('Error creating tables:', err);
     }
 }
 
@@ -111,6 +141,128 @@ app.get('/api/contacts', async (req, res) => {
         return res.status(500).json({
             success: false,
             message: 'Error al obtener contactos'
+        });
+    }
+});
+
+// POST endpoint for VIP registration
+app.post('/api/vip', async (req, res) => {
+    const { nombre, email, whatsapp, boletos } = req.body;
+
+    // Validation
+    if (!nombre || !email || !whatsapp || !boletos) {
+        return res.status(400).json({
+            success: false,
+            message: 'Por favor, completa todos los campos'
+        });
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({
+            success: false,
+            message: 'Por favor, ingresa un email válido'
+        });
+    }
+
+    // Insert into database
+    try {
+        const result = await pool.query(
+            'INSERT INTO vip_registrations (nombre, email, whatsapp, boletos) VALUES ($1, $2, $3, $4) RETURNING id',
+            [nombre, email, whatsapp, boletos]
+        );
+
+        res.status(201).json({
+            success: true,
+            message: '¡Gracias por tu registro VIP! Nos pondremos en contacto pronto.',
+            id: result.rows[0].id
+        });
+    } catch (err) {
+        console.error('Error inserting VIP registration:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al guardar el registro VIP'
+        });
+    }
+});
+
+// GET endpoint to fetch all VIP registrations
+app.get('/api/vip', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM vip_registrations ORDER BY fecha_creacion DESC');
+
+        res.json({
+            success: true,
+            count: result.rows.length,
+            data: result.rows
+        });
+    } catch (err) {
+        console.error('Error fetching VIP registrations:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al obtener registros VIP'
+        });
+    }
+});
+
+// POST endpoint for inscriptions (motocross/trackday)
+app.post('/api/inscripcion', async (req, res) => {
+    const { nombre, email, telefono, categoria, cantidad_personas, cantidad_vehiculos, mensaje } = req.body;
+
+    // Validation
+    if (!nombre || !email || !telefono) {
+        return res.status(400).json({
+            success: false,
+            message: 'Por favor, completa todos los campos requeridos'
+        });
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({
+            success: false,
+            message: 'Por favor, ingresa un email válido'
+        });
+    }
+
+    // Insert into database
+    try {
+        const result = await pool.query(
+            'INSERT INTO inscriptions (nombre, email, telefono, categoria, cantidad_personas, cantidad_vehiculos, mensaje) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
+            [nombre, email, telefono, categoria || null, cantidad_personas || null, cantidad_vehiculos || null, mensaje || null]
+        );
+
+        res.status(201).json({
+            success: true,
+            message: '¡Inscripción completada! Te contactaremos pronto.',
+            id: result.rows[0].id
+        });
+    } catch (err) {
+        console.error('Error inserting inscription:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al guardar la inscripción'
+        });
+    }
+});
+
+// GET endpoint to fetch all inscriptions
+app.get('/api/inscripciones', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM inscriptions ORDER BY fecha_creacion DESC');
+
+        res.json({
+            success: true,
+            count: result.rows.length,
+            data: result.rows
+        });
+    } catch (err) {
+        console.error('Error fetching inscriptions:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al obtener inscripciones'
         });
     }
 });

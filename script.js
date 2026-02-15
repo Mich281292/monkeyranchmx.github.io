@@ -245,7 +245,7 @@ if (vipForm) {
         submitBtn.textContent = 'Enviando...';
         submitBtn.disabled = true;
 
-        fetch('https://monkey-ranch-api.onrender.com/api/contact', {
+        fetch('https://monkey-ranch-api.onrender.com/api/vip', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

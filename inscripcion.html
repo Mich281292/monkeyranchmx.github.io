@@ -350,15 +350,19 @@
             submitBtn.textContent = 'Enviando...';
             submitBtn.disabled = true;
 
-            fetch('https://monkey-ranch-api.onrender.com/api/contact', {
+            fetch('https://monkey-ranch-api.onrender.com/api/inscripcion', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ 
                     nombre, 
-                    email, 
-                    mensaje: `Teléfono: ${telefono}\nCategoria: ${categoria}\nCantidad de personas: ${cantidadPersonas}\nCantidad de vehiculos: ${cantidadVehiculos}\n${personasDetalles}\n${vehiculosDetalles}\n\nMensaje: ${mensaje}` 
+                    email,
+                    telefono,
+                    categoria,
+                    cantidad_personas: cantidadPersonas,
+                    cantidad_vehiculos: cantidadVehiculos,
+                    mensaje: `Personas:\n${personasDetalles}\n\nVehículos:\n${vehiculosDetalles}\n\nMensaje adicional: ${mensaje}` 
                 })
             })
             .then(response => response.json())
