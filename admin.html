@@ -326,14 +326,17 @@
             <div class="stat-card">
                 <h3 id="totalContacts">0</h3>
                 <p>Total de Contactos</p>
+                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Hoy: <strong id="todayContacts" style="color: #b8242f;">0</strong></p>
             </div>
             <div class="stat-card">
                 <h3 id="totalVip">0</h3>
                 <p>Total VIP</p>
+                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Hoy: <strong id="todayVip" style="color: #b8242f;">0</strong></p>
             </div>
             <div class="stat-card">
                 <h3 id="totalInscripciones">0</h3>
                 <p>Total Inscripciones</p>
+                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Hoy: <strong id="todayInscripciones" style="color: #b8242f;">0</strong></p>
             </div>
         </div>
 
@@ -381,6 +384,7 @@
             await loadContacts();
             await loadVip();
             await loadInscripciones();
+            updateStats();
         }
 
         async function loadContacts() {
@@ -390,7 +394,6 @@
 
                 if (data.success) {
                     allContacts = data.data;
-                    updateStats();
                     displayContacts(allContacts);
                 }
             } catch (error) {
@@ -430,6 +433,28 @@
             document.getElementById('totalContacts').textContent = allContacts.length;
             document.getElementById('totalVip').textContent = allVip.length;
             document.getElementById('totalInscripciones').textContent = allInscripciones.length;
+
+            // Contar registros de hoy
+            const today = new Date().toDateString();
+            
+            const todayContactsCount = allContacts.filter(contact => {
+                const contactDate = new Date(contact.fecha_creacion).toDateString();
+                return contactDate === today;
+            }).length;
+
+            const todayVipCount = allVip.filter(vip => {
+                const vipDate = new Date(vip.fecha_creacion).toDateString();
+                return vipDate === today;
+            }).length;
+
+            const todayInscripcionesCount = allInscripciones.filter(insc => {
+                const inscDate = new Date(insc.fecha_creacion).toDateString();
+                return inscDate === today;
+            }).length;
+
+            document.getElementById('todayContacts').textContent = todayContactsCount;
+            document.getElementById('todayVip').textContent = todayVipCount;
+            document.getElementById('todayInscripciones').textContent = todayInscripcionesCount;
         }
 
         function switchTab(tab) {
