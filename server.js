@@ -45,6 +45,13 @@ async function initializeDatabase() {
                 fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
+        
+        // Add telefono column if it doesn't exist
+        await pool.query(`
+            ALTER TABLE contacts 
+            ADD COLUMN IF NOT EXISTS telefono VARCHAR(50)
+        `);
+        
         console.log('Contacts table ready');
 
         // VIP registrations table
