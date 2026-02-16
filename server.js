@@ -40,6 +40,7 @@ async function initializeDatabase() {
                 id SERIAL PRIMARY KEY,
                 nombre VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL,
+                telefono VARCHAR(50),
                 mensaje TEXT NOT NULL,
                 fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
@@ -86,10 +87,10 @@ app.get('/', (req, res) => {
 
 // POST endpoint for contact form
 app.post('/api/contact', async (req, res) => {
-    const { nombre, email, mensaje } = req.body;
+    const { nombre, email, telefono, mensaje } = req.body;
 
     // Validation
-    if (!nombre || !email || !mensaje) {
+    if (!nombre || !email || !telefono || !mensaje) {
         return res.status(400).json({
             success: false,
             message: 'Por favor, completa todos los campos'
@@ -108,8 +109,8 @@ app.post('/api/contact', async (req, res) => {
     // Insert into database
     try {
         const result = await pool.query(
-            'INSERT INTO contacts (nombre, email, mensaje) VALUES ($1, $2, $3) RETURNING id',
-            [nombre, email, mensaje]
+            'INSERT INTO contacts (nombre, email, telefono, mensaje) VALUES ($1, $2, $3, $4) RETURNING id',
+            [nombre, email, telefono, mensaje]
         );
 
         res.status(201).json({

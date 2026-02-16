@@ -67,6 +67,7 @@ if (contactForm) {
     
     const nombre = this.querySelector('input[placeholder="Tu nombre"]').value.trim();
     const email = this.querySelector('input[placeholder="Tu email"]').value.trim();
+    const telefono = this.querySelector('input[placeholder="Tu teléfono"]').value.trim();
     const mensaje = this.querySelector('textarea[placeholder="Tu mensaje"]').value.trim();
     const inputs = this.querySelectorAll('input, textarea');
     
@@ -104,7 +105,7 @@ if (contactForm) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ nombre, email, mensaje })
+        body: JSON.stringify({ nombre, email, telefono, mensaje })
     })
     .then(response => response.json())
     .then(data => {
