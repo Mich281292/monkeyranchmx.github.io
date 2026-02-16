@@ -65,26 +65,31 @@ if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
     e.preventDefault();
     
-    const nombre = this.querySelector('input[placeholder="Tu nombre"]').value.trim();
-    const email = this.querySelector('input[placeholder="Tu email"]').value.trim();
-    const telefono = this.querySelector('input[placeholder="Tu teléfono"]').value.trim();
-    const mensaje = this.querySelector('textarea[placeholder="Tu mensaje"]').value.trim();
-    const inputs = this.querySelectorAll('input, textarea');
+    const nombreInput = this.querySelector('input[placeholder="Tu nombre"]');
+    const emailInput = this.querySelector('input[placeholder="Tu email"]');
+    const telefonoInput = this.querySelector('input[placeholder="Tu teléfono"]');
+    const mensajeInput = this.querySelector('textarea[placeholder="Tu mensaje"]');
     
-    // Client-side validation
-    let isValid = true;
-    inputs.forEach(input => {
-        if (!input.value.trim()) {
-            isValid = false;
-            input.style.borderColor = '#ff6b6b';
-        } else {
-            input.style.borderColor = 'var(--border-color)';
-        }
-    });
+    const nombre = nombreInput.value.trim();
+    const email = emailInput.value.trim();
+    const telefono = telefonoInput.value.trim();
+    const mensaje = mensajeInput.value.trim();
     
-    if (!isValid) {
+    // Client-side validation - only check the 4 required fields
+    if (!nombre || !email || !telefono || !mensaje) {
         alert('Por favor, completa todos los campos del formulario.');
+        // Mark empty fields with red border
+        [nombreInput, emailInput, telefonoInput, mensajeInput].forEach(input => {
+            if (!input.value.trim()) {
+                input.style.borderColor = '#ff6b6b';
+            }
+        });
         return;
+    } else {
+        // Reset border colors
+        [nombreInput, emailInput, telefonoInput, mensajeInput].forEach(input => {
+            input.style.borderColor = 'var(--border-color)';
+        });
     }
 
     // Email validation
@@ -112,7 +117,7 @@ if (contactForm) {
         if (data.success) {
             alert(data.message);
             this.reset();
-            inputs.forEach(input => {
+            [nombreInput, emailInput, telefonoInput, mensajeInput].forEach(input => {
                 input.style.borderColor = 'var(--border-color)';
             });
         } else {
