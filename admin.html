@@ -515,7 +515,7 @@
                         <div class="contact-date">📅 ${formatDate(contact.fecha_creacion)}</div>
                     </div>
                     <div class="contact-email">📧 ${escapeHtml(contact.email)}</div>
-                    <div class="contact-phone">📱 <a href="tel:${contact.telefono}">${escapeHtml(contact.telefono)}</a></div>
+                    <div class="contact-phone">📱 <a href="https://wa.me/${contact.telefono}" target="_blank">${escapeHtml(contact.telefono)}</a></div>
                     <div class="contact-message">
                         <strong>💬 Mensaje:</strong><br>
                         ${escapeHtml(contact.mensaje)}
@@ -572,7 +572,7 @@
                         <div class="contact-date">📅 ${formatDate(insc.fecha_creacion)}</div>
                     </div>
                     <div class="contact-email">📧 ${escapeHtml(insc.email)}</div>
-                    <div class="contact-phone">📱 <a href="tel:${insc.telefono}">${escapeHtml(insc.telefono)}</a></div>
+                    <div class="contact-phone">📱 <a href="https://wa.me/${insc.telefono}" target="_blank">${escapeHtml(insc.telefono)}</a></div>
                     <div class="inscription-details">
                         <strong>Categoría:</strong> ${escapeHtml(insc.categoria)}<br>
                         <strong>Personas:</strong> ${escapeHtml(insc.cantidad_personas)}<br>
