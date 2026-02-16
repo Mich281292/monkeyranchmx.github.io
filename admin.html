@@ -178,6 +178,28 @@
             word-break: break-all;
         }
 
+        .contact-phone a {
+            color: #b8242f;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .contact-phone a:hover {
+            text-decoration: underline;
+            color: #a01e27;
+        }
+
+        .vip-field a {
+            color: #b8242f;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .vip-field a:hover {
+            text-decoration: underline;
+            color: #a01e27;
+        }
+
         .contact-message {
             background: white;
             padding: 15px;
@@ -319,7 +341,7 @@
         <div class="header">
             <img src="logo-monkey.png" alt="Monkey Ranch Logo">
             <h1> Panel de Administración</h1>
-            <p>Gestión de Contactos - Monkey Ranch MX</p>
+            <p>Gestión general - Monkey Ranch MX</p>
         </div>
 
         <div class="stats">
@@ -493,7 +515,7 @@
                         <div class="contact-date">📅 ${formatDate(contact.fecha_creacion)}</div>
                     </div>
                     <div class="contact-email">📧 ${escapeHtml(contact.email)}</div>
-                    <div class="contact-phone">📱 ${escapeHtml(contact.telefono)}</div>
+                    <div class="contact-phone">📱 <a href="tel:${contact.telefono}">${escapeHtml(contact.telefono)}</a></div>
                     <div class="contact-message">
                         <strong>💬 Mensaje:</strong><br>
                         ${escapeHtml(contact.mensaje)}
@@ -522,7 +544,7 @@
                     <div class="vip-info">
                         <div class="vip-field">
                             <strong>WhatsApp</strong>
-                            <span>${escapeHtml(vip.whatsapp)}</span>
+                            <span><a href="https://wa.me/${vip.whatsapp}" target="_blank">${escapeHtml(vip.whatsapp)}</a></span>
                         </div>
                         <div class="vip-field">
                             <strong>Boletos</strong>
@@ -550,7 +572,7 @@
                         <div class="contact-date">📅 ${formatDate(insc.fecha_creacion)}</div>
                     </div>
                     <div class="contact-email">📧 ${escapeHtml(insc.email)}</div>
-                    <div class="contact-phone">📱 ${escapeHtml(insc.telefono)}</div>
+                    <div class="contact-phone">📱 <a href="tel:${insc.telefono}">${escapeHtml(insc.telefono)}</a></div>
                     <div class="inscription-details">
                         <strong>Categoría:</strong> ${escapeHtml(insc.categoria)}<br>
                         <strong>Personas:</strong> ${escapeHtml(insc.cantidad_personas)}<br>
