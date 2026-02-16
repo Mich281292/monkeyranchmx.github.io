@@ -334,15 +334,109 @@
             font-size: 0.9em;
             line-height: 1.6;
         }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+
+        .login-box {
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-box img {
+            max-width: 100px;
+            display: block;
+            margin: 0 auto 30px;
+        }
+
+        .login-box h2 {
+            text-align: center;
+            color: #b8242f;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .login-form input {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .login-form input:focus {
+            outline: none;
+            border-color: #b8242f;
+            box-shadow: 0 0 10px rgba(184, 36, 47, 0.2);
+        }
+
+        .login-form button {
+            padding: 12px;
+            background: #b8242f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-form button:hover {
+            background: #a01e27;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(184, 36, 47, 0.4);
+        }
+
+        .login-error {
+            color: #ff4757;
+            text-align: center;
+            font-size: 0.9em;
+            margin-top: 15px;
+        }
+
+        .admin-content {
+            display: none;
+        }
     </style>
 </head>
 <body>
+    <!-- Login Section -->
+    <div id="loginSection" class="login-container">
+        <div class="login-box">
+            <img src="logo-monkey.png" alt="Monkey Ranch Logo">
+            <h2>🐵 Admin</h2>
+            <form class="login-form" id="loginForm">
+                <input type="text" id="username" placeholder="Usuario" required>
+                <input type="password" id="password" placeholder="Contraseña" required>
+                <button type="submit">Ingresar</button>
+            </form>
+            <div class="login-error" id="loginError"></div>
+        </div>
+    </div>
+
+    <!-- Admin Content -->
+    <div id="adminContent" class="admin-content">
     <div class="container">
         <div class="header">
             <img src="logo-monkey.png" alt="Monkey Ranch Logo">
             <h1> Panel de Administración</h1>
-            <p>Gestión general - Monkey Ranch MX</p>
-        </div>
+            <p>Gestión general - Monkey Ranch MX</p>            <button class="refresh-btn" onclick="logout()" style="margin-top: 20px; background: #a01e27;">🚪 Cerrar Sesión</button>        </div>
 
         <div class="stats">
             <div class="stat-card">
@@ -389,8 +483,56 @@
             </div>
         </div>
     </div>
+    </div>
 
     <script>
+        // Credenciales de acceso
+        const ADMIN_USERNAME = 'admin';
+        const ADMIN_PASSWORD = 'monkeyranch123';
+
+        // Verificar si ya está autenticado
+        window.addEventListener('DOMContentLoaded', function() {
+            if (sessionStorage.getItem('adminAuthenticated')) {
+                showAdminPanel();
+            } else {
+                showLoginForm();
+            }
+        });
+
+        // Login form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorDiv = document.getElementById('loginError');
+
+            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                sessionStorage.setItem('adminAuthenticated', 'true');
+                errorDiv.textContent = '';
+                showAdminPanel();
+            } else {
+                errorDiv.textContent = '❌ Usuario o contraseña incorrectos';
+                document.getElementById('password').value = '';
+            }
+        });
+
+        function showLoginForm() {
+            document.getElementById('loginSection').style.display = 'flex';
+            document.getElementById('adminContent').style.display = 'none';
+        }
+
+        function showAdminPanel() {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminContent').style.display = 'block';
+            loadAllData();
+        }
+
+        function logout() {
+            sessionStorage.removeItem('adminAuthenticated');
+            document.getElementById('loginForm').reset();
+            showLoginForm();
+        }
+
         let allContacts = [];
         let allVip = [];
         let allInscripciones = [];
