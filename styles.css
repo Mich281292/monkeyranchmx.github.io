@@ -231,6 +231,45 @@ body.dark-mode .nav-links .theme-toggle:hover {
     transform: rotate(-45deg) translate(7px, -6px);
 }
 
+/* Header Accesos Button */
+.header-accesos-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(184, 36, 47, 0.15);
+    padding: 8px 12px;
+    border-radius: 28px;
+    color: #b8242f;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.3s ease;
+    margin-left: auto;
+    margin-right: 15px;
+}
+
+.header-accesos-btn i {
+    color: #b8242f;
+    font-size: 16px;
+}
+
+.header-accesos-btn span {
+    font-size: 12px;
+}
+
+.header-accesos-btn:hover {
+    background: #b8242f;
+    color: white;
+}
+
+.header-accesos-btn:hover i {
+    color: white;
+}
+
+.header-accesos-btn:hover span {
+    color: white;
+}
+
 .theme-toggle {
     background: none;
     border: none;
