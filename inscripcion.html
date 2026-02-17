@@ -117,14 +117,12 @@
                         <option value="2">2 personas</option>
                         <option value="3">3 personas</option>
                         <option value="4">4 personas</option>
-                        <option value="5">5 personas</option>
-                        <option value="6">6 personas</option>
-                        <option value="7">7 personas</option>
-                        <option value="8">8 personas</option>
-                        <option value="9">9 personas</option>
-                        <option value="10">10 personas</option>
-                        <option value="10+">Más de 10 personas</option>
                     </select>
+                    <p class="info-message">
+                        <a href="index.html#contact" style="color: var(--primary-color); text-decoration: underline;">
+                            Si requieres acceder con más personas ponte en contacto con Monkey Ranch da click aquí
+                        </a>
+                    </p>
                     <div id="personasContainer"></div>
                     <select id="cantidadVehiculosSelect" placeholder="Cantidad de vehiculos" required>
                         <option value="">¿Con cuantos vehiculos ingresas?</option>
@@ -182,7 +180,7 @@
             const cantidad = this.value;
             personasContainer.innerHTML = '';
 
-            if (cantidad && cantidad !== '10+') {
+            if (cantidad && parseInt(cantidad) > 0) {
                 for (let i = 1; i <= parseInt(cantidad); i++) {
                     const personaForm = document.createElement('div');
                     personaForm.className = 'persona-form';
@@ -206,11 +204,6 @@
                     `;
                     personasContainer.appendChild(personaForm);
                 }
-            } else if (cantidad === '10+') {
-                const alertDiv = document.createElement('div');
-                alertDiv.className = 'alert-message';
-                alertDiv.textContent = 'Por favor, contacta directamente para grupos de más de 10 personas.';
-                personasContainer.appendChild(alertDiv);
             }
         });
 
