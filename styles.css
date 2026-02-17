@@ -1304,13 +1304,12 @@ body.dark-mode .vip-section .section-description {
 /* Mobile devices (phones, 320px - 480px) */
 @media (max-width: 480px) {
     body {
-        background-attachment: scroll;
-        background-size: 100% auto;
-        background-position: center top;
+        background: url('fondomoviles.png') center top/100% auto no-repeat scroll;
     }
 
     body.has-top-contact {
         background-position: center 200px;
+        background-image: url('fondomoviles.png');
     }
     
     .container {
