@@ -1356,6 +1356,53 @@ body.dark-mode .vip-section .section-description {
     color: #f0f0f0;
 }
 
+/* Boletos Cards Grid */
+.boletos-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin: 3rem auto;
+    max-width: 1200px;
+}
+
+.boletos-cards-grid .vip-card {
+    position: relative;
+    opacity: 1;
+    pointer-events: auto;
+    max-width: 100%;
+    height: auto;
+    min-height: 500px;
+    padding: 3rem 2rem;
+}
+
+.boletos-cards-grid .vip-card:nth-child(1) {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('terraza2.jpg') center/cover no-repeat;
+}
+
+.boletos-cards-grid .vip-card:nth-child(2) {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('terraza.jpg') center/cover no-repeat;
+}
+
+.benefits-list {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+    text-align: left;
+}
+
+.benefits-list li {
+    padding: 0.5rem 0;
+    color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.benefits-list i {
+    color: #b8242f;
+    font-size: 1rem;
+}
+
 /* ========================================
    RESPONSIVE DESIGN - Mobile First
    ========================================*/
@@ -1536,6 +1583,18 @@ body.dark-mode .vip-section .section-description {
         font-size: 0.9rem;
     }
     
+    /* Boletos Cards - Stack on mobile */
+    .boletos-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin: 2rem 1rem;
+    }
+    
+    .boletos-cards-grid .vip-card {
+        min-height: 400px;
+        padding: 2rem 1.5rem;
+    }
+    
     /* Inscription Section */
     .inscription-section {
         padding: 40px 15px;
@@ -1613,6 +1672,17 @@ body.dark-mode .vip-section .section-description {
     .vip-cards-container {
         width: 500px;
         height: 500px;
+    }
+    
+    /* Boletos Cards - Tablets */
+    .boletos-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin: 2.5rem auto;
+    }
+    
+    .boletos-cards-grid .vip-card {
+        min-height: 450px;
     }
     
     nav ul li a {
