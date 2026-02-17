@@ -447,6 +447,7 @@ body.dark-mode .nav-links .theme-toggle:hover {
 /* Evitar que el contenido quede debajo de la barra */
 body.has-top-contact {
     padding-top: 200px;
+    background-position: center 200px;
 }
 
 /* Contact tab - aparece cuando la barra está cerrada */
@@ -1307,6 +1308,10 @@ body.dark-mode .vip-section .section-description {
         background-size: 100% auto;
         background-position: center top;
     }
+
+    body.has-top-contact {
+        background-position: center 200px;
+    }
     
     .container {
         padding: 0 15px;
@@ -1388,6 +1393,10 @@ body.dark-mode .vip-section .section-description {
     }
     
     /* Flyer Section */
+    .flyer-section {
+        background-color: #000;
+    }
+
     .flyer {
         padding: 40px 15px;
     }
@@ -1403,6 +1412,7 @@ body.dark-mode .vip-section .section-description {
     /* Services */
     .services {
         padding: 40px 15px;
+        background-color: #000;
     }
     
     .services h2 {
@@ -1497,6 +1507,10 @@ body.dark-mode .vip-section .section-description {
         background-attachment: scroll;
         background-size: cover;
         background-position: center top;
+    }
+
+    body.has-top-contact {
+        background-position: center 200px;
     }
     
     /* Mobile Menu adjustments for tablets */
