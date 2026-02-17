@@ -246,6 +246,20 @@ body.dark-mode .nav-links .theme-toggle:hover {
     transition: all 0.3s ease;
     margin-left: auto;
     margin-right: 15px;
+    animation: boletosGlow 2s ease-in-out infinite;
+}
+
+@keyframes boletosGlow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(184, 36, 47, 0.3),
+                    0 0 10px rgba(184, 36, 47, 0.2),
+                    0 0 15px rgba(184, 36, 47, 0.1);
+    }
+    50% {
+        box-shadow: 0 0 10px rgba(184, 36, 47, 0.6),
+                    0 0 20px rgba(184, 36, 47, 0.4),
+                    0 0 30px rgba(184, 36, 47, 0.2);
+    }
 }
 
 .header-accesos-btn i {
