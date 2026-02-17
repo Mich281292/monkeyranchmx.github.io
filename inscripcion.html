@@ -286,6 +286,60 @@
                 return;
             }
 
+            // Validación de edad según categoría
+            const edadNum = parseInt(edad);
+            let edadValida = true;
+            let mensajeEdad = '';
+
+            if (categoria.includes('50cc mini 1')) {
+                edadValida = edadNum >= 4 && edadNum <= 6;
+                mensajeEdad = 'La categoría 50cc mini 1 requiere edad entre 4 y 6 años';
+            } else if (categoria.includes('50cc mini 2')) {
+                edadValida = edadNum >= 7 && edadNum <= 8;
+                mensajeEdad = 'La categoría 50cc mini 2 requiere edad entre 7 y 8 años';
+            } else if (categoria.includes('50cc junior')) {
+                edadValida = edadNum >= 4 && edadNum <= 8;
+                mensajeEdad = 'La categoría 50cc junior requiere edad entre 4 y 8 años';
+            } else if (categoria.includes('65cc mini 1')) {
+                edadValida = edadNum >= 7 && edadNum <= 8;
+                mensajeEdad = 'La categoría 65cc mini 1 requiere edad entre 7 y 8 años';
+            } else if (categoria.includes('65cc mini 2')) {
+                edadValida = edadNum >= 9 && edadNum <= 10;
+                mensajeEdad = 'La categoría 65cc mini 2 requiere edad entre 9 y 10 años';
+            } else if (categoria.includes('85cc mini 1')) {
+                edadValida = edadNum >= 10 && edadNum <= 12;
+                mensajeEdad = 'La categoría 85cc mini 1 requiere edad entre 10 y 12 años';
+            } else if (categoria.includes('85cc mini 2')) {
+                edadValida = edadNum >= 13 && edadNum <= 15;
+                mensajeEdad = 'La categoría 85cc mini 2 requiere edad entre 13 y 15 años';
+            } else if (categoria.includes('125cc B')) {
+                edadValida = edadNum >= 15 && edadNum <= 23;
+                mensajeEdad = 'La categoría 125cc B requiere edad entre 15 y 23 años';
+            } else if (categoria.includes('125cc A')) {
+                edadValida = edadNum >= 18;
+                mensajeEdad = 'La categoría 125cc A requiere edad mínima de 18 años';
+            } else if (categoria.includes('Veteranos 30')) {
+                edadValida = edadNum >= 30;
+                mensajeEdad = 'La categoría Veteranos 30 requiere edad mínima de 30 años';
+            } else if (categoria.includes('Veteranos 40')) {
+                edadValida = edadNum >= 40;
+                mensajeEdad = 'La categoría Veteranos 40 requiere edad mínima de 40 años';
+            } else if (categoria.includes('Veteranos 50')) {
+                edadValida = edadNum >= 50;
+                mensajeEdad = 'La categoría Veteranos 50 requiere edad mínima de 50 años';
+            } else if (categoria.includes('Mx2')) {
+                edadValida = edadNum >= 15 && edadNum <= 23;
+                mensajeEdad = 'La categoría Mx2 requiere edad entre 15 y 23 años';
+            } else if (categoria.includes('Mx1 Open')) {
+                edadValida = edadNum >= 18;
+                mensajeEdad = 'La categoría Mx1 Open requiere edad mínima de 18 años';
+            }
+
+            if (!edadValida) {
+                alert('La edad no es correcta. ' + mensajeEdad);
+                return;
+            }
+
             // Recopilar datos de personas
             const personas = [];
             const personasInputs = this.querySelectorAll('.persona-form');
