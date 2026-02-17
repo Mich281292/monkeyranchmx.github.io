@@ -1312,10 +1312,16 @@ body.dark-mode .vip-section .section-description {
         padding: 0 15px;
     }
     
+    /* Fondos negros para mejor legibilidad en móviles */
+    header {
+        background-color: rgba(0, 0, 0, 0.85);
+    }
+    
     /* Contact Bar - Más pequeño en móviles */
     .contact-bar-inner {
         padding: 8px 12px;
         gap: 8px;
+        background: rgba(0, 0, 0, 0.85);
     }
     
     .social-icon {
@@ -1343,6 +1349,11 @@ body.dark-mode .vip-section .section-description {
     .nav-links {
         min-width: 200px;
         padding: 8px 0;
+        background: rgba(0, 0, 0, 0.9);
+    }
+    
+    .nav-links a {
+        background: rgba(0, 0, 0, 0.5);
     }
     
     .nav-links li a {
@@ -1368,6 +1379,7 @@ body.dark-mode .vip-section .section-description {
     
     /* Hero Section */
     .hero {
+        background: rgba(0, 0, 0, 0.6);
         background-attachment: scroll;
         padding: 60px 15px;
         min-height: 60vh;
