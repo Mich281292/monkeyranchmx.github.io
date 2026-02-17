@@ -1404,6 +1404,13 @@ body.dark-mode .vip-section .section-description {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('terraza.jpg') center/cover no-repeat;
 }
 
+.boletos-cards-grid .vip-card:nth-child(3) {
+    grid-column: 1 / -1;
+    max-width: 550px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('terraza2.jpg') center/cover no-repeat;
+}
+
 .benefits-list {
     list-style: none;
     padding: 0;
