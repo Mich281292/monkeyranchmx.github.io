@@ -67,6 +67,7 @@ header {
 .logo {
     font-size: 1.8rem;
     font-weight: bold;
+    margin-top: 8px;
 }
 
 .logo a {
