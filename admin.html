@@ -471,6 +471,9 @@
                 <button class="tab-btn" onclick="switchTab('tickets')">🎫 Tickets Generales</button>
                 <button class="tab-btn" onclick="switchTab('tickets_vip')">🎫👑 Tickets VIP</button>
                 <button class="tab-btn" onclick="switchTab('parking')">🅿️ Estacionamiento</button>
+                <button class="tab-btn" onclick="switchTab('comprobantes_generales')">🧾 Comprobantes Generales</button>
+                <button class="tab-btn" onclick="switchTab('comprobantes_vip')">🧾👑 Comprobantes VIP</button>
+                <button class="tab-btn" onclick="switchTab('comprobantes_parking')">🧾🅿️ Comprobantes Estacionamiento</button>
             </div>
 
             <div id="contactsContent" class="tab-content">
@@ -495,6 +498,18 @@
 
             <div id="parkingContent" class="tab-content" style="display:none;">
                 <div class="loading">⏳ Cargando estacionamiento...</div>
+            </div>
+
+            <div id="comprobantes_generalesContent" class="tab-content" style="display:none;">
+                <div class="loading">⏳ Cargando comprobantes...</div>
+            </div>
+
+            <div id="comprobantes_vipContent" class="tab-content" style="display:none;">
+                <div class="loading">⏳ Cargando comprobantes VIP...</div>
+            </div>
+
+            <div id="comprobantes_parkingContent" class="tab-content" style="display:none;">
+                <div class="loading">⏳ Cargando comprobantes estacionamiento...</div>
             </div>
         </div>
     </div>
@@ -709,6 +724,18 @@
             } else if (tab === 'parking') {
                 document.getElementById('parkingContent').style.display = 'block';
                 document.getElementById('searchInput').placeholder = '🔍 Buscar estacionamiento por nombre, email o placas...';
+            } else if (tab === 'comprobantes_generales') {
+                document.getElementById('comprobantes_generalesContent').style.display = 'block';
+                document.getElementById('searchInput').placeholder = '🔍 Buscar comprobantes por nombre o email...';
+                loadProofsGenerales();
+            } else if (tab === 'comprobantes_vip') {
+                document.getElementById('comprobantes_vipContent').style.display = 'block';
+                document.getElementById('searchInput').placeholder = '🔍 Buscar comprobantes VIP por nombre o email...';
+                loadProofsVIP();
+            } else if (tab === 'comprobantes_parking') {
+                document.getElementById('comprobantes_parkingContent').style.display = 'block';
+                document.getElementById('searchInput').placeholder = '🔍 Buscar comprobantes estacionamiento por nombre o placas...';
+                loadProofsParking();
             }
             
             document.getElementById('searchInput').value = '';
@@ -880,6 +907,138 @@
             `).join('');
 
             contentDiv.innerHTML = `<div class="contacts-grid">${parkingHTML}</div>`;
+        }
+
+        // Load and display Comprobantes (Payment Proofs)
+        async function loadProofsGenerales() {
+            try {
+                const response = await fetch('https://monkey-ranch-api.onrender.com/api/comprobantes-generales');
+                const result = await response.json();
+                if (result.success) {
+                    displayProofsGenerales(result.data);
+                } else {
+                    document.getElementById('comprobantes_generalesContent').innerHTML = '<div class="error">❌ Error al cargar los comprobantes</div>';
+                }
+            } catch (error) {
+                console.error('Error loading proofs:', error);
+                document.getElementById('comprobantes_generalesContent').innerHTML = '<div class="error">❌ Error al conectar con el servidor</div>';
+            }
+        }
+
+        function displayProofsGenerales(proofs) {
+            const contentDiv = document.getElementById('comprobantes_generalesContent');
+
+            if (proofs.length === 0) {
+                contentDiv.innerHTML = '<div class="no-contacts">🧾 No hay comprobantes para mostrar</div>';
+                return;
+            }
+
+            const proofsHTML = proofs.map(proof => `
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div class="contact-name">🧾 ${escapeHtml(proof.nombre)}</div>
+                        <div class="contact-date">📅 ${formatDate(proof.fecha_carga)}</div>
+                    </div>
+                    <div class="contact-email">📧 ${escapeHtml(proof.email)}</div>
+                    <div class="contact-phone">📱 <a href="https://wa.me/${proof.telefono}" target="_blank">${escapeHtml(proof.telefono)}</a></div>
+                    <div class="inscription-details">
+                        <strong>Cantidad de Boletos:</strong> ${proof.cantidad}<br>
+                        <strong>Total:</strong> ${escapeHtml(proof.total)}<br>
+                        <strong>Fecha Evento:</strong> ${proof.fecha_evento}<br>
+                        <strong>Comprobante:</strong> <a href="${proof.comprobante_url}" target="_blank">📎 Ver archivo</a>
+                    </div>
+                </div>
+            `).join('');
+
+            contentDiv.innerHTML = `<div class="contacts-grid">${proofsHTML}</div>`;
+        }
+
+        async function loadProofsVIP() {
+            try {
+                const response = await fetch('https://monkey-ranch-api.onrender.com/api/comprobantes-vip');
+                const result = await response.json();
+                if (result.success) {
+                    displayProofsVIP(result.data);
+                } else {
+                    document.getElementById('comprobantes_vipContent').innerHTML = '<div class="error">❌ Error al cargar los comprobantes VIP</div>';
+                }
+            } catch (error) {
+                console.error('Error loading VIP proofs:', error);
+                document.getElementById('comprobantes_vipContent').innerHTML = '<div class="error">❌ Error al conectar con el servidor</div>';
+            }
+        }
+
+        function displayProofsVIP(proofs) {
+            const contentDiv = document.getElementById('comprobantes_vipContent');
+
+            if (proofs.length === 0) {
+                contentDiv.innerHTML = '<div class="no-contacts">🧾👑 No hay comprobantes VIP para mostrar</div>';
+                return;
+            }
+
+            const proofsHTML = proofs.map(proof => `
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div class="contact-name">🧾👑 ${escapeHtml(proof.nombre)}</div>
+                        <div class="contact-date">📅 ${formatDate(proof.fecha_carga)}</div>
+                    </div>
+                    <div class="contact-email">📧 ${escapeHtml(proof.email)}</div>
+                    <div class="contact-phone">📱 <a href="https://wa.me/${proof.telefono}" target="_blank">${escapeHtml(proof.telefono)}</a></div>
+                    <div class="inscription-details">
+                        <strong>Cantidad de Boletos:</strong> ${proof.cantidad}<br>
+                        <strong>Duración:</strong> ${proof.duracion} día(s)<br>
+                        <strong>Total:</strong> ${escapeHtml(proof.total)}<br>
+                        <strong>Fecha Evento:</strong> ${proof.fecha_evento}<br>
+                        <strong>Comprobante:</strong> <a href="${proof.comprobante_url}" target="_blank">📎 Ver archivo</a>
+                    </div>
+                </div>
+            `).join('');
+
+            contentDiv.innerHTML = `<div class="contacts-grid">${proofsHTML}</div>`;
+        }
+
+        async function loadProofsParking() {
+            try {
+                const response = await fetch('https://monkey-ranch-api.onrender.com/api/comprobantes-estacionamiento');
+                const result = await response.json();
+                if (result.success) {
+                    displayProofsParking(result.data);
+                } else {
+                    document.getElementById('comprobantes_parkingContent').innerHTML = '<div class="error">❌ Error al cargar los comprobantes de estacionamiento</div>';
+                }
+            } catch (error) {
+                console.error('Error loading parking proofs:', error);
+                document.getElementById('comprobantes_parkingContent').innerHTML = '<div class="error">❌ Error al conectar con el servidor</div>';
+            }
+        }
+
+        function displayProofsParking(proofs) {
+            const contentDiv = document.getElementById('comprobantes_parkingContent');
+
+            if (proofs.length === 0) {
+                contentDiv.innerHTML = '<div class="no-contacts">🧾🅿️ No hay comprobantes de estacionamiento para mostrar</div>';
+                return;
+            }
+
+            const proofsHTML = proofs.map(proof => `
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div class="contact-name">🧾🅿️ ${escapeHtml(proof.nombre)}</div>
+                        <div class="contact-date">📅 ${formatDate(proof.fecha_carga)}</div>
+                    </div>
+                    <div class="contact-email">📧 ${escapeHtml(proof.email)}</div>
+                    <div class="contact-phone">📱 <a href="https://wa.me/${proof.telefono}" target="_blank">${escapeHtml(proof.telefono)}</a></div>
+                    <div class="inscription-details">
+                        <strong>Placas:</strong> ${escapeHtml(proof.placas)}<br>
+                        <strong>Cantidad de Espacios:</strong> ${proof.cantidad}<br>
+                        <strong>Total:</strong> ${escapeHtml(proof.total)}<br>
+                        <strong>Fecha Evento:</strong> ${proof.fecha_evento}<br>
+                        <strong>Comprobante:</strong> <a href="${proof.comprobante_url}" target="_blank">📎 Ver archivo</a>
+                    </div>
+                </div>
+            `).join('');
+
+            contentDiv.innerHTML = `<div class="contacts-grid">${proofsHTML}</div>`;
         }
 
         function filterData() {

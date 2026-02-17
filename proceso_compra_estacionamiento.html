@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procesar Compra Estacionamiento - Monkey Ranch</title>
+    <link rel="icon" type="image/png" href="icono-monkey.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .proof-section {
+            padding: 60px 20px;
+            background-image: url('fondonew1.jpeg');
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 480px) {
+            .proof-section {
+                background-image: url('fondomoviles.png');
+                background-attachment: scroll;
+                background-size: 100% auto;
+                background-position: center top;
+                background-repeat: no-repeat;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 768px) {
+            .proof-section {
+                background-attachment: scroll;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+        }
+
+        .proof-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.45);
+            z-index: 1;
+        }
+
+        .proof-section .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .proof-section h1 {
+            font-weight: 700;
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .proof-section .section-description {
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: #f0f0f0;
+        }
+
+        .proof-form-container {
+            max-width: 600px;
+            margin: 3rem auto;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        .proof-form {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #b8242f;
+            border-radius: 12px;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .proof-form h2 {
+            color: #b8242f;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .deposit-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #b8242f;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 6px;
+            margin-bottom: 2rem;
+        }
+
+        .deposit-info p {
+            margin: 10px 0;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+        }
+
+        .deposit-amount {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff4444;
+            margin: 15px 0;
+        }
+
+        .bank-account {
+            font-size: 22px;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #b8242f;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .file-upload-group {
+            margin: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file-upload-group label {
+            display: block;
+            margin-bottom: 0.7rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            border: 2px dashed #b8242f;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 600;
+        }
+
+        .file-input-label:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #ff4444;
+            color: #ff4444;
+        }
+
+        .file-input-label i {
+            margin-right: 10px;
+            font-size: 24px;
+        }
+
+        .file-name {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(184, 36, 47, 0.2);
+            border-radius: 6px;
+            color: rgba(255, 255, 255, 0.9);
+            display: none;
+            border-left: 3px solid #b8242f;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            margin-top: 20px;
+            background: linear-gradient(135deg, #b8242f 0%, #8a1a22 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(184, 36, 47, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @media (max-width: 768px) {
+            .proof-section {
+                padding: 40px 20px;
+            }
+
+            .proof-form-container {
+                margin: 2rem 1rem;
+            }
+
+            .proof-form {
+                padding: 1.5rem;
+            }
+
+            .proof-section h1 {
+                font-size: 1.8rem;
+            }
+
+            .deposit-amount {
+                font-size: 24px;
+            }
+
+            .bank-account {
+                font-size: 18px;
+                letter-spacing: 2px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="logo1.png" alt="Monkey Ranch Logo">
+                    </a>
+                </div>
+                <a href="boletos.html" class="header-accesos-btn" title="Boletos">
+                    <i class="fa fa-ticket-alt"></i>
+                    <span>Boletos</span>
+                </a>
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html#home">Inicio</a></li>
+                    <li><a href="index.html#about">Acerca de</a></li>
+                    <li><a href="index.html#services">Servicios</a></li>
+                    <li><a href="vip.html">Experiencia VIP</a></li>
+                    <li><a href="index.html#contact">Contacto</a></li>
+                    <li><button class="theme-toggle" id="themeToggle">🌙</button></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <nav class="contact-bar" id="contactBar" role="region" aria-label="Barra de contacto">
+        <div class="contact-bar-inner">
+            <div class="contact-info">
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/MonkeyRanchqro" class="social-icon" title="Facebook" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="https://www.instagram.com/monkeyranchqro" class="social-icon" title="Instagram" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://wa.me/5214421234567" class="social-icon" title="WhatsApp" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="tel:+5214421234567" class="social-icon" title="Llamar">
+                        <i class="fas fa-phone"></i>
+                    </a>
+                    <a href="mailto:info@monkeyranch.com" class="social-icon" title="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+            <button class="close-contact-bar" aria-label="Cerrar barra de contacto">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="contact-tab" id="contactTab" role="button" tabindex="0" aria-label="Abrir barra de contacto">
+        <i class="fa fa-phone"></i>
+        <span>Contacto</span>
+    </div>
+
+    <main>
+        <section id="proof-section" class="proof-section">
+            <div class="container">
+                <h1>Completar Compra Estacionamiento</h1>
+                <p class="section-description">Verifica tu depósito para completar la transacción</p>
+
+                <div class="proof-form-container">
+                    <div class="proof-form">
+                        <h2>🅿️ Depósito Bancario Estacionamiento</h2>
+                        
+                        <div class="deposit-info">
+                            <p><strong>Por favor realiza la siguiente transferencia:</strong></p>
+                            <p>Depositar <span class="deposit-amount" id="depositAmount">$150.00</span> al siguiente número de cuenta:</p>
+                            <div class="bank-account">0000 0000 0000 000</div>
+                            <p style="margin-top: 20px; font-size: 14px; color: #7f8c8d;"><i class="fas fa-info-circle"></i> Después de realizar la transferencia, sube la captura o ticket de pago.</p>
+                        </div>
+
+                        <form id="proofForm">
+                            <div class="file-upload-group">
+                                <label for="comprobante">Por favor sube la captura de tu transferencia o ticket de pago:</label>
+                                <div class="file-input-wrapper">
+                                    <input type="file" id="comprobante" name="comprobante" accept="image/*,.pdf" required>
+                                    <label for="comprobante" class="file-input-label">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <span>Haz clic o arrastra tu archivo aquí</span>
+                                    </label>
+                                </div>
+                                <div class="file-name" id="fileName"></div>
+                            </div>
+
+                            <button type="submit" class="submit-btn">
+                                <i class="fas fa-check"></i> Verificar Comprobante
+                            </button>
+                            <button type="button" class="submit-btn" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); margin-top: 10px;" onmouseover="this.style.background='rgba(255, 255, 255, 0.2)'; this.style.borderColor='rgba(255, 255, 255, 0.4)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.borderColor='rgba(255, 255, 255, 0.2)'" onclick="window.location.href='estacionamiento.html'">
+                                <i class="fas fa-arrow-left"></i> Volver
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Monkey Ranch</h4>
+                    <p>Tu mejor opción para una experiencia de aventura inolvidable.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="index.html#about">Acerca de</a></li>
+                        <li><a href="boletos.html">Boletos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Síguenos</h4>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/MonkeyRanchqro" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/monkeyranchqro" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Monkey Ranch. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Get purchase data from sessionStorage or URL
+        function getPurchaseData() {
+            // Check URL parameter first
+            const urlParams = new URLSearchParams(window.location.search);
+            const totalFromUrl = urlParams.get('total');
+            const nombreFromUrl = urlParams.get('nombre');
+            const emailFromUrl = urlParams.get('email');
+            const telefonoFromUrl = urlParams.get('telefono');
+            const placasFromUrl = urlParams.get('placas');
+            const cantidadFromUrl = urlParams.get('cantidad');
+            const fechaFromUrl = urlParams.get('fecha');
+
+            if (totalFromUrl) {
+                return {
+                    total: totalFromUrl,
+                    nombre: nombreFromUrl,
+                    email: emailFromUrl,
+                    telefono: telefonoFromUrl,
+                    placas: placasFromUrl,
+                    cantidad: cantidadFromUrl,
+                    fecha_evento: fechaFromUrl
+                };
+            }
+
+            // Otherwise try sessionStorage
+            const data = sessionStorage.getItem('purchaseData');
+            if (data) {
+                return JSON.parse(data);
+            }
+
+            // Default if nothing found
+            return {
+                total: '$150.00',
+                nombre: '',
+                email: '',
+                telefono: '',
+                placas: '',
+                cantidad: '1',
+                fecha_evento: ''
+            };
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const data = getPurchaseData();
+            document.getElementById('depositAmount').textContent = data.total;
+
+            // Handle file input display
+            const fileInput = document.getElementById('comprobante');
+            const fileLabel = document.querySelector('.file-input-label');
+            const fileName = document.getElementById('fileName');
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    fileName.textContent = '✓ Archivo seleccionado: ' + e.target.files[0].name;
+                    fileName.style.display = 'block';
+                }
+            });
+
+            // Handle form submission
+            document.getElementById('proofForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const file = fileInput.files[0];
+                if (!file) {
+                    alert('Por favor selecciona un archivo');
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('comprobante', file);
+                formData.append('nombre', data.nombre);
+                formData.append('email', data.email);
+                formData.append('telefono', data.telefono);
+                formData.append('placas', data.placas);
+                formData.append('cantidad', data.cantidad);
+                formData.append('total', data.total);
+                formData.append('fecha_evento', data.fecha_evento);
+
+                const submitBtn = document.querySelector('.submit-btn');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Procesando...';
+
+                try {
+                    const response = await fetch('/api/comprobante-estacionamiento', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        alert('¡Comprobante recibido! Procesaremos tu solicitud pronto.');
+                        sessionStorage.removeItem('purchaseData');
+                        setTimeout(() => {
+                            window.location.href = 'boletos.html';
+                        }, 1500);
+                    } else {
+                        alert('Error: ' + result.message);
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Verificar Comprobante';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error al procesar el comprobante. Intenta de nuevo.');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Verificar Comprobante';
+                }
+            });
+
+            // Mobile menu toggle
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const navLinks = document.getElementById('navLinks');
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
+            }
+
+            // Contact bar functionality
+            const contactTab = document.getElementById('contactTab');
+            const contactBar = document.getElementById('contactBar');
+            const closeContactBar = document.querySelector('.close-contact-bar');
+
+            if (contactTab) {
+                contactTab.addEventListener('click', () => {
+                    contactBar.classList.toggle('active');
+                });
+            }
+
+            if (closeContactBar) {
+                closeContactBar.addEventListener('click', () => {
+                    contactBar.classList.remove('active');
+                });
+            }
+
+            // Theme toggle
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-mode');
+                    const isDarkMode = document.body.classList.contains('dark-mode');
+                    localStorage.setItem('darkMode', isDarkMode);
+                    themeToggle.textContent = isDarkMode ? '☀️' : '🌙';
+                });
+
+                const isDarkMode = localStorage.getItem('darkMode') === 'true';
+                if (isDarkMode) {
+                    document.body.classList.add('dark-mode');
+                    themeToggle.textContent = '☀️';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

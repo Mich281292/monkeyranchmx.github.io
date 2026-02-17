@@ -4,15 +4,47 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 const path = require('path');
+const multer = require('multer');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Crear carpeta de uploads si no existe
+const uploadDir = 'uploads';
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+}
+
+// Configuración de multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname);
+    }
+});
+
+const upload = multer({ 
+    storage: storage,
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10MB max
+    fileFilter: (req, file, cb) => {
+        const allowed = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
+        if (allowed.includes(file.mimetype)) {
+            cb(null, true);
+        } else {
+            cb(new Error('Tipo de archivo no permitido'));
+        }
+    }
+});
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname)));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // PostgreSQL Database setup
 const pool = new Pool({
@@ -140,6 +172,56 @@ async function initializeDatabase() {
             )
         `);
         console.log('Parking purchases table ready');
+
+        // Comprobantes Generales table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS comprobantes_generales (
+                id SERIAL PRIMARY KEY,
+                nombre VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                telefono VARCHAR(50) NOT NULL,
+                cantidad INT NOT NULL,
+                total VARCHAR(50) NOT NULL,
+                fecha_evento DATE NOT NULL,
+                comprobante_url VARCHAR(500) NOT NULL,
+                fecha_carga TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+        console.log('Comprobantes Generales table ready');
+
+        // Comprobantes VIP table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS comprobantes_vip (
+                id SERIAL PRIMARY KEY,
+                nombre VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                telefono VARCHAR(50) NOT NULL,
+                cantidad INT NOT NULL,
+                duracion INT NOT NULL,
+                total VARCHAR(50) NOT NULL,
+                fecha_evento DATE NOT NULL,
+                comprobante_url VARCHAR(500) NOT NULL,
+                fecha_carga TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+        console.log('Comprobantes VIP table ready');
+
+        // Comprobantes Estacionamiento table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS comprobantes_estacionamiento (
+                id SERIAL PRIMARY KEY,
+                nombre VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                telefono VARCHAR(50) NOT NULL,
+                placas VARCHAR(50) NOT NULL,
+                cantidad INT NOT NULL,
+                total VARCHAR(50) NOT NULL,
+                fecha_evento DATE NOT NULL,
+                comprobante_url VARCHAR(500) NOT NULL,
+                fecha_carga TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+        console.log('Comprobantes Estacionamiento table ready');
     } catch (err) {
         console.error('Error creating tables:', err);
     }
@@ -509,6 +591,162 @@ app.get('/api/parking-purchases', async (req, res) => {
         return res.status(500).json({
             success: false,
             message: 'Error al obtener estacionamientos'
+        });
+    }
+});
+
+// POST endpoint for general ticket proof
+app.post('/api/comprobante-general', upload.single('comprobante'), async (req, res) => {
+    const { nombre, email, telefono, cantidad, total, fecha_evento } = req.body;
+
+    if (!req.file) {
+        return res.status(400).json({
+            success: false,
+            message: 'Por favor, sube un comprobante'
+        });
+    }
+
+    try {
+        const comprobanteUrl = `/uploads/${req.file.filename}`;
+        
+        await pool.query(
+            'INSERT INTO comprobantes_generales (nombre, email, telefono, cantidad, total, fecha_evento, comprobante_url) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+            [nombre, email, telefono, parseInt(cantidad), total, fecha_evento, comprobanteUrl]
+        );
+
+        res.json({
+            success: true,
+            message: '¡Comprobante recibido! Procesaremos tu compra pronto.',
+            comprobante_url: comprobanteUrl
+        });
+    } catch (err) {
+        console.error('Error uploading proof:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al guardar el comprobante'
+        });
+    }
+});
+
+// GET endpoint for general proofs
+app.get('/api/comprobantes-generales', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM comprobantes_generales ORDER BY fecha_carga DESC');
+
+        res.json({
+            success: true,
+            count: result.rows.length,
+            data: result.rows
+        });
+    } catch (err) {
+        console.error('Error fetching proofs:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al obtener comprobantes'
+        });
+    }
+});
+
+// POST endpoint for VIP ticket proof
+app.post('/api/comprobante-vip', upload.single('comprobante'), async (req, res) => {
+    const { nombre, email, telefono, cantidad, duracion, total, fecha_evento } = req.body;
+
+    if (!req.file) {
+        return res.status(400).json({
+            success: false,
+            message: 'Por favor, sube un comprobante'
+        });
+    }
+
+    try {
+        const comprobanteUrl = `/uploads/${req.file.filename}`;
+        
+        await pool.query(
+            'INSERT INTO comprobantes_vip (nombre, email, telefono, cantidad, duracion, total, fecha_evento, comprobante_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+            [nombre, email, telefono, parseInt(cantidad), parseInt(duracion), total, fecha_evento, comprobanteUrl]
+        );
+
+        res.json({
+            success: true,
+            message: '¡Comprobante recibido! Procesaremos tu compra pronto.',
+            comprobante_url: comprobanteUrl
+        });
+    } catch (err) {
+        console.error('Error uploading proof:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al guardar el comprobante'
+        });
+    }
+});
+
+// GET endpoint for VIP proofs
+app.get('/api/comprobantes-vip', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM comprobantes_vip ORDER BY fecha_carga DESC');
+
+        res.json({
+            success: true,
+            count: result.rows.length,
+            data: result.rows
+        });
+    } catch (err) {
+        console.error('Error fetching proofs:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al obtener comprobantes VIP'
+        });
+    }
+});
+
+// POST endpoint for parking proof
+app.post('/api/comprobante-estacionamiento', upload.single('comprobante'), async (req, res) => {
+    const { nombre, email, telefono, placas, cantidad, total, fecha_evento } = req.body;
+
+    if (!req.file) {
+        return res.status(400).json({
+            success: false,
+            message: 'Por favor, sube un comprobante'
+        });
+    }
+
+    try {
+        const comprobanteUrl = `/uploads/${req.file.filename}`;
+        
+        await pool.query(
+            'INSERT INTO comprobantes_estacionamiento (nombre, email, telefono, placas, cantidad, total, fecha_evento, comprobante_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+            [nombre, email, telefono, placas, parseInt(cantidad), total, fecha_evento, comprobanteUrl]
+        );
+
+        res.json({
+            success: true,
+            message: '¡Comprobante recibido! Procesaremos tu solicitud pronto.',
+            comprobante_url: comprobanteUrl
+        });
+    } catch (err) {
+        console.error('Error uploading proof:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al guardar el comprobante'
+        });
+    }
+});
+
+// GET endpoint for parking proofs
+app.get('/api/comprobantes-estacionamiento', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM comprobantes_estacionamiento ORDER BY fecha_carga DESC');
+
+        res.json({
+            success: true,
+            count: result.rows.length,
+            data: result.rows
+        });
+    } catch (err) {
+        console.error('Error fetching proofs:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al obtener comprobantes de estacionamiento'
         });
     }
 });
