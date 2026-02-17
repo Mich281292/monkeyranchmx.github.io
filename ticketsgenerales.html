@@ -159,7 +159,7 @@
             document.getElementById('total').textContent = '$' + total.toFixed(2);
         });
 
-        document.getElementById('purchaseForm').addEventListener('submit', function(e) {
+        document.getElementById('purchaseForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const nombre = document.getElementById('nombre').value;
@@ -169,29 +169,55 @@
             const fecha_evento = document.getElementById('fecha').value;
             const totalText = document.getElementById('total').textContent;
             
-            // Store data in sessionStorage
-            const purchaseData = {
-                nombre: nombre,
-                email: email,
-                telefono: telefono,
-                cantidad: cantidad,
-                fecha_evento: fecha_evento,
-                total: totalText
-            };
-            
-            sessionStorage.setItem('purchaseData', JSON.stringify(purchaseData));
-            
-            // Redirect to payment proof page with URL parameters
-            const params = new URLSearchParams({
-                nombre: nombre,
-                email: email,
-                telefono: telefono,
-                cantidad: cantidad,
-                fecha: fecha_evento,
-                total: totalText
-            });
-            
-            window.location.href = `proceso_compra_general.html?${params.toString()}`;
+            try {
+                // Save purchase to database
+                const response = await fetch('/api/save-ticket-purchase', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        nombre: nombre,
+                        email: email,
+                        telefono: telefono,
+                        cantidad: cantidad,
+                        fecha_evento: fecha_evento,
+                        total: totalText
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (!response.ok || !result.success) {
+                    alert('Error al guardar la compra: ' + (result.message || 'Error desconocido'));
+                    return;
+                }
+                
+                // Store data in sessionStorage
+                const purchaseData = {
+                    nombre: nombre,
+                    email: email,
+                    telefono: telefono,
+                    cantidad: cantidad,
+                    fecha_evento: fecha_evento,
+                    total: totalText
+                };
+                
+                sessionStorage.setItem('purchaseData', JSON.stringify(purchaseData));
+                
+                // Redirect to payment proof page with URL parameters
+                const params = new URLSearchParams({
+                    nombre: nombre,
+                    email: email,
+                    telefono: telefono,
+                    cantidad: cantidad,
+                    fecha: fecha_evento,
+                    total: totalText
+                });
+                
+                window.location.href = `proceso_compra_general.html?${params.toString()}`;
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error de conexión: ' + error.message);
+            }
         });
     </script>
 </body>
