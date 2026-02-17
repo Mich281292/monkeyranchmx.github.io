@@ -136,8 +136,15 @@ async function initializeDatabase() {
                 cantidad INT NOT NULL,
                 fecha_evento DATE NOT NULL,
                 precio VARCHAR(50) NOT NULL,
+                comprobante VARCHAR(500),
                 fecha_compra TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
+        `);
+        
+        // Add comprobante column if it doesn't exist
+        await pool.query(`
+            ALTER TABLE ticket_purchases 
+            ADD COLUMN IF NOT EXISTS comprobante VARCHAR(500)
         `);
         console.log('Ticket purchases table ready');
 
@@ -152,8 +159,15 @@ async function initializeDatabase() {
                 duracion INT NOT NULL,
                 fecha_evento DATE NOT NULL,
                 precio VARCHAR(50) NOT NULL,
+                comprobante VARCHAR(500),
                 fecha_compra TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
+        `);
+        
+        // Add comprobante column if it doesn't exist
+        await pool.query(`
+            ALTER TABLE vip_purchases 
+            ADD COLUMN IF NOT EXISTS comprobante VARCHAR(500)
         `);
         console.log('VIP purchases table ready');
 
@@ -168,8 +182,15 @@ async function initializeDatabase() {
                 cantidad INT NOT NULL,
                 fecha_evento DATE NOT NULL,
                 precio VARCHAR(50) NOT NULL,
+                comprobante VARCHAR(500),
                 fecha_compra TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
+        `);
+        
+        // Add comprobante column if it doesn't exist
+        await pool.query(`
+            ALTER TABLE parking_purchases 
+            ADD COLUMN IF NOT EXISTS comprobante VARCHAR(500)
         `);
         console.log('Parking purchases table ready');
 
@@ -417,7 +438,7 @@ app.get('/api/inscripciones', async (req, res) => {
 
 // POST endpoint for ticket purchases (General)
 app.post('/api/ticket-purchase', async (req, res) => {
-    const { nombre, email, telefono, cantidad, fecha_evento, precio } = req.body;
+    const { nombre, email, telefono, cantidad, fecha_evento, precio, comprobante } = req.body;
 
     // Validation
     if (!nombre || !email || !telefono || !cantidad || !fecha_evento) {
@@ -438,8 +459,8 @@ app.post('/api/ticket-purchase', async (req, res) => {
 
     try {
         const result = await pool.query(
-            'INSERT INTO ticket_purchases (nombre, email, telefono, cantidad, fecha_evento, precio) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
-            [nombre, email, telefono, parseInt(cantidad), fecha_evento, precio]
+            'INSERT INTO ticket_purchases (nombre, email, telefono, cantidad, fecha_evento, precio, comprobante) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
+            [nombre, email, telefono, parseInt(cantidad), fecha_evento, precio, comprobante || null]
         );
 
         res.status(201).json({
@@ -452,6 +473,40 @@ app.post('/api/ticket-purchase', async (req, res) => {
         return res.status(500).json({
             success: false,
             message: 'Error al guardar la compra'
+        });
+    }
+});
+
+// POST endpoint for uploading ticket proof
+app.post('/api/ticket-purchase-proof', upload.single('comprobante'), async (req, res) => {
+    const { nombre, email, telefono, cantidad, fecha_evento, precio, compra_id } = req.body;
+
+    if (!req.file) {
+        return res.status(400).json({
+            success: false,
+            message: 'Por favor, sube un comprobante'
+        });
+    }
+
+    try {
+        const comprobanteUrl = `/uploads/${req.file.filename}`;
+        
+        // Update ticket purchase with proof
+        await pool.query(
+            'UPDATE ticket_purchases SET comprobante = $1 WHERE id = $2',
+            [comprobanteUrl, compra_id]
+        );
+
+        res.json({
+            success: true,
+            message: '¡Comprobante recibido! Verificaremos tu pago pronto.',
+            comprobante_url: comprobanteUrl
+        });
+    } catch (err) {
+        console.error('Error uploading ticket proof:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al guardar el comprobante'
         });
     }
 });
@@ -477,7 +532,7 @@ app.get('/api/ticket-purchases', async (req, res) => {
 
 // POST endpoint for VIP ticket purchases
 app.post('/api/vip-purchase', async (req, res) => {
-    const { nombre, email, telefono, cantidad, duracion, fecha_evento, precio } = req.body;
+    const { nombre, email, telefono, cantidad, duracion, fecha_evento, precio, comprobante } = req.body;
 
     // Validation
     if (!nombre || !email || !telefono || !cantidad || !duracion || !fecha_evento) {
@@ -498,8 +553,8 @@ app.post('/api/vip-purchase', async (req, res) => {
 
     try {
         const result = await pool.query(
-            'INSERT INTO vip_purchases (nombre, email, telefono, cantidad, duracion, fecha_evento, precio) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
-            [nombre, email, telefono, parseInt(cantidad), parseInt(duracion), fecha_evento, precio]
+            'INSERT INTO vip_purchases (nombre, email, telefono, cantidad, duracion, fecha_evento, precio, comprobante) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id',
+            [nombre, email, telefono, parseInt(cantidad), parseInt(duracion), fecha_evento, precio, comprobante || null]
         );
 
         res.status(201).json({
@@ -512,6 +567,40 @@ app.post('/api/vip-purchase', async (req, res) => {
         return res.status(500).json({
             success: false,
             message: 'Error al guardar la compra VIP'
+        });
+    }
+});
+
+// POST endpoint for uploading VIP ticket proof
+app.post('/api/vip-purchase-proof', upload.single('comprobante'), async (req, res) => {
+    const { compra_id } = req.body;
+
+    if (!req.file) {
+        return res.status(400).json({
+            success: false,
+            message: 'Por favor, sube un comprobante'
+        });
+    }
+
+    try {
+        const comprobanteUrl = `/uploads/${req.file.filename}`;
+        
+        // Update VIP purchase with proof
+        await pool.query(
+            'UPDATE vip_purchases SET comprobante = $1 WHERE id = $2',
+            [comprobanteUrl, compra_id]
+        );
+
+        res.json({
+            success: true,
+            message: '¡Comprobante recibido! Verificaremos tu pago pronto.',
+            comprobante_url: comprobanteUrl
+        });
+    } catch (err) {
+        console.error('Error uploading VIP proof:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al guardar el comprobante VIP'
         });
     }
 });
@@ -537,7 +626,7 @@ app.get('/api/vip-purchases', async (req, res) => {
 
 // POST endpoint for parking purchases
 app.post('/api/parking-purchase', async (req, res) => {
-    const { nombre, email, telefono, placas, cantidad, fecha_evento, precio } = req.body;
+    const { nombre, email, telefono, placas, cantidad, fecha_evento, precio, comprobante } = req.body;
 
     // Validation
     if (!nombre || !email || !telefono || !placas || !cantidad || !fecha_evento) {
@@ -558,8 +647,8 @@ app.post('/api/parking-purchase', async (req, res) => {
 
     try {
         const result = await pool.query(
-            'INSERT INTO parking_purchases (nombre, email, telefono, placas, cantidad, fecha_evento, precio) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
-            [nombre, email, telefono, placas, parseInt(cantidad), fecha_evento, precio]
+            'INSERT INTO parking_purchases (nombre, email, telefono, placas, cantidad, fecha_evento, precio, comprobante) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id',
+            [nombre, email, telefono, placas, parseInt(cantidad), fecha_evento, precio, comprobante || null]
         );
 
         res.status(201).json({
@@ -572,6 +661,40 @@ app.post('/api/parking-purchase', async (req, res) => {
         return res.status(500).json({
             success: false,
             message: 'Error al guardar el estacionamiento'
+        });
+    }
+});
+
+// POST endpoint for uploading parking proof
+app.post('/api/parking-purchase-proof', upload.single('comprobante'), async (req, res) => {
+    const { compra_id } = req.body;
+
+    if (!req.file) {
+        return res.status(400).json({
+            success: false,
+            message: 'Por favor, sube un comprobante'
+        });
+    }
+
+    try {
+        const comprobanteUrl = `/uploads/${req.file.filename}`;
+        
+        // Update parking purchase with proof
+        await pool.query(
+            'UPDATE parking_purchases SET comprobante = $1 WHERE id = $2',
+            [comprobanteUrl, compra_id]
+        );
+
+        res.json({
+            success: true,
+            message: '¡Comprobante recibido! Procesaremos tu solicitud pronto.',
+            comprobante_url: comprobanteUrl
+        });
+    } catch (err) {
+        console.error('Error uploading parking proof:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al guardar el comprobante'
         });
     }
 });
