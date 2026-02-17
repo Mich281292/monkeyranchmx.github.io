@@ -150,101 +150,103 @@
 
     <script src="script.js"></script>
     <script>
-        document.querySelectorAll('.cta-button').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const card = this.closest('.vip-card');
-                const title = card.querySelector('h3').textContent;
-                const price = card.querySelector('.price-tag').textContent;
-                
-                // Check if form already exists
-                let form = card.querySelector('.purchase-form');
-                if (form) {
-                    form.remove();
-                    this.textContent = this.getAttribute('data-original-text');
-                    return;
-                }
-                
-                // Store original button text
-                if (!this.getAttribute('data-original-text')) {
-                    this.setAttribute('data-original-text', this.textContent);
-                }
-                
-                // Create form
-                const formHTML = `
-                    <div class="purchase-form">
-                        <h4>Formulario de Compra</h4>
-                        <form>
-                            <div class="form-group">
-                                <label for="nombre-${title}">Nombre Completo:</label>
-                                <input type="text" id="nombre-${title}" name="nombre" placeholder="Tu nombre completo" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="email-${title}">Email:</label>
-                                <input type="email" id="email-${title}" name="email" placeholder="tu@email.com" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="telefono-${title}">Teléfono:</label>
-                                <input type="tel" id="telefono-${title}" name="telefono" placeholder="+52 442 222 2222" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="cantidad-${title}">Cantidad:</label>
-                                <input type="number" id="cantidad-${title}" name="cantidad" min="1" value="1" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="fecha-${title}">Fecha del Evento:</label>
-                                <input type="date" id="fecha-${title}" name="fecha" required>
-                            </div>
-                            
-                            <div class="form-actions">
-                                <button type="submit" class="submit-btn">Procesar Compra</button>
-                                <button type="button" class="cancel-btn">Cancelar</button>
-                            </div>
-                        </form>
-                    </div>
-                `;
-                
-                // Insert form before button
-                this.insertAdjacentHTML('beforebegin', formHTML);
-                this.textContent = 'Cerrar Formulario';
-                
-                // Handle form submission
-                const form = card.querySelector('.purchase-form form');
-                form.addEventListener('submit', async function(e) {
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.cta-button').forEach(button => {
+                button.addEventListener('click', function(e) {
                     e.preventDefault();
+                    const card = this.closest('.vip-card');
+                    const title = card.querySelector('h3').textContent;
+                    const price = card.querySelector('.price-tag').textContent;
                     
-                    const formData = {
-                        nombre: this.querySelector('input[name="nombre"]').value,
-                        email: this.querySelector('input[name="email"]').value,
-                        telefono: this.querySelector('input[name="telefono"]').value,
-                        cantidad: this.querySelector('input[name="cantidad"]').value,
-                        fecha: this.querySelector('input[name="fecha"]').value,
-                        tipo_boleto: title,
-                        precio: price
-                    };
+                    // Check if form already exists
+                    let form = card.querySelector('.purchase-form');
+                    if (form) {
+                        form.remove();
+                        this.textContent = this.getAttribute('data-original-text');
+                        return;
+                    }
                     
-                    try {
-                        // Placeholder para API real
-                        console.log('Datos de compra:', formData);
-                        alert('¡Compra procesada exitosamente! Nos contactaremos pronto.');
+                    // Store original button text
+                    if (!this.getAttribute('data-original-text')) {
+                        this.setAttribute('data-original-text', this.textContent);
+                    }
+                    
+                    // Create form
+                    const formHTML = `
+                        <div class="purchase-form">
+                            <h4>Formulario de Compra</h4>
+                            <form>
+                                <div class="form-group">
+                                    <label for="nombre-${title}">Nombre Completo:</label>
+                                    <input type="text" id="nombre-${title}" name="nombre" placeholder="Tu nombre completo" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email-${title}">Email:</label>
+                                    <input type="email" id="email-${title}" name="email" placeholder="tu@email.com" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="telefono-${title}">Teléfono:</label>
+                                    <input type="tel" id="telefono-${title}" name="telefono" placeholder="+52 442 222 2222" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="cantidad-${title}">Cantidad:</label>
+                                    <input type="number" id="cantidad-${title}" name="cantidad" min="1" value="1" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="fecha-${title}">Fecha del Evento:</label>
+                                    <input type="date" id="fecha-${title}" name="fecha" required>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="submit" class="submit-btn">Procesar Compra</button>
+                                    <button type="button" class="cancel-btn">Cancelar</button>
+                                </div>
+                            </form>
+                        </div>
+                    `;
+                    
+                    // Insert form before button
+                    this.insertAdjacentHTML('beforebegin', formHTML);
+                    this.textContent = 'Cerrar Formulario';
+                    
+                    // Handle form submission
+                    const form = card.querySelector('.purchase-form form');
+                    form.addEventListener('submit', async function(e) {
+                        e.preventDefault();
                         
-                        // Clear form
+                        const formData = {
+                            nombre: this.querySelector('input[name="nombre"]').value,
+                            email: this.querySelector('input[name="email"]').value,
+                            telefono: this.querySelector('input[name="telefono"]').value,
+                            cantidad: this.querySelector('input[name="cantidad"]').value,
+                            fecha: this.querySelector('input[name="fecha"]').value,
+                            tipo_boleto: title,
+                            precio: price
+                        };
+                        
+                        try {
+                            // Placeholder para API real
+                            console.log('Datos de compra:', formData);
+                            alert('¡Compra procesada exitosamente! Nos contactaremos pronto.');
+                            
+                            // Clear form
+                            card.querySelector('.purchase-form').remove();
+                            button.textContent = button.getAttribute('data-original-text');
+                        } catch (error) {
+                            alert('Error al procesar la compra. Intenta de nuevo.');
+                        }
+                    });
+                    
+                    // Handle cancel button
+                    const cancelBtn = card.querySelector('.cancel-btn');
+                    cancelBtn.addEventListener('click', function() {
                         card.querySelector('.purchase-form').remove();
                         button.textContent = button.getAttribute('data-original-text');
-                    } catch (error) {
-                        alert('Error al procesar la compra. Intenta de nuevo.');
-                    }
-                });
-                
-                // Handle cancel button
-                const cancelBtn = card.querySelector('.cancel-btn');
-                cancelBtn.addEventListener('click', function() {
-                    card.querySelector('.purchase-form').remove();
-                    button.textContent = button.getAttribute('data-original-text');
+                    });
                 });
             });
         });
