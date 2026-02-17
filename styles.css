@@ -1190,3 +1190,221 @@ footer {
 body.dark-mode .vip-section .section-description {
     color: #f0f0f0;
 }
+
+/* ========================================
+   RESPONSIVE DESIGN - Mobile First
+   ========================================*/
+
+/* Mobile devices (phones, 320px - 480px) */
+@media (max-width: 480px) {
+    body {
+        background-attachment: scroll;
+    }
+    
+    .container {
+        padding: 0 15px;
+    }
+    
+    /* Header */
+    .logo img {
+        max-width: 120px;
+    }
+    
+    nav ul {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px 0;
+    }
+    
+    nav ul li a {
+        font-size: 0.9rem;
+        padding: 8px 15px;
+    }
+    
+    /* Hero Section */
+    .hero {
+        padding: 60px 15px;
+        min-height: 60vh;
+    }
+    
+    .hero-content h1 {
+        font-size: 1.8rem;
+        line-height: 1.2;
+    }
+    
+    .hero-content p {
+        font-size: 1rem;
+    }
+    
+    .cta-button {
+        padding: 12px 25px;
+        font-size: 0.95rem;
+    }
+    
+    /* Flyer Section */
+    .flyer {
+        padding: 40px 15px;
+    }
+    
+    .flyer-content h2 {
+        font-size: 1.6rem;
+    }
+    
+    .flyer-content p {
+        font-size: 0.9rem;
+    }
+    
+    /* Services */
+    .services {
+        padding: 40px 15px;
+    }
+    
+    .services h2 {
+        font-size: 1.8rem;
+    }
+    
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .service-card {
+        padding: 30px 20px;
+    }
+    
+    .service-card h3 {
+        font-size: 1.3rem;
+    }
+    
+    /* Contact Form */
+    .contact {
+        padding: 40px 15px;
+    }
+    
+    .contact h2 {
+        font-size: 1.8rem;
+    }
+    
+    .contact-form input,
+    .contact-form textarea,
+    .contact-form select {
+        font-size: 0.95rem;
+        padding: 12px;
+    }
+    
+    /* Footer */
+    footer {
+        padding: 30px 15px;
+    }
+    
+    .social-links {
+        gap: 15px;
+    }
+    
+    .social-links a {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+    
+    /* VIP Carousel */
+    .vip-cards-container {
+        width: 100%;
+        height: 400px;
+        max-width: 350px;
+    }
+    
+    .vip-card h2 {
+        font-size: 1.5rem;
+    }
+    
+    .vip-card p {
+        font-size: 0.9rem;
+    }
+    
+    /* Inscription Section */
+    .inscription-section {
+        padding: 40px 15px;
+    }
+    
+    .inscription-section h1 {
+        font-size: 1.8rem;
+    }
+    
+    .inscription-form {
+        padding: 20px 15px;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .form-group {
+        flex: 1 1 100%;
+    }
+}
+
+/* Tablets (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+    
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    
+    .vip-cards-container {
+        width: 500px;
+        height: 500px;
+    }
+    
+    nav ul {
+        gap: 15px;
+    }
+    
+    nav ul li a {
+        font-size: 0.95rem;
+    }
+}
+
+/* Landscape phones (max-height: 500px) */
+@media (max-height: 500px) and (orientation: landscape) {
+    .hero {
+        min-height: auto;
+        padding: 40px 20px;
+    }
+    
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-content p {
+        font-size: 1rem;
+    }
+}
+
+/* iOS safe areas */
+@supports (padding: max(0px)) {
+    body {
+        padding-left: max(0px, env(safe-area-inset-left));
+        padding-right: max(0px, env(safe-area-inset-right));
+    }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+    .cta-button,
+    .submit-btn,
+    nav ul li a {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .social-links a {
+        min-width: 44px;
+        min-height: 44px;
+    }
+}
