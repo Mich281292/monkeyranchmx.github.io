@@ -376,15 +376,16 @@ if (prevBtn && nextBtn) {
 
 // VIP Form show/hide functionality
 const vipFormElement = document.getElementById('vipForm');
-const comprarBtns = document.querySelectorAll('.vip-card .cta-button');
-
-comprarBtns.forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        vipFormElement.classList.add('show');
-        // Scroll to form
-        vipFormElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+if (vipFormElement) {
+    const comprarBtns = document.querySelectorAll('.vip-card .cta-button');
+    comprarBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            vipFormElement.classList.add('show');
+            // Scroll to form
+            vipFormElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
     });
-});
+}
 
 console.log('Monkey Ranch website loaded successfully!');
