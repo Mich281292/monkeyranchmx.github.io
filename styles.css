@@ -111,12 +111,40 @@ header.header-compact .logo img:hover {
 }
 
 .nav-links {
-    display: flex;
+    position: fixed;
+    top: 65px;
+    left: -100%;
+    width: 100%;
+    height: calc(100vh - 65px);
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    flex-direction: column;
+    gap: 0;
+    padding: 30px 0;
+    transition: left 0.3s ease;
+    z-index: 999;
+    overflow-y: auto;
     list-style: none;
-    gap: 2rem;
+}
+
+.nav-links.active {
+    left: 0;
+}
+
+.nav-links li {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid rgba(184, 36, 47, 0.1);
+}
+
+.nav-links li:last-child {
+    border-bottom: none;
 }
 
 .nav-links a {
+    display: block;
+    padding: 18px 20px;
+    font-size: 1.2rem;
     color: #b8242f;
     text-decoration: none;
     transition: color 0.3s;
@@ -124,11 +152,16 @@ header.header-compact .logo img:hover {
 
 .nav-links a:hover {
     color: #ff9800;
+    background: rgba(184, 36, 47, 0.05);
+}
+
+body.dark-mode .nav-links {
+    background: rgba(26, 26, 26, 0.98);
 }
 
 /* Mobile Menu Toggle Button */
 .mobile-menu-toggle {
-    display: none;
+    display: flex;
     flex-direction: column;
     gap: 4px;
     background: none;
@@ -1262,61 +1295,24 @@ body.dark-mode .vip-section .section-description {
         font-size: 14px;
     }
     
-    /* Mobile Menu */
-    .mobile-menu-toggle {
-        display: flex;
-    }
-    
+    /* Mobile Menu adjustments */
     header {
         top: 48px;
     }
     
-    .navbar .container {
-        position: relative;
-    }
-    
     .nav-links {
-        position: fixed;
         top: 48px;
-        left: -100%;
-        width: 100%;
         height: calc(100vh - 48px);
-        background: rgba(255, 255, 255, 0.98);
-        backdrop-filter: blur(10px);
-        flex-direction: column;
-        gap: 0;
         padding: 20px 0;
-        transition: left 0.3s ease;
-        z-index: 999;
-        overflow-y: auto;
-    }
-    
-    .nav-links.active {
-        left: 0;
-    }
-    
-    .nav-links li {
-        width: 100%;
-        text-align: center;
-        border-bottom: 1px solid rgba(184, 36, 47, 0.1);
     }
     
     .nav-links li a {
-        display: block;
         padding: 15px 20px;
         font-size: 1.1rem;
     }
     
-    .nav-links li:last-child {
-        border-bottom: none;
-    }
-    
     .theme-toggle {
         margin: 10px auto;
-    }
-    
-    body.dark-mode .nav-links {
-        background: rgba(26, 26, 26, 0.98);
     }
     
     /* Header */
@@ -1463,53 +1459,14 @@ body.dark-mode .vip-section .section-description {
         background-position: center top;
     }
     
-    /* Mobile Menu for tablets too */
-    .mobile-menu-toggle {
-        display: flex;
-    }
-    
+    /* Mobile Menu adjustments for tablets */
     header {
         top: 55px;
     }
     
-    .navbar .container {
-        position: relative;
-    }
-    
     .nav-links {
-        position: fixed;
         top: 55px;
-        left: -100%;
-        width: 100%;
         height: calc(100vh - 55px);
-        background: rgba(255, 255, 255, 0.98);
-        backdrop-filter: blur(10px);
-        flex-direction: column;
-        gap: 0;
-        padding: 30px 0;
-        transition: left 0.3s ease;
-        z-index: 999;
-        overflow-y: auto;
-    }
-    
-    .nav-links.active {
-        left: 0;
-    }
-    
-    .nav-links li {
-        width: 100%;
-        text-align: center;
-        border-bottom: 1px solid rgba(184, 36, 47, 0.1);
-    }
-    
-    .nav-links li a {
-        display: block;
-        padding: 18px 20px;
-        font-size: 1.2rem;
-    }
-    
-    body.dark-mode .nav-links {
-        background: rgba(26, 26, 26, 0.98);
     }
     
     /* Contact Bar */
