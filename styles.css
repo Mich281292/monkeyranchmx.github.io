@@ -886,7 +886,17 @@ body.has-top-contact {
     justify-content: center;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
+    .inscription-section {
+        background-image: url('fondomoviles.png');
+        background-attachment: scroll;
+        background-size: 100% auto;
+        background-position: center top;
+        background-repeat: no-repeat;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
     .inscription-section {
         background-attachment: scroll;
         background-size: cover;
@@ -1156,7 +1166,17 @@ footer {
     justify-content: center;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
+    .vip-section {
+        background-image: url('fondomoviles.png');
+        background-attachment: scroll;
+        background-size: 100% auto;
+        background-position: center top;
+        background-repeat: no-repeat;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
     .vip-section {
         background-attachment: scroll;
         background-size: cover;
