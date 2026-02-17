@@ -1304,7 +1304,7 @@ body.dark-mode .vip-section .section-description {
 @media (max-width: 480px) {
     body {
         background-attachment: scroll;
-        background-size: auto 100%;
+        background-size: 100% auto;
         background-position: center top;
     }
     
