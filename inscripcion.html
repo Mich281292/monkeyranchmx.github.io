@@ -83,6 +83,9 @@
                     <input type="text" placeholder="Tu nombre" required>
                     <input type="email" placeholder="Tu email" required>
                     <input type="tel" placeholder="Tu teléfono" required>
+                    <input type="number" placeholder="Tu edad" min="1" max="120" required>
+                    <input type="text" placeholder="Número de moto" required>
+                    <input type="text" placeholder="Número de licencia" required>
                     <select id="categoriaSelect" placeholder="Categoria" required>
                         <option value="">¿Categoria a la que ingresas?</option>
                         <option value="50cc mini">50cc mini</option>
@@ -240,6 +243,9 @@
             const nombre = this.querySelector('input[placeholder="Tu nombre"]').value.trim();
             const email = this.querySelector('input[placeholder="Tu email"]').value.trim();
             const telefono = this.querySelector('input[placeholder="Tu teléfono"]').value.trim();
+            const edad = this.querySelector('input[placeholder="Tu edad"]').value.trim();
+            const numero_moto = this.querySelector('input[placeholder="Número de moto"]').value.trim();
+            const numero_licencia = this.querySelector('input[placeholder="Número de licencia"]').value.trim();
             const categoria = this.querySelector('#categoriaSelect').value;
             const cantidadPersonas = cantidadPersonasSelect.value;
             const cantidadVehiculos = cantidadVehiculosSelect.value;
@@ -364,6 +370,9 @@
                     nombre, 
                     email,
                     telefono,
+                    edad,
+                    numero_moto,
+                    numero_licencia,
                     categoria,
                     cantidad_personas: cantidadPersonas,
                     cantidad_vehiculos: cantidadVehiculos,

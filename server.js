@@ -74,12 +74,23 @@ async function initializeDatabase() {
                 nombre VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL,
                 telefono VARCHAR(50) NOT NULL,
+                edad INT,
+                numero_moto VARCHAR(100),
+                numero_licencia VARCHAR(100),
                 categoria VARCHAR(100),
                 cantidad_personas VARCHAR(50),
                 cantidad_vehiculos VARCHAR(50),
                 mensaje TEXT,
                 fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
+        `);
+        
+        // Add new columns if they don't exist
+        await pool.query(`
+            ALTER TABLE inscriptions 
+            ADD COLUMN IF NOT EXISTS edad INT,
+            ADD COLUMN IF NOT EXISTS numero_moto VARCHAR(100),
+            ADD COLUMN IF NOT EXISTS numero_licencia VARCHAR(100)
         `);
         console.log('Inscriptions table ready');
     } catch (err) {
@@ -216,10 +227,10 @@ app.get('/api/vip', async (req, res) => {
 
 // POST endpoint for inscriptions (motocross/trackday)
 app.post('/api/inscripcion', async (req, res) => {
-    const { nombre, email, telefono, categoria, cantidad_personas, cantidad_vehiculos, mensaje } = req.body;
+    const { nombre, email, telefono, edad, numero_moto, numero_licencia, categoria, cantidad_personas, cantidad_vehiculos, mensaje } = req.body;
 
     // Validation
-    if (!nombre || !email || !telefono) {
+    if (!nombre || !email || !telefono || !edad || !numero_moto || !numero_licencia) {
         return res.status(400).json({
             success: false,
             message: 'Por favor, completa todos los campos requeridos'
@@ -238,8 +249,8 @@ app.post('/api/inscripcion', async (req, res) => {
     // Insert into database
     try {
         const result = await pool.query(
-            'INSERT INTO inscriptions (nombre, email, telefono, categoria, cantidad_personas, cantidad_vehiculos, mensaje) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
-            [nombre, email, telefono, categoria || null, cantidad_personas || null, cantidad_vehiculos || null, mensaje || null]
+            'INSERT INTO inscriptions (nombre, email, telefono, edad, numero_moto, numero_licencia, categoria, cantidad_personas, cantidad_vehiculos, mensaje) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id',
+            [nombre, email, telefono, parseInt(edad), numero_moto, numero_licencia, categoria || null, cantidad_personas || null, cantidad_vehiculos || null, mensaje || null]
         );
 
         res.status(201).json({
