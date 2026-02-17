@@ -1231,6 +1231,8 @@ body.dark-mode .vip-section .section-description {
 @media (max-width: 480px) {
     body {
         background-attachment: scroll;
+        background-size: auto 100%;
+        background-position: center top;
     }
     
     .container {
@@ -1330,6 +1332,7 @@ body.dark-mode .vip-section .section-description {
     
     /* Hero Section */
     .hero {
+        background-attachment: scroll;
         padding: 60px 15px;
         min-height: 60vh;
     }
@@ -1454,6 +1457,12 @@ body.dark-mode .vip-section .section-description {
 
 /* Tablets (481px - 768px) */
 @media (min-width: 481px) and (max-width: 768px) {
+    body {
+        background-attachment: scroll;
+        background-size: cover;
+        background-position: center top;
+    }
+    
     /* Mobile Menu for tablets too */
     .mobile-menu-toggle {
         display: flex;
@@ -1513,6 +1522,11 @@ body.dark-mode .vip-section .section-description {
         height: 34px;
     }
     
+    /* Hero Section */
+    .hero {
+        background-attachment: scroll;
+    }
+    
     .hero-content h1 {
         font-size: 2.5rem;
     }
@@ -1535,6 +1549,7 @@ body.dark-mode .vip-section .section-description {
 /* Landscape phones (max-height: 500px) */
 @media (max-height: 500px) and (orientation: landscape) {
     .hero {
+        background-attachment: scroll;
         min-height: auto;
         padding: 40px 20px;
     }
