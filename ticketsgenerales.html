@@ -159,7 +159,7 @@
             document.getElementById('total').textContent = '$' + total.toFixed(2);
         });
 
-        document.getElementById('purchaseForm').addEventListener('submit', function(e) {
+        document.getElementById('purchaseForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const formData = {
@@ -167,15 +167,36 @@
                 email: document.getElementById('email').value,
                 telefono: document.getElementById('telefono').value,
                 cantidad: document.getElementById('cantidad').value,
-                fecha: document.getElementById('fecha').value,
-                tipo_boleto: 'Tickets Generales',
+                fecha_evento: document.getElementById('fecha').value,
                 precio: '$200 por día'
             };
             
-            console.log('Datos de compra:', formData);
-            alert('¡Compra procesada exitosamente! Nos contactaremos pronto.');
-            this.reset();
-            document.getElementById('total').textContent = '$200.00';
+            try {
+                const API_URL = 'https://monkey-ranch-api.onrender.com';
+                const response = await fetch(`${API_URL}/api/ticket-purchase`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('¡Compra procesada exitosamente! Nos contactaremos pronto.');
+                    this.reset();
+                    document.getElementById('total').textContent = '$200.00';
+                    setTimeout(() => {
+                        window.location.href = 'boletos.html';
+                    }, 1500);
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al procesar la compra. Intenta de nuevo.');
+            }
         });
     </script>
 </body>

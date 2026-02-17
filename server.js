@@ -93,6 +93,53 @@ async function initializeDatabase() {
             ADD COLUMN IF NOT EXISTS numero_licencia VARCHAR(100)
         `);
         console.log('Inscriptions table ready');
+
+        // Ticket purchases (General) table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS ticket_purchases (
+                id SERIAL PRIMARY KEY,
+                nombre VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                telefono VARCHAR(50) NOT NULL,
+                cantidad INT NOT NULL,
+                fecha_evento DATE NOT NULL,
+                precio VARCHAR(50) NOT NULL,
+                fecha_compra TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+        console.log('Ticket purchases table ready');
+
+        // VIP ticket purchases table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS vip_purchases (
+                id SERIAL PRIMARY KEY,
+                nombre VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                telefono VARCHAR(50) NOT NULL,
+                cantidad INT NOT NULL,
+                duracion INT NOT NULL,
+                fecha_evento DATE NOT NULL,
+                precio VARCHAR(50) NOT NULL,
+                fecha_compra TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+        console.log('VIP purchases table ready');
+
+        // Parking purchases table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS parking_purchases (
+                id SERIAL PRIMARY KEY,
+                nombre VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                telefono VARCHAR(50) NOT NULL,
+                placas VARCHAR(50) NOT NULL,
+                cantidad INT NOT NULL,
+                fecha_evento DATE NOT NULL,
+                precio VARCHAR(50) NOT NULL,
+                fecha_compra TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+        console.log('Parking purchases table ready');
     } catch (err) {
         console.error('Error creating tables:', err);
     }
@@ -282,6 +329,186 @@ app.get('/api/inscripciones', async (req, res) => {
         return res.status(500).json({
             success: false,
             message: 'Error al obtener inscripciones'
+        });
+    }
+});
+
+// POST endpoint for ticket purchases (General)
+app.post('/api/ticket-purchase', async (req, res) => {
+    const { nombre, email, telefono, cantidad, fecha_evento, precio } = req.body;
+
+    // Validation
+    if (!nombre || !email || !telefono || !cantidad || !fecha_evento) {
+        return res.status(400).json({
+            success: false,
+            message: 'Por favor, completa todos los campos'
+        });
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({
+            success: false,
+            message: 'Por favor, ingresa un email válido'
+        });
+    }
+
+    try {
+        const result = await pool.query(
+            'INSERT INTO ticket_purchases (nombre, email, telefono, cantidad, fecha_evento, precio) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
+            [nombre, email, telefono, parseInt(cantidad), fecha_evento, precio]
+        );
+
+        res.status(201).json({
+            success: true,
+            message: '¡Compra de tickets procesada exitosamente! Nos contactaremos pronto.',
+            id: result.rows[0].id
+        });
+    } catch (err) {
+        console.error('Error inserting ticket purchase:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al guardar la compra'
+        });
+    }
+});
+
+// GET endpoint to fetch all ticket purchases
+app.get('/api/ticket-purchases', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM ticket_purchases ORDER BY fecha_compra DESC');
+
+        res.json({
+            success: true,
+            count: result.rows.length,
+            data: result.rows
+        });
+    } catch (err) {
+        console.error('Error fetching ticket purchases:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al obtener compras de tickets'
+        });
+    }
+});
+
+// POST endpoint for VIP ticket purchases
+app.post('/api/vip-purchase', async (req, res) => {
+    const { nombre, email, telefono, cantidad, duracion, fecha_evento, precio } = req.body;
+
+    // Validation
+    if (!nombre || !email || !telefono || !cantidad || !duracion || !fecha_evento) {
+        return res.status(400).json({
+            success: false,
+            message: 'Por favor, completa todos los campos'
+        });
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({
+            success: false,
+            message: 'Por favor, ingresa un email válido'
+        });
+    }
+
+    try {
+        const result = await pool.query(
+            'INSERT INTO vip_purchases (nombre, email, telefono, cantidad, duracion, fecha_evento, precio) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
+            [nombre, email, telefono, parseInt(cantidad), parseInt(duracion), fecha_evento, precio]
+        );
+
+        res.status(201).json({
+            success: true,
+            message: '¡Compra VIP procesada exitosamente! Nos contactaremos pronto.',
+            id: result.rows[0].id
+        });
+    } catch (err) {
+        console.error('Error inserting VIP purchase:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al guardar la compra VIP'
+        });
+    }
+});
+
+// GET endpoint to fetch all VIP ticket purchases
+app.get('/api/vip-purchases', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM vip_purchases ORDER BY fecha_compra DESC');
+
+        res.json({
+            success: true,
+            count: result.rows.length,
+            data: result.rows
+        });
+    } catch (err) {
+        console.error('Error fetching VIP purchases:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al obtener compras VIP'
+        });
+    }
+});
+
+// POST endpoint for parking purchases
+app.post('/api/parking-purchase', async (req, res) => {
+    const { nombre, email, telefono, placas, cantidad, fecha_evento, precio } = req.body;
+
+    // Validation
+    if (!nombre || !email || !telefono || !placas || !cantidad || !fecha_evento) {
+        return res.status(400).json({
+            success: false,
+            message: 'Por favor, completa todos los campos'
+        });
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({
+            success: false,
+            message: 'Por favor, ingresa un email válido'
+        });
+    }
+
+    try {
+        const result = await pool.query(
+            'INSERT INTO parking_purchases (nombre, email, telefono, placas, cantidad, fecha_evento, precio) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
+            [nombre, email, telefono, placas, parseInt(cantidad), fecha_evento, precio]
+        );
+
+        res.status(201).json({
+            success: true,
+            message: '¡Estacionamiento apartado exitosamente! Nos contactaremos pronto.',
+            id: result.rows[0].id
+        });
+    } catch (err) {
+        console.error('Error inserting parking purchase:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al guardar el estacionamiento'
+        });
+    }
+});
+
+// GET endpoint to fetch all parking purchases
+app.get('/api/parking-purchases', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM parking_purchases ORDER BY fecha_compra DESC');
+
+        res.json({
+            success: true,
+            count: result.rows.length,
+            data: result.rows
+        });
+    } catch (err) {
+        console.error('Error fetching parking purchases:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al obtener estacionamientos'
         });
     }
 });

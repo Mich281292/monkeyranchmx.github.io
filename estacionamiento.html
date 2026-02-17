@@ -164,7 +164,7 @@
             document.getElementById('total').textContent = '$' + total.toFixed(2);
         });
 
-        document.getElementById('purchaseForm').addEventListener('submit', function(e) {
+        document.getElementById('purchaseForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const formData = {
@@ -173,15 +173,36 @@
                 telefono: document.getElementById('telefono').value,
                 placas: document.getElementById('placas').value,
                 cantidad: document.getElementById('cantidad').value,
-                fecha: document.getElementById('fecha').value,
-                tipo: 'Estacionamiento General',
+                fecha_evento: document.getElementById('fecha').value,
                 precio: '$150 por día'
             };
             
-            console.log('Datos de estacionamiento:', formData);
-            alert('¡Estacionamiento apartado exitosamente! Nos contactaremos pronto.');
-            this.reset();
-            document.getElementById('total').textContent = '$150.00';
+            try {
+                const API_URL = 'https://monkey-ranch-api.onrender.com';
+                const response = await fetch(`${API_URL}/api/parking-purchase`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('¡Estacionamiento apartado exitosamente! Nos contactaremos pronto.');
+                    this.reset();
+                    document.getElementById('total').textContent = '$150.00';
+                    setTimeout(() => {
+                        window.location.href = 'boletos.html';
+                    }, 1500);
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al apartar el estacionamiento. Intenta de nuevo.');
+            }
         });
     </script>
 </body>
