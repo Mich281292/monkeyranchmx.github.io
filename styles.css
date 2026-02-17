@@ -263,7 +263,7 @@ body.dark-mode .nav-links .theme-toggle:hover {
     gap: 10px;
     background: transparent;
     border-radius: 0;
-    box-shadow: none;
+    box-shadow: 0 2px 12px rgba(184, 36, 47, 0.5), 0 4px 20px rgba(184, 36, 47, 0.3);
     padding: 12px 20px;
     border: none;
     border-bottom: 2px solid #b8242f;
