@@ -1759,13 +1759,25 @@ body.dark-mode .vip-section .section-description {
 }
 
 /* Purchase Form Styles */
+.purchase-form-container {
+    max-width: 600px;
+    margin: 3rem auto;
+    animation: slideIn 0.4s ease-out;
+}
+
 .purchase-form {
     background: rgba(0, 0, 0, 0.5);
     border: 2px solid #b8242f;
     border-radius: 12px;
-    padding: 2rem;
-    margin: 1.5rem 0;
-    animation: slideIn 0.3s ease-out;
+    padding: 2.5rem;
+    backdrop-filter: blur(10px);
+}
+
+.purchase-form h2 {
+    color: #b8242f;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    text-align: center;
 }
 
 @keyframes slideIn {
@@ -1779,28 +1791,22 @@ body.dark-mode .vip-section .section-description {
     }
 }
 
-.purchase-form h4 {
-    color: #b8242f;
-    font-size: 1.3rem;
-    margin-bottom: 1.5rem;
-    text-align: center;
-}
-
 .form-group {
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.5rem;
     display: flex;
     flex-direction: column;
 }
 
 .form-group label {
     color: rgba(255, 255, 255, 0.9);
-    font-size: 0.95rem;
-    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 0.7rem;
     font-weight: 600;
 }
 
-.form-group input {
-    padding: 0.8rem;
+.form-group input,
+.form-group select {
+    padding: 0.9rem;
     border: 1px solid #b8242f;
     border-radius: 6px;
     background: rgba(255, 255, 255, 0.1);
@@ -1813,29 +1819,54 @@ body.dark-mode .vip-section .section-description {
     color: rgba(255, 255, 255, 0.5);
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group select:focus {
     outline: none;
     border-color: #ff4444;
     background: rgba(255, 255, 255, 0.15);
     box-shadow: 0 0 10px rgba(184, 36, 47, 0.3);
 }
 
+.form-group select {
+    cursor: pointer;
+}
+
+.form-group select option {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+.total-display {
+    padding: 0.9rem;
+    background: rgba(184, 36, 47, 0.2);
+    border: 1px solid #b8242f;
+    border-radius: 6px;
+    color: #b8242f;
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-align: center;
+}
+
 .form-actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-top: 1.5rem;
+    gap: 1.2rem;
+    margin-top: 2rem;
 }
 
 .submit-btn,
 .cancel-btn {
-    padding: 0.8rem 1.5rem;
+    padding: 1rem 1.5rem;
     border: none;
     border-radius: 6px;
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .submit-btn {
@@ -1865,6 +1896,10 @@ body.dark-mode .vip-section .section-description {
 
 /* Responsive form */
 @media (max-width: 768px) {
+    .purchase-form-container {
+        margin: 2rem 1rem;
+    }
+
     .purchase-form {
         padding: 1.5rem;
     }

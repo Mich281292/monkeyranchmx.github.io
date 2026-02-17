@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boletos - Monkey Ranch</title>
+    <title>Tickets Terraza VIP - Monkey Ranch</title>
     <link rel="icon" type="image/png" href="icono-monkey.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
@@ -79,48 +79,58 @@
     </div>
 
     <main>
-        <section id="boletos" class="vip-section">
+        <section id="tickets-vip" class="vip-section">
             <div class="container">
-                <h1>Boletos</h1>
-                <p class="section-description">Adquiere tus boletos para vivir la experiencia Monkey Ranch</p>
-                
-                <div class="boletos-cards-grid">
-                    <div class="vip-card">
-                        <h3>Tickets Generales</h3>
-                        <p class="price-tag">$200 por día</p>
-                        <p>Disfruta de acceso al evento en las instalaciones de Monkey Ranch con nuestro boleto general.</p>
-                        <ul class="benefits-list">
-                            <li><i class="fas fa-check"></i> Acceso a gradas</li>
-                            <li><i class="fas fa-check"></i> Baños </li>
-                            <li><i class="fas fa-check"></i> Zonas de espectadores</li>
-                            <li><i class="fas fa-times"></i> Estacionamiento no incluido</li>
-                        </ul>
-                        <a href="ticketsgenerales.html" class="cta-button">Comprar Acceso</a>
-                    </div>
-                    
-                    <div class="vip-card">
-                        <h3>Tickets Terraza VIP</h3>
-                        <p class="price-tag">$1500 por día $2500 por 2 días</p>
-                        <ul class="benefits-list">
-                            <li><i class="fas fa-check"></i> Vista panoramica de toda la pista</li>
-                            <li><i class="fas fa-check"></i> Estacionamiento preferencial Lote A</li>
-                            <li><i class="fas fa-check"></i> Barra libre</li>
-                            <li><i class="fas fa-check"></i> Desayuno y Lunch Buffet</li>
-                            <li><i class="fas fa-check"></i> Transmicion en tiempo real en pantallas</li>
-                        </ul>
-                        <a href="ticketvip.html" class="cta-button">Comprar Acceso VIP</a>
-                    </div>
-                    
-                    <div class="vip-card">
-                        <h3>Estacionamiento General</h3>
-                        <p class="price-tag">$150 por día</p>
-                        <p>Asegura tu lugar de estacionamiento dentro de las instalaciones de Monkey Ranch.</p>
-                        <ul class="benefits-list">
-                            <li><i class="fas fa-check"></i> Estacionamiento cerrado con vigilancia</li>
-                            <li><i class="fas fa-check"></i> Sticker y tarjeta de identificacion de vehiculo</li>
-                            <li><i class="fas fa-check"></i> Salida solo si muestra la tarjeta ID entregada junto con el sticker coincidente </li>
-                        </ul>
-                        <a href="estacionamiento.html" class="cta-button">Apartar Lugar</a>
+                <h1>Comprar Tickets Terraza VIP</h1>
+                <p class="section-description">$1500 por día | $2500 por 2 días</p>
+
+                <div class="purchase-form-container">
+                    <div class="purchase-form">
+                        <h2>Formulario de Compra</h2>
+                        <form id="purchaseForm">
+                            <div class="form-group">
+                                <label for="nombre">Nombre Completo:</label>
+                                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="telefono">Teléfono:</label>
+                                <input type="tel" id="telefono" name="telefono" placeholder="+52 442 222 2222" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cantidad">Cantidad de Boletos:</label>
+                                <input type="number" id="cantidad" name="cantidad" min="1" value="1" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="dias">Duración:</label>
+                                <select id="dias" name="dias" required>
+                                    <option value="1">1 día ($1500)</option>
+                                    <option value="2">2 días ($2500)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="fecha">Fecha del Evento:</label>
+                                <input type="date" id="fecha" name="fecha" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="total">Total:</label>
+                                <div id="total" class="total-display">$1500.00</div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="submit-btn">Procesar Compra</button>
+                                <a href="boletos.html" class="cancel-btn">Volver</a>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -149,5 +159,39 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        document.getElementById('cantidad').addEventListener('change', calculateTotal);
+        document.getElementById('dias').addEventListener('change', calculateTotal);
+
+        function calculateTotal() {
+            const cantidad = parseInt(document.getElementById('cantidad').value) || 1;
+            const dias = parseInt(document.getElementById('dias').value) || 1;
+            const precio = dias === 1 ? 1500 : 2500;
+            const total = cantidad * precio;
+            document.getElementById('total').textContent = '$' + total.toFixed(2);
+        }
+
+        document.getElementById('purchaseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const dias = parseInt(document.getElementById('dias').value);
+            const tipoBoleto = dias === 1 ? 'Tickets VIP (1 día)' : 'Tickets VIP (2 días)';
+            
+            const formData = {
+                nombre: document.getElementById('nombre').value,
+                email: document.getElementById('email').value,
+                telefono: document.getElementById('telefono').value,
+                cantidad: document.getElementById('cantidad').value,
+                fecha: document.getElementById('fecha').value,
+                tipo_boleto: tipoBoleto,
+                precio: document.getElementById('total').textContent
+            };
+            
+            console.log('Datos de compra:', formData);
+            alert('¡Compra procesada exitosamente! Nos contactaremos pronto.');
+            this.reset();
+            document.getElementById('total').textContent = '$1500.00';
+        });
+    </script>
 </body>
 </html>
