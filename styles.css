@@ -1373,7 +1373,6 @@ body.dark-mode .vip-section .section-description {
     
     /* Hero Section */
     .hero {
-        background-color: #000;
         background-attachment: scroll;
         padding: 60px 15px;
         min-height: 60vh;
