@@ -84,12 +84,14 @@
                 <h1>Inscribete</h1>
                 <p class="section-description">Completa tus datos para inscribirte en  la carrera en Monkey Ranch</p>
                 <form class="contact-form" id="inscriptionForm">
-                    <input type="text" placeholder="Tu nombre" required>
-                    <input type="email" placeholder="Tu email" required>
-                    <input type="tel" placeholder="Tu teléfono" required>
-                    <input type="number" placeholder="Tu edad" min="1" max="120" required>
-                    <input type="text" placeholder="Número de moto" required>
-                    <input type="text" placeholder="Número de licencia" required>
+                    <input type="text" name="nombre" placeholder="Tu nombre" required>
+                    <input type="email" name="email" placeholder="Tu email" required>
+                    <input type="tel" name="telefono" placeholder="Tu teléfono" required>
+                    <input type="text" name="instagram" placeholder="Instagram (opcional)">
+                    <input type="text" name="facebook" placeholder="Facebook (opcional)">
+                    <input type="number" name="edad" placeholder="Tu edad" min="1" max="120" required>
+                    <input type="text" name="numero_moto" placeholder="Número de moto" required>
+                    <input type="text" name="numero_licencia" placeholder="Número de licencia" required>
                     <select id="categoriaSelect" placeholder="Categoria" required>
                         <option value="">¿Categoria a la que ingresas?</option>
                         <option value="50cc mini 1 (4 a 6 años)">50cc mini 1 (4 a 6 años)</option>
@@ -139,7 +141,12 @@
                         <option value="10+">Más de 10 vehiculos</option>
                     </select>
                     <div id="vehiculosContainer"></div>
-                    <textarea placeholder="Tu mensaje" rows="5" required></textarea>
+                    <textarea name="mensaje" placeholder="Tu mensaje" rows="5" required></textarea>
+                    <select name="club_exclusivo" aria-label="Club exclusivo">
+                        <option value="">¿Te gustaria pertenecer a nuestro club exclusivo para practicar en nuestras instalaciones?</option>
+                        <option value="si">Si</option>
+                        <option value="no">Por ahora no</option>
+                    </select>
                     <button type="submit" class="submit-btn">Inscribirse</button>
                 </form>
             </div>
@@ -243,17 +250,31 @@
         inscriptionForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const nombre = this.querySelector('input[placeholder="Tu nombre"]').value.trim();
-            const email = this.querySelector('input[placeholder="Tu email"]').value.trim();
-            const telefono = this.querySelector('input[placeholder="Tu teléfono"]').value.trim();
-            const edad = this.querySelector('input[placeholder="Tu edad"]').value.trim();
-            const numero_moto = this.querySelector('input[placeholder="Número de moto"]').value.trim();
-            const numero_licencia = this.querySelector('input[placeholder="Número de licencia"]').value.trim();
+            const nombre = this.querySelector('input[name="nombre"]').value.trim();
+            const email = this.querySelector('input[name="email"]').value.trim();
+            const telefono = this.querySelector('input[name="telefono"]').value.trim();
+            const instagram = this.querySelector('input[name="instagram"]').value.trim();
+            const facebook = this.querySelector('input[name="facebook"]').value.trim();
+            const edad = this.querySelector('input[name="edad"]').value.trim();
+            const numero_moto = this.querySelector('input[name="numero_moto"]').value.trim();
+            const numero_licencia = this.querySelector('input[name="numero_licencia"]').value.trim();
             const categoria = this.querySelector('#categoriaSelect').value;
             const cantidadPersonas = cantidadPersonasSelect.value;
             const cantidadVehiculos = cantidadVehiculosSelect.value;
-            const mensaje = this.querySelector('textarea[placeholder="Tu mensaje"]').value.trim();
-            const mainInputs = this.querySelectorAll('input[placeholder], textarea[placeholder], #categoriaSelect, #cantidadPersonasSelect, #cantidadVehiculosSelect');
+            const mensaje = this.querySelector('textarea[name="mensaje"]').value.trim();
+            const club_exclusivo = this.querySelector('select[name="club_exclusivo"]').value;
+            const mainInputs = [
+                this.querySelector('input[name="nombre"]'),
+                this.querySelector('input[name="email"]'),
+                this.querySelector('input[name="telefono"]'),
+                this.querySelector('input[name="edad"]'),
+                this.querySelector('input[name="numero_moto"]'),
+                this.querySelector('input[name="numero_licencia"]'),
+                this.querySelector('#categoriaSelect'),
+                this.querySelector('#cantidadPersonasSelect'),
+                this.querySelector('#cantidadVehiculosSelect'),
+                this.querySelector('textarea[name="mensaje"]')
+            ];
             
             // Validación cliente
             let isValid = true;
@@ -427,6 +448,9 @@
                     nombre, 
                     email,
                     telefono,
+                    instagram,
+                    facebook,
+                    club_exclusivo,
                     edad,
                     numero_moto,
                     numero_licencia,

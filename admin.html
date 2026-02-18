@@ -817,6 +817,9 @@
                     </div>
                     <div class="contact-email">📧 ${escapeHtml(insc.email)}</div>
                     <div class="contact-phone">📱 <a href="https://wa.me/${insc.telefono}" target="_blank">${escapeHtml(insc.telefono)}</a></div>
+                    ${insc.instagram ? `<div class="contact-phone">📷 Instagram: ${escapeHtml(insc.instagram)}</div>` : ''}
+                    ${insc.facebook ? `<div class="contact-phone">👥 Facebook: ${escapeHtml(insc.facebook)}</div>` : ''}
+                    ${insc.club_exclusivo ? `<div class="contact-phone">⭐ Club exclusivo: ${escapeHtml(insc.club_exclusivo)}</div>` : ''}
                     <div class="inscription-details">
                         <strong>Categoría:</strong> ${escapeHtml(insc.categoria)}<br>
                         <strong>Personas:</strong> ${escapeHtml(insc.cantidad_personas)}<br>
