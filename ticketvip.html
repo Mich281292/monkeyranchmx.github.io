@@ -184,7 +184,8 @@
             
             try {
                 // Save VIP purchase to database
-                const response = await fetch('/api/save-vip-purchase', {
+                const API_URL = 'https://monkey-ranch-api.onrender.com';
+                const response = await fetch(`${API_URL}/api/save-vip-purchase`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

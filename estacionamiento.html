@@ -177,7 +177,8 @@
             
             try {
                 // Save parking purchase to database
-                const response = await fetch('/api/save-parking-purchase', {
+                const API_URL = 'https://monkey-ranch-api.onrender.com';
+                const response = await fetch(`${API_URL}/api/save-parking-purchase`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
