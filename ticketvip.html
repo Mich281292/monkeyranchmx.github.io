@@ -119,6 +119,7 @@
                             <div class="form-group">
                                 <label for="fecha">Fecha del Evento:</label>
                                 <input type="date" id="fecha" name="fecha" min="2026-03-14" max="2026-03-15" required>
+                                <input type="text" id="fechaTexto" name="fechaTexto" value="14 y 15 de Marzo, 2026" readonly style="display: none;">
                             </div>
 
                             <div class="form-group">
@@ -161,7 +162,30 @@
     <script src="script.js"></script>
     <script>
         document.getElementById('cantidad').addEventListener('change', calculateTotal);
-        document.getElementById('dias').addEventListener('change', calculateTotal);
+        document.getElementById('dias').addEventListener('change', function() {
+            calculateTotal();
+            updateFechaField();
+        });
+
+        function updateFechaField() {
+            const dias = parseInt(document.getElementById('dias').value);
+            const fechaDate = document.getElementById('fecha');
+            const fechaTexto = document.getElementById('fechaTexto');
+            
+            if (dias === 2) {
+                // Ocultar selector de fecha y mostrar texto fijo
+                fechaDate.style.display = 'none';
+                fechaDate.removeAttribute('required');
+                fechaTexto.style.display = 'block';
+                fechaTexto.setAttribute('required', 'required');
+            } else {
+                // Mostrar selector de fecha y ocultar texto
+                fechaDate.style.display = 'block';
+                fechaDate.setAttribute('required', 'required');
+                fechaTexto.style.display = 'none';
+                fechaTexto.removeAttribute('required');
+            }
+        }
 
         function calculateTotal() {
             const cantidad = parseInt(document.getElementById('cantidad').value) || 1;
@@ -179,7 +203,15 @@
             const telefono = document.getElementById('telefono').value;
             const cantidad = document.getElementById('cantidad').value;
             const duracion = document.getElementById('dias').value;
-            const fecha_evento = document.getElementById('fecha').value;
+            
+            // Obtener la fecha según el tipo de campo visible
+            let fecha_evento;
+            if (parseInt(duracion) === 2) {
+                fecha_evento = '2026-03-14,2026-03-15'; // Ambas fechas
+            } else {
+                fecha_evento = document.getElementById('fecha').value;
+            }
+            
             const totalText = document.getElementById('total').textContent;
             
             try {
