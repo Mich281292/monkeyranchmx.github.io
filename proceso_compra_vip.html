@@ -479,7 +479,8 @@
                 submitBtn.textContent = 'Procesando...';
 
                 try {
-                    const response = await fetch('/api/comprobante-vip', {
+                    const API_URL = 'https://monkey-ranch-api.onrender.com';
+                    const response = await fetch(`${API_URL}/api/vip-purchase-proof`, {
                         method: 'POST',
                         body: formData
                     });
