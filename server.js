@@ -498,7 +498,7 @@ app.post('/api/ticket-purchase', async (req, res) => {
 // POST endpoint for uploading ticket proof
 app.post('/api/ticket-purchase-proof', upload.single('comprobante'), async (req, res) => {
     try {
-        const { nombre, email, telefono, cantidad, fecha_evento, precio, compra_id } = req.body;
+        const { nombre, email, telefono, cantidad, fecha_evento, total, compra_id } = req.body;
 
         if (!req.file) {
             return res.status(400).json({
@@ -509,7 +509,6 @@ app.post('/api/ticket-purchase-proof', upload.single('comprobante'), async (req,
 
         console.log('Ticket proof upload:', { filename: req.file.filename, size: req.file.size, mimetype: req.file.mimetype });
         
-        // In Render, files are ephemeral. Store just the filename as reference
         const comprobanteUrl = `/uploads/${req.file.filename}`;
         
         // Get the purchase ID from the latest ticket purchase if not provided
@@ -530,6 +529,18 @@ app.post('/api/ticket-purchase-proof', upload.single('comprobante'), async (req,
                 'UPDATE ticket_purchases SET comprobante = $1 WHERE id = $2',
                 [comprobanteUrl, purchaseId]
             );
+        }
+        
+        // Also insert into comprobantes_generales table
+        try {
+            await pool.query(
+                'INSERT INTO comprobantes_generales (nombre, email, telefono, cantidad, total, fecha_evento, comprobante_url) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+                [nombre, email, telefono, cantidad, total, fecha_evento, comprobanteUrl]
+            );
+            console.log('Inserted into comprobantes_generales for:', email);
+        } catch (insertErr) {
+            console.warn('Warning: Could not insert into comprobantes_generales:', insertErr.message);
+            // Don't fail the request if comprobantes_generales insert fails
         }
 
         res.json({
@@ -609,7 +620,7 @@ app.post('/api/vip-purchase', async (req, res) => {
 // POST endpoint for uploading VIP ticket proof
 app.post('/api/vip-purchase-proof', upload.single('comprobante'), async (req, res) => {
     try {
-        const { nombre, email, telefono, compra_id } = req.body;
+        const { nombre, email, telefono, cantidad, duracion, fecha_evento, total, compra_id } = req.body;
 
         if (!req.file) {
             return res.status(400).json({
@@ -640,6 +651,18 @@ app.post('/api/vip-purchase-proof', upload.single('comprobante'), async (req, re
                 'UPDATE vip_purchases SET comprobante = $1 WHERE id = $2',
                 [comprobanteUrl, purchaseId]
             );
+        }
+        
+        // Also insert into comprobantes_vip table
+        try {
+            await pool.query(
+                'INSERT INTO comprobantes_vip (nombre, email, telefono, cantidad, duracion, total, fecha_evento, comprobante_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+                [nombre, email, telefono, cantidad, duracion, total, fecha_evento, comprobanteUrl]
+            );
+            console.log('Inserted into comprobantes_vip for:', email);
+        } catch (insertErr) {
+            console.warn('Warning: Could not insert into comprobantes_vip:', insertErr.message);
+            // Don't fail the request if comprobantes_vip insert fails
         }
 
         res.json({
@@ -719,7 +742,7 @@ app.post('/api/parking-purchase', async (req, res) => {
 // POST endpoint for uploading parking proof
 app.post('/api/parking-purchase-proof', upload.single('comprobante'), async (req, res) => {
     try {
-        const { nombre, email, telefono, placas, compra_id } = req.body;
+        const { nombre, email, telefono, placas, cantidad, fecha_evento, total, compra_id } = req.body;
 
         if (!req.file) {
             return res.status(400).json({
@@ -750,6 +773,18 @@ app.post('/api/parking-purchase-proof', upload.single('comprobante'), async (req
                 'UPDATE parking_purchases SET comprobante = $1 WHERE id = $2',
                 [comprobanteUrl, purchaseId]
             );
+        }
+        
+        // Also insert into comprobantes_estacionamiento table
+        try {
+            await pool.query(
+                'INSERT INTO comprobantes_estacionamiento (nombre, email, telefono, placas, cantidad, total, fecha_evento, comprobante_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+                [nombre, email, telefono, placas, cantidad, total, fecha_evento, comprobanteUrl]
+            );
+            console.log('Inserted into comprobantes_estacionamiento for:', email);
+        } catch (insertErr) {
+            console.warn('Warning: Could not insert into comprobantes_estacionamiento:', insertErr.message);
+            // Don't fail the request if comprobantes_estacionamiento insert fails
         }
 
         res.json({
