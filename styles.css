@@ -891,6 +891,11 @@ body.has-top-contact {
     border-color: var(--header-bg);
 }
 
+.contact-form input:focus,
+.contact-form textarea:focus {
+    box-shadow: 0 0 0 3px rgba(184, 36, 47, 0.15);
+}
+
 .contact-form select:focus {
     box-shadow: 0 0 0 3px rgba(184, 36, 47, 0.15);
 }
@@ -1129,6 +1134,10 @@ body.dark-mode .inscription-section .section-description {
     border-color: var(--header-bg);
 }
 
+.persona-form input:focus {
+    box-shadow: 0 0 0 3px rgba(184, 36, 47, 0.15);
+}
+
 .persona-form select:focus {
     box-shadow: 0 0 0 3px rgba(184, 36, 47, 0.15);
 }
@@ -1137,6 +1146,10 @@ body.dark-mode .inscription-section .section-description {
 .vehiculo-form select:focus {
     outline: none;
     border-color: var(--header-bg);
+}
+
+.vehiculo-form input:focus {
+    box-shadow: 0 0 0 3px rgba(184, 36, 47, 0.15);
 }
 
 .vehiculo-form select:focus {
@@ -1870,6 +1883,13 @@ body.dark-mode .vip-section .section-description {
 
 .form-group input:focus,
 .form-group select:focus {
+    outline: none;
+    border-color: #ff4444;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 10px rgba(184, 36, 47, 0.3);
+}
+
+.form-group textarea:focus {
     outline: none;
     border-color: #ff4444;
     background: rgba(255, 255, 255, 0.15);
