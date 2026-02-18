@@ -891,6 +891,10 @@ body.has-top-contact {
     border-color: var(--header-bg);
 }
 
+.contact-form select:focus {
+    box-shadow: 0 0 0 3px rgba(184, 36, 47, 0.15);
+}
+
 .submit-btn {
     display: inline-flex;
     align-items: center;
@@ -1125,10 +1129,18 @@ body.dark-mode .inscription-section .section-description {
     border-color: var(--header-bg);
 }
 
+.persona-form select:focus {
+    box-shadow: 0 0 0 3px rgba(184, 36, 47, 0.15);
+}
+
 .vehiculo-form input:focus,
 .vehiculo-form select:focus {
     outline: none;
     border-color: var(--header-bg);
+}
+
+.vehiculo-form select:focus {
+    box-shadow: 0 0 0 3px rgba(184, 36, 47, 0.15);
 }
 
 .alert-message {
