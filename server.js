@@ -43,8 +43,9 @@ const upload = multer({
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname)));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// API routes should come BEFORE static file serving
+// This ensures /api/* requests don't try to find static files first
 
 // PostgreSQL Database setup
 const pool = new Pool({
@@ -948,6 +949,10 @@ app.post('/api/save-parking-purchase', async (req, res) => {
         res.status(500).json({ success: false, message: 'Error: ' + error.message });
     }
 });
+
+// Static file serving (after all API routes)
+app.use(express.static(path.join(__dirname)));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Global error handler
 app.use((err, req, res, next) => {
