@@ -875,6 +875,11 @@ body.has-top-contact {
     color: var(--text-primary);
 }
 
+.contact-form select option {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
 .contact-form input:focus,
 .contact-form textarea:focus,
 .contact-form select:focus {
