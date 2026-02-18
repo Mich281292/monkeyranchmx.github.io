@@ -81,8 +81,8 @@
     <main>
         <section id="inscription" class="inscription-section">
             <div class="container">
-                <h1>Inscribete</h1>
-                <p class="section-description">Completa tus datos para inscribirte en  la carrera en Monkey Ranch</p>
+                <h1>Inscríbete</h1>
+                <p class="section-description">Completa tus datos para inscribirte en la carrera en Monkey Ranch.</p>
                 <form class="contact-form" id="inscriptionForm">
                     <input type="text" name="nombre" placeholder="Tu nombre" required>
                     <input type="email" name="email" placeholder="Tu email" required>
@@ -92,8 +92,8 @@
                     <input type="number" name="edad" placeholder="Tu edad" min="1" max="120" required>
                     <input type="text" name="numero_moto" placeholder="Número de moto" required>
                     <input type="text" name="numero_licencia" placeholder="Número de licencia" required>
-                    <select id="categoriaSelect" placeholder="Categoria" required>
-                        <option value="">¿Categoria a la que ingresas?</option>
+                    <select id="categoriaSelect" placeholder="Categoría" required>
+                        <option value="">¿Categoría a la que ingresas?</option>
                         <option value="50cc mini 1 (4 a 6 años)">50cc mini 1 (4 a 6 años)</option>
                         <option value="50cc mini 2 (7 a 8 años)">50cc mini 2 (7 a 8 años)</option>
                         <option value="50cc junior (Open de 4 a 8 años)">50cc junior (Open de 4 a 8 años)</option>
@@ -117,36 +117,39 @@
                         <option value="Mx1 Open (18 años mínimo)">Mx1 Open (18 años mínimo)</option>
                     </select>
                     <select id="cantidadPersonasSelect" placeholder="Cantidad de personas" required>
-                        <option value="">¿Cuantas personas ingresan contigo?</option>
+                        <option value="">¿Cuántas personas ingresan contigo?</option>
                         <option value="0">Solo yo (0 personas)</option>
                         <option value="1">1 persona</option>
                         <option value="2">2 personas</option>
                         <option value="3">3 personas</option>
                         <option value="4">4 personas</option>
-                        <option value="contacto">Si requieres acceder con más personas ponte en contacto con Monkey Ranch da click aquí</option>
+                        <option value="contacto">Si requieres acceder con más personas, ponte en contacto con Monkey Ranch; da clic aquí</option>
                     </select>
                     <div id="personasContainer"></div>
-                    <select id="cantidadVehiculosSelect" placeholder="Cantidad de vehiculos" required>
-                        <option value="">¿Con cuantos vehiculos ingresas?</option>
-                        <option value="1">1 vehiculo</option>
-                        <option value="2">2 vehiculos</option>
-                        <option value="3">3 vehiculos</option>
-                        <option value="4">4 vehiculos</option>
-                        <option value="5">5 vehiculos</option>
-                        <option value="6">6 vehiculos</option>
-                        <option value="7">7 vehiculos</option>
-                        <option value="8">8 vehiculos</option>
-                        <option value="9">9 vehiculos</option>
-                        <option value="10">10 vehiculos</option>
-                        <option value="10+">Más de 10 vehiculos</option>
+                    <select id="cantidadVehiculosSelect" placeholder="Cantidad de vehículos" required>
+                        <option value="">¿Con cuántos vehículos ingresas?</option>
+                        <option value="1">1 vehículo</option>
+                        <option value="2">2 vehículos</option>
+                        <option value="3">3 vehículos</option>
+                        <option value="4">4 vehículos</option>
+                        <option value="5">5 vehículos</option>
+                        <option value="6">6 vehículos</option>
+                        <option value="7">7 vehículos</option>
+                        <option value="8">8 vehículos</option>
+                        <option value="9">9 vehículos</option>
+                        <option value="10">10 vehículos</option>
+                        <option value="10+">Más de 10 vehículos</option>
                     </select>
                     <div id="vehiculosContainer"></div>
                     <textarea name="mensaje" placeholder="Tu mensaje" rows="5" required></textarea>
-                    <select name="club_exclusivo" aria-label="Club exclusivo">
-                        <option value="">¿Te gustaria pertenecer a nuestro club exclusivo para practicar en nuestras instalaciones?</option>
-                        <option value="si">Si</option>
-                        <option value="no">Por ahora no</option>
-                    </select>
+                    <div class="question-block">
+                        <label for="clubExclusivoSelect">¿Te gustaría pertenecer a nuestro club exclusivo para practicar en nuestras instalaciones?</label>
+                        <select id="clubExclusivoSelect" name="club_exclusivo">
+                            <option value="">Selecciona una opción</option>
+                            <option value="si">Sí</option>
+                            <option value="no">Por ahora no</option>
+                        </select>
+                    </div>
                     <button type="submit" class="submit-btn">Inscribirse</button>
                 </form>
             </div>
@@ -230,18 +233,18 @@
                     const vehiculoForm = document.createElement('div');
                     vehiculoForm.className = 'vehiculo-form';
                     vehiculoForm.innerHTML = `
-                        <h3>Vehiculo ${i}</h3>
+                        <h3>Vehículo ${i}</h3>
                         <input type="text" placeholder="Marca" class="vehiculo-marca" required>
                         <input type="text" placeholder="Modelo" class="vehiculo-modelo" required>
                         <input type="number" placeholder="Año" class="vehiculo-ano" min="1900" max="2100" required>
-                        <input type="text" placeholder="Numero de placa" class="vehiculo-placa" required>
+                        <input type="text" placeholder="Número de placa" class="vehiculo-placa" required>
                     `;
                     vehiculosContainer.appendChild(vehiculoForm);
                 }
             } else if (cantidad === '10+') {
                 const alertDiv = document.createElement('div');
                 alertDiv.className = 'alert-message';
-                alertDiv.textContent = 'Por favor, contacta directamente para grupos de mas de 10 vehiculos.';
+                alertDiv.textContent = 'Por favor, contacta directamente para grupos de más de 10 vehículos.';
                 vehiculosContainer.appendChild(alertDiv);
             }
         });
@@ -418,11 +421,11 @@
             });
 
             if (!isValid) {
-                alert('Por favor, completa todos los campos de los vehiculos.');
+                alert('Por favor, completa todos los campos de los vehículos.');
                 return;
             }
 
-            // Buil mensaje con datos de personas
+            // Build mensaje con datos de personas
             let personasDetalles = '';
             personas.forEach((p, i) => {
                 personasDetalles += `\nPersona ${i + 1}:\n  - Nombre: ${p.nombre}\n  - Edad: ${p.edad}\n  - Sexo: ${p.sexo}\n  - Rol: ${p.rol}`;
@@ -430,7 +433,7 @@
 
             let vehiculosDetalles = '';
             vehiculos.forEach((v, i) => {
-                vehiculosDetalles += `\nVehiculo ${i + 1}:\n  - Marca: ${v.marca}\n  - Modelo: ${v.modelo}\n  - Año: ${v.ano}\n  - Numero de placa: ${v.placa}`;
+                vehiculosDetalles += `\nVehículo ${i + 1}:\n  - Marca: ${v.marca}\n  - Modelo: ${v.modelo}\n  - Año: ${v.ano}\n  - Número de placa: ${v.placa}`;
             });
 
             // Enviar al backend

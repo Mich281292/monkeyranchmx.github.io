@@ -880,6 +880,17 @@ body.has-top-contact {
     color: var(--text-primary);
 }
 
+.contact-form .question-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.contact-form .question-block label {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
 .contact-form select:hover {
     border-color: var(--header-bg);
 }
