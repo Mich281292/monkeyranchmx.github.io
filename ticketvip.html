@@ -219,7 +219,9 @@
                 
                 sessionStorage.setItem('purchaseData', JSON.stringify(purchaseData));
                 
-                // Redirect to payment proof page with URL parameters                const baseUrl = 'https://mich281292.github.io/monkeyranchmx.github.io';                const params = new URLSearchParams({
+                // Redirect to payment proof page with URL parameters
+                const baseUrl = 'https://mich281292.github.io/monkeyranchmx.github.io';
+                const params = new URLSearchParams({
                     nombre: nombre,
                     email: email,
                     telefono: telefono,
@@ -229,7 +231,7 @@
                     total: totalText
                 });
                 
-                window.location.href = `proceso_compra_vip.html?${params.toString()}`;
+                window.location.href = `${baseUrl}/proceso_compra_vip.html?${params.toString()}`;
             } catch (error) {
                 console.error('Error:', error);
                 alert('Error de conexión: ' + error.message);
