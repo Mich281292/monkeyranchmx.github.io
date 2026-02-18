@@ -891,6 +891,11 @@ body.has-top-contact {
     color: var(--text-primary);
 }
 
+.contact-form .question-help {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
 .contact-form select:hover {
     border-color: var(--header-bg);
 }
