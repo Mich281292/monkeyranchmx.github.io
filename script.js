@@ -105,15 +105,21 @@ if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
     e.preventDefault();
     
-    const nombreInput = this.querySelector('input[placeholder="Tu nombre"]');
-    const emailInput = this.querySelector('input[placeholder="Tu email"]');
-    const telefonoInput = this.querySelector('input[placeholder="Tu teléfono"]');
-    const mensajeInput = this.querySelector('textarea[placeholder="Tu mensaje"]');
+    const nombreInput = this.querySelector('input[name="nombre"]');
+    const emailInput = this.querySelector('input[name="email"]');
+    const telefonoInput = this.querySelector('input[name="telefono"]');
+    const instagramInput = this.querySelector('input[name="instagram"]');
+    const facebookInput = this.querySelector('input[name="facebook"]');
+    const mensajeInput = this.querySelector('textarea[name="mensaje"]');
+    const clubInput = this.querySelector('select[name="club_exclusivo"]');
     
     const nombre = nombreInput.value.trim();
     const email = emailInput.value.trim();
     const telefono = telefonoInput.value.trim();
+    const instagram = instagramInput ? instagramInput.value.trim() : '';
+    const facebook = facebookInput ? facebookInput.value.trim() : '';
     const mensaje = mensajeInput.value.trim();
+    const club_exclusivo = clubInput ? clubInput.value : '';
     
     // Client-side validation - only check the 4 required fields
     if (!nombre || !email || !telefono || !mensaje) {
@@ -150,7 +156,7 @@ if (contactForm) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ nombre, email, telefono, mensaje })
+        body: JSON.stringify({ nombre, email, telefono, mensaje, instagram, facebook, club_exclusivo })
     })
     .then(response => response.json())
     .then(data => {

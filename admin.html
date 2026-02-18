@@ -759,6 +759,7 @@
                     <div class="contact-phone">📱 <a href="https://wa.me/${contact.telefono}" target="_blank">${escapeHtml(contact.telefono)}</a></div>
                     ${contact.instagram ? `<div class="contact-phone">📷 Instagram: ${escapeHtml(contact.instagram)}</div>` : ''}
                     ${contact.facebook ? `<div class="contact-phone">👥 Facebook: ${escapeHtml(contact.facebook)}</div>` : ''}
+                    ${contact.club_exclusivo ? `<div class="contact-phone">⭐ Club exclusivo: ${escapeHtml(contact.club_exclusivo)}</div>` : ''}
                     <div class="contact-message">
                         <strong>💬 Mensaje:</strong><br>
                         ${escapeHtml(contact.mensaje)}

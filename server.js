@@ -92,6 +92,9 @@ async function initializeDatabase() {
                 email VARCHAR(255) NOT NULL,
                 telefono VARCHAR(50),
                 mensaje TEXT NOT NULL,
+                instagram VARCHAR(255),
+                facebook VARCHAR(255),
+                club_exclusivo VARCHAR(50),
                 fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
@@ -112,6 +115,12 @@ async function initializeDatabase() {
         await pool.query(`
             ALTER TABLE contacts 
             ADD COLUMN IF NOT EXISTS facebook VARCHAR(255)
+        `);
+
+        // Add club_exclusivo column if it doesn't exist
+        await pool.query(`
+            ALTER TABLE contacts 
+            ADD COLUMN IF NOT EXISTS club_exclusivo VARCHAR(50)
         `);
         
         console.log('Contacts table ready');
@@ -307,12 +316,13 @@ app.post('/api/contact', async (req, res) => {
     // Get optional social media fields
     const instagram = req.body.instagram || null;
     const facebook = req.body.facebook || null;
+    const club_exclusivo = req.body.club_exclusivo || null;
 
     // Insert into database
     try {
         const result = await pool.query(
-            'INSERT INTO contacts (nombre, email, telefono, mensaje, instagram, facebook) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
-            [nombre, email, telefono, mensaje, instagram, facebook]
+            'INSERT INTO contacts (nombre, email, telefono, mensaje, instagram, facebook, club_exclusivo) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
+            [nombre, email, telefono, mensaje, instagram, facebook, club_exclusivo]
         );
 
         res.status(201).json({
