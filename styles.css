@@ -875,6 +875,10 @@ body.has-top-contact {
     color: var(--text-primary);
 }
 
+.contact-form select:hover {
+    border-color: var(--header-bg);
+}
+
 .contact-form select option {
     background-color: var(--bg-primary);
     color: var(--text-primary);
@@ -1081,6 +1085,10 @@ body.dark-mode .inscription-section .section-description {
     box-sizing: border-box;
 }
 
+.persona-form select:hover {
+    border-color: var(--header-bg);
+}
+
 .persona-form select option {
     background-color: var(--bg-primary);
     color: var(--text-primary);
@@ -1100,6 +1108,10 @@ body.dark-mode .inscription-section .section-description {
     color: var(--text-primary);
     transition: border-color 0.3s;
     box-sizing: border-box;
+}
+
+.vehiculo-form select:hover {
+    border-color: var(--header-bg);
 }
 
 .vehiculo-form select option {
@@ -1828,6 +1840,11 @@ body.dark-mode .vip-section .section-description {
     color: #fff;
     font-size: 0.95rem;
     transition: all 0.3s ease;
+}
+
+.form-group select:hover {
+    border-color: #ff4444;
+    background: rgba(255, 255, 255, 0.12);
 }
 
 .form-group input[type="date"]::-webkit-calendar-picker-indicator {
