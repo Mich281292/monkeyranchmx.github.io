@@ -134,11 +134,14 @@
                     <input type="text" name="instagram" placeholder="Instagram (opcional)">
                     <input type="text" name="facebook" placeholder="Facebook (opcional)">
                     <textarea name="mensaje" placeholder="Tu mensaje" rows="5" required></textarea>
-                    <select name="club_exclusivo" aria-label="Club exclusivo">
-                        <option value="">¿Te gustaría pertenecer a nuestro club exclusivo para practicar en nuestras instalaciones?</option>
-                        <option value="si">Sí</option>
-                        <option value="no">Por ahora no</option>
-                    </select>
+                    <div class="question-block">
+                        <label for="clubExclusivoContact">¿Te gustaría pertenecer a nuestro club exclusivo para practicar en nuestras instalaciones?</label>
+                        <select id="clubExclusivoContact" name="club_exclusivo">
+                            <option value="">Selecciona una opción</option>
+                            <option value="si">Sí</option>
+                            <option value="no">Por ahora no</option>
+                        </select>
+                    </div>
                     <button type="submit" class="submit-btn">Enviar</button>
                 </form>
             </div>
