@@ -102,6 +102,18 @@ async function initializeDatabase() {
             ADD COLUMN IF NOT EXISTS telefono VARCHAR(50)
         `);
         
+        // Add instagram column if it doesn't exist
+        await pool.query(`
+            ALTER TABLE contacts 
+            ADD COLUMN IF NOT EXISTS instagram VARCHAR(255)
+        `);
+        
+        // Add facebook column if it doesn't exist
+        await pool.query(`
+            ALTER TABLE contacts 
+            ADD COLUMN IF NOT EXISTS facebook VARCHAR(255)
+        `);
+        
         console.log('Contacts table ready');
 
         // VIP registrations table
@@ -292,11 +304,15 @@ app.post('/api/contact', async (req, res) => {
         });
     }
 
+    // Get optional social media fields
+    const instagram = req.body.instagram || null;
+    const facebook = req.body.facebook || null;
+
     // Insert into database
     try {
         const result = await pool.query(
-            'INSERT INTO contacts (nombre, email, telefono, mensaje) VALUES ($1, $2, $3, $4) RETURNING id',
-            [nombre, email, telefono, mensaje]
+            'INSERT INTO contacts (nombre, email, telefono, mensaje, instagram, facebook) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
+            [nombre, email, telefono, mensaje, instagram, facebook]
         );
 
         res.status(201).json({
