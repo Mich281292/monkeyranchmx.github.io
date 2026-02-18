@@ -877,72 +877,104 @@ app.get('/api/comprobantes-estacionamiento', async (req, res) => {
 // Endpoint para guardar compra de tickets generales
 app.post('/api/save-ticket-purchase', async (req, res) => {
     try {
+        console.log('POST /api/save-ticket-purchase - Request body:', req.body);
         const { nombre, email, telefono, cantidad, fecha_evento, total } = req.body;
         
         if (!nombre || !email || !telefono || !cantidad || !fecha_evento) {
+            console.warn('Missing required fields:', { nombre, email, telefono, cantidad, fecha_evento });
             return res.status(400).json({ success: false, message: 'Datos incompletos' });
         }
 
-        await pool.query(
+        const result = await pool.query(
             `INSERT INTO ticket_purchases (nombre, email, telefono, cantidad, fecha_evento, precio) 
-             VALUES ($1, $2, $3, $4, $5, $6)`,
+             VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
             [nombre, email, telefono, parseInt(cantidad), fecha_evento, total]
         );
 
-        res.json({ success: true, message: 'Compra guardada' });
+        console.log('Ticket purchase saved with ID:', result.rows[0].id);
+        res.json({ success: true, message: 'Compra guardada', id: result.rows[0].id });
     } catch (error) {
-        console.error('Error saving ticket purchase:', error);
-        res.status(500).json({ success: false, message: error.message });
+        console.error('Error saving ticket purchase:', error.message, error.stack);
+        res.status(500).json({ success: false, message: 'Error: ' + error.message });
     }
 });
 
 // Endpoint para guardar compra VIP
 app.post('/api/save-vip-purchase', async (req, res) => {
     try {
+        console.log('POST /api/save-vip-purchase - Request body:', req.body);
         const { nombre, email, telefono, cantidad, duracion, fecha_evento, total } = req.body;
         
         if (!nombre || !email || !telefono || !cantidad || !duracion || !fecha_evento) {
+            console.warn('Missing required fields:', { nombre, email, telefono, cantidad, duracion, fecha_evento });
             return res.status(400).json({ success: false, message: 'Datos incompletos' });
         }
 
-        await pool.query(
+        const result = await pool.query(
             `INSERT INTO vip_purchases (nombre, email, telefono, cantidad, duracion, fecha_evento, precio) 
-             VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+             VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`,
             [nombre, email, telefono, parseInt(cantidad), parseInt(duracion), fecha_evento, total]
         );
 
-        res.json({ success: true, message: 'Compra VIP guardada' });
+        console.log('VIP purchase saved with ID:', result.rows[0].id);
+        res.json({ success: true, message: 'Compra VIP guardada', id: result.rows[0].id });
     } catch (error) {
-        console.error('Error saving VIP purchase:', error);
-        res.status(500).json({ success: false, message: error.message });
+        console.error('Error saving VIP purchase:', error.message, error.stack);
+        res.status(500).json({ success: false, message: 'Error: ' + error.message });
     }
 });
 
 // Endpoint para guardar compra de estacionamiento
 app.post('/api/save-parking-purchase', async (req, res) => {
     try {
+        console.log('POST /api/save-parking-purchase - Request body:', req.body);
         const { nombre, email, telefono, placas, cantidad, fecha_evento, total } = req.body;
         
         if (!nombre || !email || !telefono || !placas || !cantidad || !fecha_evento) {
+            console.warn('Missing required fields:', { nombre, email, telefono, placas, cantidad, fecha_evento });
             return res.status(400).json({ success: false, message: 'Datos incompletos' });
         }
 
-        await pool.query(
+        const result = await pool.query(
             `INSERT INTO parking_purchases (nombre, email, telefono, placas, cantidad, fecha_evento, precio) 
-             VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+             VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`,
             [nombre, email, telefono, placas, parseInt(cantidad), fecha_evento, total]
         );
 
-        res.json({ success: true, message: 'Compra de estacionamiento guardada' });
+        console.log('Parking purchase saved with ID:', result.rows[0].id);
+        res.json({ success: true, message: 'Compra de estacionamiento guardada', id: result.rows[0].id });
     } catch (error) {
-        console.error('Error saving parking purchase:', error);
-        res.status(500).json({ success: false, message: error.message });
+        console.error('Error saving parking purchase:', error.message, error.stack);
+        res.status(500).json({ success: false, message: 'Error: ' + error.message });
     }
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+    console.error('Express Error:', err);
+    res.status(500).json({
+        success: false,
+        message: 'Error del servidor',
+        error: err.message
+    });
+});
+
+// 404 handler
+app.use((req, res) => {
+    console.warn(`404 - Route not found: ${req.method} ${req.path}`);
+    res.status(404).json({
+        success: false,
+        message: `Endpoint not found: ${req.method} ${req.path}`
+    });
 });
 
 // Start server
 app.listen(PORT, () => {
-    console.log(`🐵 Monkey Ranch server running on http://localhost:${PORT}`);
+    console.log(`🐵 Monkey Ranch server running on port ${PORT}`);
+    console.log(`Available endpoints:`);
+    console.log(`  POST /api/save-ticket-purchase`);
+    console.log(`  POST /api/save-vip-purchase`);
+    console.log(`  POST /api/save-parking-purchase`);
 });
 
 // Handle graceful shutdown
