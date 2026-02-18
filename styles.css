@@ -602,6 +602,11 @@ body.has-top-contact {
     transform: scale(1.05);
 }
 
+.cta-button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(184, 36, 47, 0.25);
+}
+
 .vip-card .cta-button {
     padding: 15px 30px;
     font-size: 16px;
@@ -920,6 +925,11 @@ body.has-top-contact {
     background: #b8242f;
     color: white;
     transform: scale(1.05);
+}
+
+.submit-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(184, 36, 47, 0.25);
 }
 
 .inscription-section .submit-btn {
