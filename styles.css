@@ -1081,6 +1081,11 @@ body.dark-mode .inscription-section .section-description {
     box-sizing: border-box;
 }
 
+.persona-form select option {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
 .vehiculo-form input,
 .vehiculo-form select {
     display: block;
@@ -1095,6 +1100,11 @@ body.dark-mode .inscription-section .section-description {
     color: var(--text-primary);
     transition: border-color 0.3s;
     box-sizing: border-box;
+}
+
+.vehiculo-form select option {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
 .persona-form input:focus,
@@ -1842,8 +1852,8 @@ body.dark-mode .vip-section .section-description {
 }
 
 .form-group select option {
-    background: #1a1a1a;
-    color: #fff;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
 .total-display {
