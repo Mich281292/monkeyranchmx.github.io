@@ -757,6 +757,8 @@
                     </div>
                     <div class="contact-email">📧 ${escapeHtml(contact.email)}</div>
                     <div class="contact-phone">📱 <a href="https://wa.me/${contact.telefono}" target="_blank">${escapeHtml(contact.telefono)}</a></div>
+                    ${contact.instagram ? `<div class="contact-phone">📷 Instagram: ${escapeHtml(contact.instagram)}</div>` : ''}
+                    ${contact.facebook ? `<div class="contact-phone">👥 Facebook: ${escapeHtml(contact.facebook)}</div>` : ''}
                     <div class="contact-message">
                         <strong>💬 Mensaje:</strong><br>
                         ${escapeHtml(contact.mensaje)}
