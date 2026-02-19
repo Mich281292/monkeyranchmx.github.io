@@ -464,6 +464,9 @@ body.dark-mode .nav-links .theme-toggle:hover {
 .inscripcion-btn {
     background: url('logo mx pro series 2026 promotora.png') center/contain no-repeat;
     color: white;
+    min-width: 160px;
+    min-height: 36px;
+    padding: 8px 16px;
 }
 
 .inscripcion-btn:hover {
