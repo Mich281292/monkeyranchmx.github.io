@@ -589,7 +589,7 @@
 
         async function loadContacts() {
             try {
-                const response = await fetch('https://api.monkeyranch.com.mx/api/contacts');
+                const response = await fetch('https://monkey-ranch-api.onrender.com/api/contacts');
                 const data = await response.json();
 
                 if (data.success) {
@@ -617,7 +617,7 @@
 
         async function loadInscripciones() {
             try {
-                const response = await fetch('https://api.monkeyranch.com.mx/api/inscripciones');
+                const response = await fetch('https://monkey-ranch-api.onrender.com/api/inscripciones');
                 const data = await response.json();
 
                 if (data.success) {
