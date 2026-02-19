@@ -613,9 +613,25 @@ app.post('/api/ticket-purchase-proof', async (req, res) => {
 
         console.log('Ticket proof upload - Base64:', { nombre, email, tipo: comprobante_tipo, size: comprobante_base64.length });
         
-        // Convert base64 to buffer
-        const comprobanteBuffer = Buffer.from(comprobante_base64, 'base64');
-        
+        // Validate base64
+        if (!/^[A-Za-z0-9+/=]*$/.test(comprobante_base64)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Formato de archivo inválido'
+            });
+        }
+
+        // Convert base64 to buffer and then to hex string for PostgreSQL BYTEA
+        let comprobanteBuffer;
+        try {
+            comprobanteBuffer = Buffer.from(comprobante_base64, 'base64');
+        } catch (bufErr) {
+            return res.status(400).json({
+                success: false,
+                message: 'Error al procesar el archivo: ' + bufErr.message
+            });
+        }
+
         // Get the purchase ID from the latest ticket purchase if not provided
         let purchaseId = compra_id;
         if (!purchaseId) {
@@ -629,10 +645,10 @@ app.post('/api/ticket-purchase-proof', async (req, res) => {
         }
         
         if (purchaseId) {
-            // Update ticket purchase with proof
+            // Update ticket purchase with proof (BYTEA)
             await pool.query(
                 'UPDATE ticket_purchases SET comprobante = $1, comprobante_tipo = $2 WHERE id = $3',
-                [comprobanteBuffer, comprobante_tipo || 'image/jpeg', purchaseId]
+                [comprobanteBuffer, comprobante_tipo || 'application/octet-stream', purchaseId]
             );
         }
         
@@ -640,7 +656,7 @@ app.post('/api/ticket-purchase-proof', async (req, res) => {
         try {
             await pool.query(
                 'INSERT INTO comprobantes_generales (nombre, email, telefono, cantidad, total, fecha_evento, comprobante, comprobante_tipo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-                [nombre, email, telefono, cantidad, total, fecha_evento, comprobanteBuffer, comprobante_tipo || 'image/jpeg']
+                [nombre, email, telefono, cantidad, total, fecha_evento, comprobanteBuffer, comprobante_tipo || 'application/octet-stream']
             );
             console.log('Inserted into comprobantes_generales for:', email);
         } catch (insertErr) {
@@ -735,8 +751,24 @@ app.post('/api/vip-purchase-proof', async (req, res) => {
 
         console.log('VIP proof upload - Base64:', { nombre, email, tipo: comprobante_tipo, size: comprobante_base64.length });
         
+        // Validate base64
+        if (!/^[A-Za-z0-9+/=]*$/.test(comprobante_base64)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Formato de archivo inválido'
+            });
+        }
+
         // Convert base64 to buffer
-        const comprobanteBuffer = Buffer.from(comprobante_base64, 'base64');
+        let comprobanteBuffer;
+        try {
+            comprobanteBuffer = Buffer.from(comprobante_base64, 'base64');
+        } catch (bufErr) {
+            return res.status(400).json({
+                success: false,
+                message: 'Error al procesar el archivo: ' + bufErr.message
+            });
+        }
         
         // Get the purchase ID from the latest VIP purchase if not provided
         let purchaseId = compra_id;
@@ -754,7 +786,7 @@ app.post('/api/vip-purchase-proof', async (req, res) => {
             // Update VIP purchase with proof
             await pool.query(
                 'UPDATE vip_purchases SET comprobante = $1, comprobante_tipo = $2 WHERE id = $3',
-                [comprobanteBuffer, comprobante_tipo || 'image/jpeg', purchaseId]
+                [comprobanteBuffer, comprobante_tipo || 'application/octet-stream', purchaseId]
             );
         }
         
@@ -762,7 +794,7 @@ app.post('/api/vip-purchase-proof', async (req, res) => {
         try {
             await pool.query(
                 'INSERT INTO comprobantes_vip (nombre, email, telefono, cantidad, duracion, total, fecha_evento, comprobante, comprobante_tipo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
-                [nombre, email, telefono, cantidad, duracion, total, fecha_evento, comprobanteBuffer, comprobante_tipo || 'image/jpeg']
+                [nombre, email, telefono, cantidad, duracion, total, fecha_evento, comprobanteBuffer, comprobante_tipo || 'application/octet-stream']
             );
             console.log('Inserted into comprobantes_vip for:', email);
         } catch (insertErr) {
@@ -857,8 +889,24 @@ app.post('/api/parking-purchase-proof', async (req, res) => {
 
         console.log('Parking proof upload - Base64:', { nombre, email, tipo: comprobante_tipo, size: comprobante_base64.length });
         
+        // Validate base64
+        if (!/^[A-Za-z0-9+/=]*$/.test(comprobante_base64)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Formato de archivo inválido'
+            });
+        }
+
         // Convert base64 to buffer
-        const comprobanteBuffer = Buffer.from(comprobante_base64, 'base64');
+        let comprobanteBuffer;
+        try {
+            comprobanteBuffer = Buffer.from(comprobante_base64, 'base64');
+        } catch (bufErr) {
+            return res.status(400).json({
+                success: false,
+                message: 'Error al procesar el archivo: ' + bufErr.message
+            });
+        }
         
         // Get the purchase ID from the latest parking purchase if not provided
         let purchaseId = compra_id;
@@ -876,7 +924,7 @@ app.post('/api/parking-purchase-proof', async (req, res) => {
             // Update parking purchase with proof
             await pool.query(
                 'UPDATE parking_purchases SET comprobante = $1, comprobante_tipo = $2 WHERE id = $3',
-                [comprobanteBuffer, comprobante_tipo || 'image/jpeg', purchaseId]
+                [comprobanteBuffer, comprobante_tipo || 'application/octet-stream', purchaseId]
             );
         }
         
@@ -884,7 +932,7 @@ app.post('/api/parking-purchase-proof', async (req, res) => {
         try {
             await pool.query(
                 'INSERT INTO comprobantes_estacionamiento (nombre, email, telefono, placas, cantidad, total, fecha_evento, comprobante, comprobante_tipo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
-                [nombre, email, telefono, placas, cantidad, total, fecha_evento, comprobanteBuffer, comprobante_tipo || 'image/jpeg']
+                [nombre, email, telefono, placas, cantidad, total, fecha_evento, comprobanteBuffer, comprobante_tipo || 'application/octet-stream']
             );
             console.log('Inserted into comprobantes_estacionamiento for:', email);
         } catch (insertErr) {
