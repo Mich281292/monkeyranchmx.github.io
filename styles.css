@@ -1399,7 +1399,27 @@ footer {
 }
 
 .vip-card:nth-child(2) {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url('terraza.jpg') center/cover no-repeat;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url('terrazanew2.jpeg') center/cover no-repeat;
+}
+
+.vip-card:nth-child(3) {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url('terrazanew3.jpeg') center/cover no-repeat;
+}
+
+.vip-card:nth-child(4) {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url('terrazanew4.jpeg') center/cover no-repeat;
+}
+
+.vip-card:nth-child(5) {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url('terrazanew5.jpeg') center/cover no-repeat;
+}
+
+.vip-card:nth-child(6) {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url('terrazanew6.jpeg') center/cover no-repeat;
+}
+
+.vip-card:nth-child(7) {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url('terrazanew7.jpeg') center/cover no-repeat;
 }
 
 .vip-card:hover {
