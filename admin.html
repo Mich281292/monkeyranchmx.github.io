@@ -1390,6 +1390,15 @@
             await generateAndSaveQR(nombre, email, telefono, `Parking-${id}`);
         }
 
+        function loadImageAsync(src) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = reject;
+                img.src = src;
+            });
+        }
+
         async function generateAndSaveQR(nombre, email, telefono, codigoId) {
             try {
                 // Crear datos para el QR
@@ -1413,6 +1422,37 @@
                     reader.onerror = reject;
                     reader.readAsDataURL(blob);
                 });
+
+                // Agregar logo1 en la parte superior del QR
+                let finalBase64 = qrBase64;
+                try {
+                    const qrDataUrl = `data:image/png;base64,${qrBase64}`;
+                    const [qrImg, logoImg] = await Promise.all([
+                        loadImageAsync(qrDataUrl),
+                        loadImageAsync('logo1.png')
+                    ]);
+
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+
+                    const maxLogoWidth = Math.min(qrImg.width, 140);
+                    const logoScale = maxLogoWidth / logoImg.width;
+                    const logoWidth = maxLogoWidth;
+                    const logoHeight = Math.round(logoImg.height * logoScale);
+                    const padding = 10;
+
+                    canvas.width = qrImg.width;
+                    canvas.height = logoHeight + padding + qrImg.height;
+
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(logoImg, (canvas.width - logoWidth) / 2, 0, logoWidth, logoHeight);
+                    ctx.drawImage(qrImg, 0, logoHeight + padding);
+
+                    finalBase64 = canvas.toDataURL('image/png').split(',')[1];
+                } catch (err) {
+                    console.warn('No se pudo agregar logo al QR:', err);
+                }
                 
                 // Guardar en la tabla codigos via API
                 const saveResponse = await fetch(`${API_BASE_URL}/api/codigos`, {
@@ -1421,7 +1461,7 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        imagen: qrBase64,
+                        imagen: finalBase64,
                         nombre: nombre,
                         correo: email,
                         telefono: telefono
