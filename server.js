@@ -1124,3 +1124,5 @@ process.on('SIGINT', async () => {
     }
     process.exit(0);
 });
+
+// CORS configured for monkeyranch.com.mx and www.monkeyranch.com.mx
