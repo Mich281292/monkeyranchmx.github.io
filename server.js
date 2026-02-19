@@ -190,12 +190,19 @@ async function initializeDatabase() {
             )
         `);
         
-        // Add comprobante columns if they don't exist
-        await pool.query(`
-            ALTER TABLE ticket_purchases 
-            ADD COLUMN IF NOT EXISTS comprobante BYTEA,
-            ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
-        `);
+        // Add comprobante columns if they don't exist and ensure proper type
+        try {
+            await pool.query(`
+                ALTER TABLE ticket_purchases 
+                ADD COLUMN IF NOT EXISTS comprobante TEXT,
+                ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
+            `);
+        } catch (e) {
+            // Column might already exist, try to alter its type
+            try {
+                await pool.query(`ALTER TABLE ticket_purchases ALTER COLUMN comprobante TYPE TEXT`);
+            } catch (e2) {}
+        }
         console.log('Ticket purchases table ready');
 
         // VIP ticket purchases table
@@ -215,12 +222,19 @@ async function initializeDatabase() {
             )
         `);
         
-        // Add comprobante columns if they don't exist
-        await pool.query(`
-            ALTER TABLE vip_purchases 
-            ADD COLUMN IF NOT EXISTS comprobante BYTEA,
-            ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
-        `);
+        // Add comprobante columns if they don't exist and ensure proper type
+        try {
+            await pool.query(`
+                ALTER TABLE vip_purchases 
+                ADD COLUMN IF NOT EXISTS comprobante TEXT,
+                ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
+            `);
+        } catch (e) {
+            // Column might already exist, try to alter its type
+            try {
+                await pool.query(`ALTER TABLE vip_purchases ALTER COLUMN comprobante TYPE TEXT`);
+            } catch (e2) {}
+        }
         console.log('VIP purchases table ready');
 
         // Parking purchases table
@@ -240,12 +254,19 @@ async function initializeDatabase() {
             )
         `);
         
-        // Add comprobante columns if they don't exist
-        await pool.query(`
-            ALTER TABLE parking_purchases 
-            ADD COLUMN IF NOT EXISTS comprobante BYTEA,
-            ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
-        `);
+        // Add comprobante columns if they don't exist and ensure proper type
+        try {
+            await pool.query(`
+                ALTER TABLE parking_purchases 
+                ADD COLUMN IF NOT EXISTS comprobante TEXT,
+                ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
+            `);
+        } catch (e) {
+            // Column might already exist, try to alter its type
+            try {
+                await pool.query(`ALTER TABLE parking_purchases ALTER COLUMN comprobante TYPE TEXT`);
+            } catch (e2) {}
+        }
         console.log('Parking purchases table ready');
 
         // Comprobantes Generales table
@@ -264,13 +285,20 @@ async function initializeDatabase() {
             )
         `);
         
-        // Add comprobante columns if they don't exist
-        await pool.query(`
-            ALTER TABLE comprobantes_generales 
-            DROP COLUMN IF EXISTS comprobante_url,
-            ADD COLUMN IF NOT EXISTS comprobante BYTEA,
-            ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
-        `).catch(() => {});
+        // Add comprobante columns if they don't exist and ensure proper type
+        try {
+            await pool.query(`
+                ALTER TABLE comprobantes_generales 
+                DROP COLUMN IF EXISTS comprobante_url,
+                ADD COLUMN IF NOT EXISTS comprobante TEXT,
+                ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
+            `);
+        } catch (e) {
+            // Column might already exist, try to alter its type
+            try {
+                await pool.query(`ALTER TABLE comprobantes_generales ALTER COLUMN comprobante TYPE TEXT`);
+            } catch (e2) {}
+        }
         console.log('Comprobantes Generales table ready');
 
         // Comprobantes VIP table
@@ -290,13 +318,20 @@ async function initializeDatabase() {
             )
         `);
         
-        // Add comprobante columns if they don't exist
-        await pool.query(`
-            ALTER TABLE comprobantes_vip 
-            DROP COLUMN IF EXISTS comprobante_url,
-            ADD COLUMN IF NOT EXISTS comprobante BYTEA,
-            ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
-        `).catch(() => {});
+        // Add comprobante columns if they don't exist and ensure proper type
+        try {
+            await pool.query(`
+                ALTER TABLE comprobantes_vip 
+                DROP COLUMN IF EXISTS comprobante_url,
+                ADD COLUMN IF NOT EXISTS comprobante TEXT,
+                ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
+            `);
+        } catch (e) {
+            // Column might already exist, try to alter its type
+            try {
+                await pool.query(`ALTER TABLE comprobantes_vip ALTER COLUMN comprobante TYPE TEXT`);
+            } catch (e2) {}
+        }
         console.log('Comprobantes VIP table ready');
 
         // Comprobantes Estacionamiento table
@@ -316,13 +351,20 @@ async function initializeDatabase() {
             )
         `);
         
-        // Add comprobante columns if they don't exist
-        await pool.query(`
-            ALTER TABLE comprobantes_estacionamiento 
-            DROP COLUMN IF EXISTS comprobante_url,
-            ADD COLUMN IF NOT EXISTS comprobante BYTEA,
-            ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
-        `).catch(() => {});
+        // Add comprobante columns if they don't exist and ensure proper type
+        try {
+            await pool.query(`
+                ALTER TABLE comprobantes_estacionamiento 
+                DROP COLUMN IF EXISTS comprobante_url,
+                ADD COLUMN IF NOT EXISTS comprobante TEXT,
+                ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
+            `);
+        } catch (e) {
+            // Column might already exist, try to alter its type
+            try {
+                await pool.query(`ALTER TABLE comprobantes_estacionamiento ALTER COLUMN comprobante TYPE TEXT`);
+            } catch (e2) {}
+        }
         console.log('Comprobantes Estacionamiento table ready');
     } catch (err) {
         console.error('Error creating tables:', err);
@@ -637,10 +679,10 @@ app.post('/api/ticket-purchase-proof', async (req, res) => {
         }
         
         if (purchaseId) {
-            // Use PostgreSQL decode() to safely convert Base64 to BYTEA
+            // Store base64 string directly in TEXT column
             try {
                 await pool.query(
-                    'UPDATE ticket_purchases SET comprobante = decode($1, \'base64\'), comprobante_tipo = $2 WHERE id = $3',
+                    'UPDATE ticket_purchases SET comprobante = $1, comprobante_tipo = $2 WHERE id = $3',
                     [comprobanteData, comprobante_tipo || 'application/octet-stream', purchaseId]
                 );
             } catch (updateErr) {
@@ -652,7 +694,7 @@ app.post('/api/ticket-purchase-proof', async (req, res) => {
         // Also insert into comprobantes_generales table
         try {
             await pool.query(
-                'INSERT INTO comprobantes_generales (nombre, email, telefono, cantidad, total, fecha_evento, comprobante, comprobante_tipo) VALUES ($1, $2, $3, $4, $5, $6, decode($7, \'base64\'), $8)',
+                'INSERT INTO comprobantes_generales (nombre, email, telefono, cantidad, total, fecha_evento, comprobante, comprobante_tipo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
                 [nombre, email, telefono, cantidad, total, fecha_evento, comprobanteData, comprobante_tipo || 'application/octet-stream']
             );
             console.log('Inserted into comprobantes_generales for:', email);
@@ -772,10 +814,10 @@ app.post('/api/vip-purchase-proof', async (req, res) => {
         }
         
         if (purchaseId) {
-            // Update VIP purchase with proof using decode()
+            // Update VIP purchase with proof
             try {
                 await pool.query(
-                    'UPDATE vip_purchases SET comprobante = decode($1, \'base64\'), comprobante_tipo = $2 WHERE id = $3',
+                    'UPDATE vip_purchases SET comprobante = $1, comprobante_tipo = $2 WHERE id = $3',
                     [comprobanteData, comprobante_tipo || 'application/octet-stream', purchaseId]
                 );
             } catch (updateErr) {
@@ -787,7 +829,7 @@ app.post('/api/vip-purchase-proof', async (req, res) => {
         // Also insert into comprobantes_vip table
         try {
             await pool.query(
-                'INSERT INTO comprobantes_vip (nombre, email, telefono, cantidad, duracion, total, fecha_evento, comprobante, comprobante_tipo) VALUES ($1, $2, $3, $4, $5, $6, $7, decode($8, \'base64\'), $9)',
+                'INSERT INTO comprobantes_vip (nombre, email, telefono, cantidad, duracion, total, fecha_evento, comprobante, comprobante_tipo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
                 [nombre, email, telefono, cantidad, duracion, total, fecha_evento, comprobanteData, comprobante_tipo || 'application/octet-stream']
             );
             console.log('Inserted into comprobantes_vip for:', email);
@@ -907,10 +949,10 @@ app.post('/api/parking-purchase-proof', async (req, res) => {
         }
         
         if (purchaseId) {
-            // Update parking purchase with proof using decode()
+            // Update parking purchase with proof
             try {
                 await pool.query(
-                    'UPDATE parking_purchases SET comprobante = decode($1, \'base64\'), comprobante_tipo = $2 WHERE id = $3',
+                    'UPDATE parking_purchases SET comprobante = $1, comprobante_tipo = $2 WHERE id = $3',
                     [comprobanteData, comprobante_tipo || 'application/octet-stream', purchaseId]
                 );
             } catch (updateErr) {
@@ -922,7 +964,7 @@ app.post('/api/parking-purchase-proof', async (req, res) => {
         // Also insert into comprobantes_estacionamiento table
         try {
             await pool.query(
-                'INSERT INTO comprobantes_estacionamiento (nombre, email, telefono, placas, cantidad, total, fecha_evento, comprobante, comprobante_tipo) VALUES ($1, $2, $3, $4, $5, $6, $7, decode($8, \'base64\'), $9)',
+                'INSERT INTO comprobantes_estacionamiento (nombre, email, telefono, placas, cantidad, total, fecha_evento, comprobante, comprobante_tipo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
                 [nombre, email, telefono, placas, cantidad, total, fecha_evento, comprobanteData, comprobante_tipo || 'application/octet-stream']
             );
             console.log('Inserted into comprobantes_estacionamiento for:', email);
