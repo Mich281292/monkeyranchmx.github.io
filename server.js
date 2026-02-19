@@ -366,6 +366,22 @@ async function initializeDatabase() {
             } catch (e2) {}
         }
         console.log('Comprobantes Estacionamiento table ready');
+
+        // Codes table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS codigos (
+                id SERIAL PRIMARY KEY,
+                codigo VARCHAR(100) NOT NULL UNIQUE,
+                tipo VARCHAR(50) NOT NULL,
+                descripcion TEXT,
+                descuento INT NOT NULL DEFAULT 0,
+                activo BOOLEAN DEFAULT true,
+                fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                fecha_expiracion TIMESTAMP,
+                usos INT DEFAULT 0
+            )
+        `);
+        console.log('Codigos table ready');
     } catch (err) {
         console.error('Error creating tables:', err);
     }
@@ -1361,6 +1377,25 @@ app.get('/api/comprobante/:table/:id', async (req, res) => {
     } catch (err) {
         console.error('Error retrieving comprobante:', err);
         res.status(500).json({ success: false, message: 'Error al recuperar comprobante' });
+    }
+});
+
+// Endpoint to get all codes
+app.get('/api/codigos', async (req, res) => {
+    try {
+        const result = await pool.query(
+            `SELECT id, codigo, tipo, descripcion, descuento, activo, fecha_creacion, fecha_expiracion, usos 
+             FROM codigos 
+             ORDER BY fecha_creacion DESC`
+        );
+        
+        res.json({ 
+            success: true, 
+            data: result.rows 
+        });
+    } catch (err) {
+        console.error('Error fetching codes:', err);
+        res.status(500).json({ success: false, message: 'Error al obtener códigos' });
     }
 });
 
