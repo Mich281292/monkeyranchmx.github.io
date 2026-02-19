@@ -828,7 +828,7 @@ body.has-top-contact {
 }
 
 .terraza-card {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), url('terraza2.jpg') center/cover no-repeat !important;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), url('terrazanew1.jpeg') center/cover no-repeat !important;
     color: white;
 }
 
@@ -1378,7 +1378,7 @@ footer {
     padding: 10rem 2rem;
     border-radius: 16px;
     border: 2px solid #b8242f;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url('terraza2.jpg') center/cover no-repeat;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url('terrazanew1.jpeg') center/cover no-repeat;
     color: white;
     text-align: center;
     box-shadow: none;
@@ -1477,7 +1477,7 @@ body.dark-mode .vip-section .section-description {
 }
 
 .boletos-cards-grid .vip-card:nth-child(1) {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('terraza2.jpg') center/cover no-repeat;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('terrazanew1.jpeg') center/cover no-repeat;
 }
 
 .boletos-cards-grid .vip-card:nth-child(2) {
@@ -1488,7 +1488,7 @@ body.dark-mode .vip-section .section-description {
     grid-column: 1 / -1;
     max-width: 550px;
     margin: 0 auto;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('terraza2.jpg') center/cover no-repeat;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('terrazanew1.jpeg') center/cover no-repeat;
 }
 
 .benefits-list {
