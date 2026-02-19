@@ -821,10 +821,13 @@
                     ${insc.facebook ? `<div class="contact-phone">👥 Facebook: ${escapeHtml(insc.facebook)}</div>` : ''}
                     ${insc.club_exclusivo ? `<div class="contact-phone">⭐ Club exclusivo: ${escapeHtml(insc.club_exclusivo)}</div>` : ''}
                     <div class="inscription-details">
-                        <strong>Categoría:</strong> ${escapeHtml(insc.categoria)}<br>
-                        <strong>Personas:</strong> ${escapeHtml(insc.cantidad_personas)}<br>
-                        <strong>Vehículos:</strong> ${escapeHtml(insc.cantidad_vehiculos)}<br>
-                        <strong>Mensaje:</strong> ${escapeHtml(insc.mensaje || 'N/A')}
+                        <strong>👤 Edad:</strong> ${insc.edad || 'N/A'}<br>
+                        <strong>🏍️ Número de Moto:</strong> ${escapeHtml(insc.numero_moto || 'N/A')}<br>
+                        <strong>📜 Número de Licencia:</strong> ${escapeHtml(insc.numero_licencia || 'N/A')}<br>
+                        <strong>🏆 Categoría:</strong> ${escapeHtml(insc.categoria || 'N/A')}<br>
+                        <strong>👥 Cantidad de Personas:</strong> ${escapeHtml(insc.cantidad_personas || 'N/A')}<br>
+                        <strong>🚗 Cantidad de Vehículos:</strong> ${escapeHtml(insc.cantidad_vehiculos || 'N/A')}<br>
+                        <strong>💬 Mensaje:</strong> ${escapeHtml(insc.mensaje || 'N/A')}
                     </div>
                 </div>
             `).join('');
