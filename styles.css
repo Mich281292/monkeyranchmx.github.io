@@ -1577,9 +1577,9 @@ body.dark-mode .vip-section .section-description {
     }
 
     .inscripcion-btn {
-        min-width: 120px;
-        min-height: 28px;
-        padding: 4px 8px;
+        min-width: 90px;
+        min-height: 24px;
+        padding: 3px 6px;
     }
     
     /* Mobile Menu adjustments */
