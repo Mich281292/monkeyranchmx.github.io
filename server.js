@@ -40,19 +40,12 @@ const upload = multer({
 });
 
 // Middleware
-const corsOptions = {
-    origin: [
-        'https://mich281292.github.io',
-        'https://monkeyranch.com.mx',
-        'https://www.monkeyranch.com.mx',
-        'http://localhost:3000',
-        'http://localhost'
-    ],
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: false
-};
-app.use(cors(corsOptions));
+app.use(cors({
+    origin: 'https://monkeyranch.com.mx',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+app.use(express.json());
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
