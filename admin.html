@@ -410,7 +410,8 @@
             font-size: 0.95em;
             font-weight: bold;
             transition: all 0.3s;
-            width: 100%;
+            width: calc(50% - 5px);
+            display: inline-block;
         }
 
         .delete-btn:hover {
@@ -419,6 +420,31 @@
         }
 
         .delete-btn:active {
+            transform: scale(0.98);
+        }
+
+        .generate-qr-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+            margin-right: 10px;
+            font-size: 0.95em;
+            font-weight: bold;
+            transition: all 0.3s;
+            width: calc(50% - 5px);
+            display: inline-block;
+        }
+
+        .generate-qr-btn:hover {
+            background: #218838;
+            transform: scale(1.02);
+        }
+
+        .generate-qr-btn:active {
             transform: scale(0.98);
         }
 
@@ -501,6 +527,8 @@
             display: none;
         }
     </style>
+    <!-- QRCode Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode.js/1.4.4/qrcode.min.js"></script>
 </head>
 <body>
     <!-- Login Section -->
@@ -970,6 +998,7 @@
                         <strong>Precio:</strong> ${escapeHtml(ticket.precio)}
                         ${proofButtonHtml}
                     </div>
+                    <button class="generate-qr-btn" onclick="generateQRTicket(${ticket.id}, '${escapeHtml(ticket.nombre)}', '${ticket.email}', '${ticket.telefono}')">🔐 Generar QR</button>
                     <button class="delete-btn" onclick="deleteTicket(${ticket.id})">🗑️ Eliminar</button>
                 </div>
             `}).join('');
@@ -1011,6 +1040,7 @@
                         <strong>Precio:</strong> ${escapeHtml(ticket.precio)}
                         ${proofButtonHtml}
                     </div>
+                    <button class="generate-qr-btn" onclick="generateQRTicketVip(${ticket.id}, '${escapeHtml(ticket.nombre)}', '${ticket.email}', '${ticket.telefono}')">🔐 Generar QR</button>
                     <button class="delete-btn" onclick="deleteTicketVip(${ticket.id})">🗑️ Eliminar</button>
                 </div>
             `}).join('');
@@ -1052,6 +1082,7 @@
                         <strong>Precio:</strong> ${escapeHtml(park.precio)}
                         ${proofButtonHtml}
                     </div>
+                    <button class="generate-qr-btn" onclick="generateQRParking(${park.id}, '${escapeHtml(park.nombre)}', '${park.email}', '${park.telefono}')">🔐 Generar QR</button>
                     <button class="delete-btn" onclick="deleteParking(${park.id})">🗑️ Eliminar</button>
                 </div>
             `}).join('');
@@ -1340,6 +1371,69 @@
             } catch (error) {
                 console.error('Error:', error);
                 alert('Error al eliminar el estacionamiento');
+            }
+        }
+
+        // Funciones para generar y guardar QR codes
+        async function generateQRTicket(id, nombre, email, telefono) {
+            await generateAndSaveQR(nombre, email, telefono, `Ticket-${id}`);
+        }
+
+        async function generateQRTicketVip(id, nombre, email, telefono) {
+            await generateAndSaveQR(nombre, email, telefono, `VIP-${id}`);
+        }
+
+        async function generateQRParking(id, nombre, email, telefono) {
+            await generateAndSaveQR(nombre, email, telefono, `Parking-${id}`);
+        }
+
+        async function generateAndSaveQR(nombre, email, telefono, codigoId) {
+            try {
+                // Crear datos para el QR
+                const qrData = `Nombre: ${nombre}\nEmail: ${email}\nTelefono: ${telefono}\nCodigo: ${codigoId}`;
+                
+                // Crear elemento canvas temporal para generar QR
+                const canvas = document.createElement('canvas');
+                
+                // Usar QRCode library
+                const qr = new QRCode({
+                    text: qrData,
+                    width: 256,
+                    height: 256,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                
+                // Obtener la imagen del QR
+                const qrCanvas = qr._canvas.firstChild;
+                const qrBase64 = qrCanvas.toDataURL('image/png').split(',')[1];
+                
+                // Guardar en la tabla codigos via API
+                const response = await fetch('https://monkey-ranch-api.onrender.com/api/codigos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        imagen: qrBase64,
+                        nombre: nombre,
+                        correo: email,
+                        telefono: telefono
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('✅ QR generado y guardado exitosamente en la tabla Códigos');
+                    loadCodigos(); // Actualizar la pestaña de códigos
+                } else {
+                    alert('❌ Error: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error al generar QR:', error);
+                alert('❌ Error al generar código QR: ' + error.message);
             }
         }
 
