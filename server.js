@@ -41,7 +41,7 @@ const upload = multer({
 
 // Middleware
 app.use(cors({
-    origin: 'https://monkeyranch.com.mx',
+    origin: ['https://monkeyranch.com.mx', 'https://www.monkeyranch.com.mx', 'http://localhost:3000', 'http://localhost', 'https://mich281292.github.io'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
