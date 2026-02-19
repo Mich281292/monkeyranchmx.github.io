@@ -367,18 +367,15 @@ async function initializeDatabase() {
         }
         console.log('Comprobantes Estacionamiento table ready');
 
-        // Codes table
+        // Codes table - stores code images with contact info
         await pool.query(`
             CREATE TABLE IF NOT EXISTS codigos (
                 id SERIAL PRIMARY KEY,
-                codigo VARCHAR(100) NOT NULL UNIQUE,
-                tipo VARCHAR(50) NOT NULL,
-                descripcion TEXT,
-                descuento INT NOT NULL DEFAULT 0,
-                activo BOOLEAN DEFAULT true,
-                fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                fecha_expiracion TIMESTAMP,
-                usos INT DEFAULT 0
+                imagen TEXT NOT NULL,
+                nombre VARCHAR(255) NOT NULL,
+                correo VARCHAR(255) NOT NULL,
+                telefono VARCHAR(50) NOT NULL,
+                fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
         console.log('Codigos table ready');
@@ -1384,7 +1381,7 @@ app.get('/api/comprobante/:table/:id', async (req, res) => {
 app.get('/api/codigos', async (req, res) => {
     try {
         const result = await pool.query(
-            `SELECT id, codigo, tipo, descripcion, descuento, activo, fecha_creacion, fecha_expiracion, usos 
+            `SELECT id, imagen, nombre, correo, telefono, fecha_creacion 
              FROM codigos 
              ORDER BY fecha_creacion DESC`
         );
@@ -1396,6 +1393,57 @@ app.get('/api/codigos', async (req, res) => {
     } catch (err) {
         console.error('Error fetching codes:', err);
         res.status(500).json({ success: false, message: 'Error al obtener códigos' });
+    }
+});
+
+// Endpoint to create a new code with image
+app.post('/api/codigos', async (req, res) => {
+    try {
+        const { imagen, nombre, correo, telefono } = req.body;
+        
+        if (!imagen || !nombre || !correo || !telefono) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Faltan campos requeridos (imagen, nombre, correo, telefono)' 
+            });
+        }
+        
+        const result = await pool.query(
+            `INSERT INTO codigos (imagen, nombre, correo, telefono)
+             VALUES ($1, $2, $3, $4)
+             RETURNING id, imagen, nombre, correo, telefono, fecha_creacion`,
+            [imagen, nombre, correo, telefono]
+        );
+        
+        res.json({ 
+            success: true, 
+            message: 'Código creado exitosamente',
+            data: result.rows[0]
+        });
+    } catch (err) {
+        console.error('Error creating code:', err);
+        res.status(500).json({ success: false, message: 'Error al crear código' });
+    }
+});
+
+// Endpoint to delete a code
+app.delete('/api/codigos/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const result = await pool.query(
+            'DELETE FROM codigos WHERE id = $1 RETURNING id',
+            [id]
+        );
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Código no encontrado' });
+        }
+        
+        res.json({ success: true, message: 'Código eliminado exitosamente' });
+    } catch (err) {
+        console.error('Error deleting code:', err);
+        res.status(500).json({ success: false, message: 'Error al eliminar código' });
     }
 });
 
