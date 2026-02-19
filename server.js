@@ -735,6 +735,33 @@ app.get('/api/ticket-purchases', async (req, res) => {
     }
 });
 
+// DELETE endpoint for ticket purchases
+app.delete('/api/ticket-purchases/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const result = await pool.query('DELETE FROM ticket_purchases WHERE id = $1 RETURNING id', [id]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Compra de ticket no encontrada'
+            });
+        }
+
+        res.json({
+            success: true,
+            message: 'Ticket eliminado exitosamente'
+        });
+    } catch (err) {
+        console.error('Error deleting ticket purchase:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al eliminar el ticket'
+        });
+    }
+});
+
 // POST endpoint for VIP ticket purchases
 app.post('/api/vip-purchase', async (req, res) => {
     const { nombre, email, telefono, cantidad, duracion, fecha_evento, precio, comprobante } = req.body;
@@ -870,6 +897,33 @@ app.get('/api/vip-purchases', async (req, res) => {
     }
 });
 
+// DELETE endpoint for VIP purchases
+app.delete('/api/vip-purchases/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const result = await pool.query('DELETE FROM vip_purchases WHERE id = $1 RETURNING id', [id]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Compra VIP no encontrada'
+            });
+        }
+
+        res.json({
+            success: true,
+            message: 'Ticket VIP eliminado exitosamente'
+        });
+    } catch (err) {
+        console.error('Error deleting VIP purchase:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al eliminar el ticket VIP'
+        });
+    }
+});
+
 // POST endpoint for parking purchases
 app.post('/api/parking-purchase', async (req, res) => {
     const { nombre, email, telefono, placas, cantidad, fecha_evento, precio, comprobante } = req.body;
@@ -1001,6 +1055,33 @@ app.get('/api/parking-purchases', async (req, res) => {
         return res.status(500).json({
             success: false,
             message: 'Error al obtener estacionamientos'
+        });
+    }
+});
+
+// DELETE endpoint for parking purchases
+app.delete('/api/parking-purchases/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const result = await pool.query('DELETE FROM parking_purchases WHERE id = $1 RETURNING id', [id]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Compra de estacionamiento no encontrada'
+            });
+        }
+
+        res.json({
+            success: true,
+            message: 'Estacionamiento eliminado exitosamente'
+        });
+    } catch (err) {
+        console.error('Error deleting parking purchase:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al eliminar el estacionamiento'
         });
     }
 });
