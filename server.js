@@ -61,6 +61,9 @@ app.use((req, res, next) => {
     next();
 });
 
+// Servir archivos estáticos desde la carpeta uploads
+app.use('/uploads', express.static('uploads'));
+
 // API routes should come BEFORE static file serving
 // This ensures /api/* requests don't try to find static files first
 
@@ -550,7 +553,7 @@ app.post('/api/ticket-purchase-proof', upload.single('comprobante'), async (req,
 
         console.log('Ticket proof upload:', { filename: req.file.filename, size: req.file.size, mimetype: req.file.mimetype });
         
-        const comprobanteUrl = `/uploads/${req.file.filename}`;
+        const comprobanteUrl = `${process.env.BACKEND_URL || 'https://monkey-ranch-api.onrender.com'}/uploads/${req.file.filename}`;
         
         // Get the purchase ID from the latest ticket purchase if not provided
         let purchaseId = compra_id;
@@ -672,7 +675,7 @@ app.post('/api/vip-purchase-proof', upload.single('comprobante'), async (req, re
 
         console.log('VIP proof upload:', { filename: req.file.filename, size: req.file.size, mimetype: req.file.mimetype });
         
-        const comprobanteUrl = `/uploads/${req.file.filename}`;
+        const comprobanteUrl = `${process.env.BACKEND_URL || 'https://monkey-ranch-api.onrender.com'}/uploads/${req.file.filename}`;
         
         // Get the purchase ID from the latest VIP purchase if not provided
         let purchaseId = compra_id;
@@ -794,7 +797,7 @@ app.post('/api/parking-purchase-proof', upload.single('comprobante'), async (req
 
         console.log('Parking proof upload:', { filename: req.file.filename, size: req.file.size, mimetype: req.file.mimetype });
         
-        const comprobanteUrl = `/uploads/${req.file.filename}`;
+        const comprobanteUrl = `${process.env.BACKEND_URL || 'https://monkey-ranch-api.onrender.com'}/uploads/${req.file.filename}`;
         
         // Get the purchase ID from the latest parking purchase if not provided
         let purchaseId = compra_id;
@@ -873,7 +876,7 @@ app.post('/api/comprobante-general', upload.single('comprobante'), async (req, r
     }
 
     try {
-        const comprobanteUrl = `/uploads/${req.file.filename}`;
+        const comprobanteUrl = `${process.env.BACKEND_URL || 'https://monkey-ranch-api.onrender.com'}/uploads/${req.file.filename}`;
         
         await pool.query(
             'INSERT INTO comprobantes_generales (nombre, email, telefono, cantidad, total, fecha_evento, comprobante_url) VALUES ($1, $2, $3, $4, $5, $6, $7)',
@@ -925,7 +928,7 @@ app.post('/api/comprobante-vip', upload.single('comprobante'), async (req, res) 
     }
 
     try {
-        const comprobanteUrl = `/uploads/${req.file.filename}`;
+        const comprobanteUrl = `${process.env.BACKEND_URL || 'https://monkey-ranch-api.onrender.com'}/uploads/${req.file.filename}`;
         
         await pool.query(
             'INSERT INTO comprobantes_vip (nombre, email, telefono, cantidad, duracion, total, fecha_evento, comprobante_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
@@ -977,7 +980,7 @@ app.post('/api/comprobante-estacionamiento', upload.single('comprobante'), async
     }
 
     try {
-        const comprobanteUrl = `/uploads/${req.file.filename}`;
+        const comprobanteUrl = `${process.env.BACKEND_URL || 'https://monkey-ranch-api.onrender.com'}/uploads/${req.file.filename}`;
         
         await pool.query(
             'INSERT INTO comprobantes_estacionamiento (nombre, email, telefono, placas, cantidad, total, fecha_evento, comprobante_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
