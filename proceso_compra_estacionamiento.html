@@ -139,6 +139,28 @@
             text-align: center;
         }
 
+        .bank-account-number {
+            display: block;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .bank-account-bank {
+            display: block;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-top: 6px;
+        }
+
+        .bank-account-name,
+        .bank-account-clabe {
+            display: block;
+            font-size: 13px;
+            letter-spacing: 0;
+            margin-top: 6px;
+        }
+
         .file-upload-group {
             margin: 1.5rem 0;
             display: flex;
@@ -335,7 +357,12 @@
                         <div class="deposit-info">
                             <p><strong>Por favor realiza la siguiente transferencia:</strong></p>
                             <p>Depositar <span class="deposit-amount" id="depositAmount">$150.00</span> al siguiente número de cuenta:</p>
-                            <div class="bank-account">0000 0000 0000 000</div>
+                            <div class="bank-account">
+                                <span class="bank-account-number">2705661307</span>
+                                <span class="bank-account-name">Monserrat Araceli Perez Rubio</span>
+                                <span class="bank-account-bank">BBVA</span>
+                                <span class="bank-account-clabe">Transferencia interbancaria clave: 012680027056613078</span>
+                            </div>
                             <p style="margin-top: 20px; font-size: 14px; color: #7f8c8d;"><i class="fas fa-info-circle"></i> Después de realizar la transferencia, sube la captura o ticket de pago.</p>
                         </div>
 

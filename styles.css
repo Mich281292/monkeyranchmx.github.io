@@ -1499,6 +1499,22 @@ body.dark-mode .vip-section .section-description {
     padding: 3rem 2rem;
 }
 
+.boletos-cards-grid .vip-card.vip-card-compact {
+    grid-column: 1 / -1;
+    max-width: 520px;
+    margin: 0 auto;
+    min-height: 320px;
+    padding: 2rem 1.5rem;
+}
+
+.hotel-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
 .boletos-cards-grid .vip-card:nth-child(1) {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('terrazanew1.jpeg') center/cover no-repeat;
 }
