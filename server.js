@@ -41,11 +41,12 @@ const upload = multer({
 
 // Middleware
 app.use(cors({
-    origin: ['https://monkeyranch.com.mx', 'https://www.monkeyranch.com.mx', 'http://localhost:3000', 'http://localhost', 'https://mich281292.github.io'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    origin: '*',  // Permitir cualquier origen para debugging
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: false
 }));
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
@@ -297,6 +298,34 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Health check endpoint
+app.get('/api/status', (req, res) => {
+    res.json({ 
+        success: true, 
+        message: 'Backend is running',
+        timestamp: new Date().toISOString()
+    });
+});
+
+// GET endpoint to fetch all contacts (admin use)
+app.get('/api/contacts', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM contacts ORDER BY fecha_creacion DESC');
+
+        res.json({
+            success: true,
+            count: result.rows.length,
+            data: result.rows
+        });
+    } catch (err) {
+        console.error('Error fetching contacts:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al obtener contactos'
+        });
+    }
+});
+
 // POST endpoint for contact form
 app.post('/api/contact', async (req, res) => {
     const { nombre, email, telefono, mensaje } = req.body;
@@ -340,25 +369,6 @@ app.post('/api/contact', async (req, res) => {
         return res.status(500).json({
             success: false,
             message: 'Error al guardar el contacto'
-        });
-    }
-});
-
-// GET endpoint to fetch all contacts (admin use)
-app.get('/api/contacts', async (req, res) => {
-    try {
-        const result = await pool.query('SELECT * FROM contacts ORDER BY fecha_creacion DESC');
-
-        res.json({
-            success: true,
-            count: result.rows.length,
-            data: result.rows
-        });
-    } catch (err) {
-        console.error('Error fetching contacts:', err);
-        return res.status(500).json({
-            success: false,
-            message: 'Error al obtener contactos'
         });
     }
 });
