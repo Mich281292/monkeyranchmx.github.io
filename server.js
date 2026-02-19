@@ -621,16 +621,8 @@ app.post('/api/ticket-purchase-proof', async (req, res) => {
             });
         }
 
-        // Convert base64 to buffer and then to hex string for PostgreSQL BYTEA
-        let comprobanteBuffer;
-        try {
-            comprobanteBuffer = Buffer.from(comprobante_base64, 'base64');
-        } catch (bufErr) {
-            return res.status(400).json({
-                success: false,
-                message: 'Error al procesar el archivo: ' + bufErr.message
-            });
-        }
+        // Store base64 string directly (simpler and avoids encoding issues)
+        const comprobanteData = comprobante_base64;
 
         // Get the purchase ID from the latest ticket purchase if not provided
         let purchaseId = compra_id;
@@ -645,18 +637,23 @@ app.post('/api/ticket-purchase-proof', async (req, res) => {
         }
         
         if (purchaseId) {
-            // Update ticket purchase with proof (BYTEA)
-            await pool.query(
-                'UPDATE ticket_purchases SET comprobante = $1, comprobante_tipo = $2 WHERE id = $3',
-                [comprobanteBuffer, comprobante_tipo || 'application/octet-stream', purchaseId]
-            );
+            // Use PostgreSQL decode() to safely convert Base64 to BYTEA
+            try {
+                await pool.query(
+                    'UPDATE ticket_purchases SET comprobante = decode($1, \'base64\'), comprobante_tipo = $2 WHERE id = $3',
+                    [comprobanteData, comprobante_tipo || 'application/octet-stream', purchaseId]
+                );
+            } catch (updateErr) {
+                console.error('Error updating ticket purchase:', updateErr.message);
+                throw updateErr;
+            }
         }
         
         // Also insert into comprobantes_generales table
         try {
             await pool.query(
-                'INSERT INTO comprobantes_generales (nombre, email, telefono, cantidad, total, fecha_evento, comprobante, comprobante_tipo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-                [nombre, email, telefono, cantidad, total, fecha_evento, comprobanteBuffer, comprobante_tipo || 'application/octet-stream']
+                'INSERT INTO comprobantes_generales (nombre, email, telefono, cantidad, total, fecha_evento, comprobante, comprobante_tipo) VALUES ($1, $2, $3, $4, $5, $6, decode($7, \'base64\'), $8)',
+                [nombre, email, telefono, cantidad, total, fecha_evento, comprobanteData, comprobante_tipo || 'application/octet-stream']
             );
             console.log('Inserted into comprobantes_generales for:', email);
         } catch (insertErr) {
@@ -759,16 +756,8 @@ app.post('/api/vip-purchase-proof', async (req, res) => {
             });
         }
 
-        // Convert base64 to buffer
-        let comprobanteBuffer;
-        try {
-            comprobanteBuffer = Buffer.from(comprobante_base64, 'base64');
-        } catch (bufErr) {
-            return res.status(400).json({
-                success: false,
-                message: 'Error al procesar el archivo: ' + bufErr.message
-            });
-        }
+        // Store base64 string directly
+        const comprobanteData = comprobante_base64;
         
         // Get the purchase ID from the latest VIP purchase if not provided
         let purchaseId = compra_id;
@@ -783,18 +772,23 @@ app.post('/api/vip-purchase-proof', async (req, res) => {
         }
         
         if (purchaseId) {
-            // Update VIP purchase with proof
-            await pool.query(
-                'UPDATE vip_purchases SET comprobante = $1, comprobante_tipo = $2 WHERE id = $3',
-                [comprobanteBuffer, comprobante_tipo || 'application/octet-stream', purchaseId]
-            );
+            // Update VIP purchase with proof using decode()
+            try {
+                await pool.query(
+                    'UPDATE vip_purchases SET comprobante = decode($1, \'base64\'), comprobante_tipo = $2 WHERE id = $3',
+                    [comprobanteData, comprobante_tipo || 'application/octet-stream', purchaseId]
+                );
+            } catch (updateErr) {
+                console.error('Error updating VIP purchase:', updateErr.message);
+                throw updateErr;
+            }
         }
         
         // Also insert into comprobantes_vip table
         try {
             await pool.query(
-                'INSERT INTO comprobantes_vip (nombre, email, telefono, cantidad, duracion, total, fecha_evento, comprobante, comprobante_tipo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
-                [nombre, email, telefono, cantidad, duracion, total, fecha_evento, comprobanteBuffer, comprobante_tipo || 'application/octet-stream']
+                'INSERT INTO comprobantes_vip (nombre, email, telefono, cantidad, duracion, total, fecha_evento, comprobante, comprobante_tipo) VALUES ($1, $2, $3, $4, $5, $6, $7, decode($8, \'base64\'), $9)',
+                [nombre, email, telefono, cantidad, duracion, total, fecha_evento, comprobanteData, comprobante_tipo || 'application/octet-stream']
             );
             console.log('Inserted into comprobantes_vip for:', email);
         } catch (insertErr) {
@@ -897,16 +891,8 @@ app.post('/api/parking-purchase-proof', async (req, res) => {
             });
         }
 
-        // Convert base64 to buffer
-        let comprobanteBuffer;
-        try {
-            comprobanteBuffer = Buffer.from(comprobante_base64, 'base64');
-        } catch (bufErr) {
-            return res.status(400).json({
-                success: false,
-                message: 'Error al procesar el archivo: ' + bufErr.message
-            });
-        }
+        // Store base64 string directly
+        const comprobanteData = comprobante_base64;
         
         // Get the purchase ID from the latest parking purchase if not provided
         let purchaseId = compra_id;
@@ -921,18 +907,23 @@ app.post('/api/parking-purchase-proof', async (req, res) => {
         }
         
         if (purchaseId) {
-            // Update parking purchase with proof
-            await pool.query(
-                'UPDATE parking_purchases SET comprobante = $1, comprobante_tipo = $2 WHERE id = $3',
-                [comprobanteBuffer, comprobante_tipo || 'application/octet-stream', purchaseId]
-            );
+            // Update parking purchase with proof using decode()
+            try {
+                await pool.query(
+                    'UPDATE parking_purchases SET comprobante = decode($1, \'base64\'), comprobante_tipo = $2 WHERE id = $3',
+                    [comprobanteData, comprobante_tipo || 'application/octet-stream', purchaseId]
+                );
+            } catch (updateErr) {
+                console.error('Error updating parking purchase:', updateErr.message);
+                throw updateErr;
+            }
         }
         
         // Also insert into comprobantes_estacionamiento table
         try {
             await pool.query(
-                'INSERT INTO comprobantes_estacionamiento (nombre, email, telefono, placas, cantidad, total, fecha_evento, comprobante, comprobante_tipo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
-                [nombre, email, telefono, placas, cantidad, total, fecha_evento, comprobanteBuffer, comprobante_tipo || 'application/octet-stream']
+                'INSERT INTO comprobantes_estacionamiento (nombre, email, telefono, placas, cantidad, total, fecha_evento, comprobante, comprobante_tipo) VALUES ($1, $2, $3, $4, $5, $6, $7, decode($8, \'base64\'), $9)',
+                [nombre, email, telefono, placas, cantidad, total, fecha_evento, comprobanteData, comprobante_tipo || 'application/octet-stream']
             );
             console.log('Inserted into comprobantes_estacionamiento for:', email);
         } catch (insertErr) {
