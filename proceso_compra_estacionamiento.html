@@ -491,46 +491,55 @@
                     return;
                 }
 
-                const formData = new FormData();
-                formData.append('comprobante', file);
-                formData.append('nombre', data.nombre);
-                formData.append('email', data.email);
-                formData.append('telefono', data.telefono);
-                formData.append('placas', data.placas);
-                formData.append('cantidad', data.cantidad);
-                formData.append('total', data.total);
-                formData.append('fecha_evento', data.fecha_evento);
+                // Convert file to Base64
+                const reader = new FileReader();
+                reader.onload = async (event) => {
+                    const base64String = event.target.result.split(',')[1]; // Remove data:image/... prefix
+                    const mimeType = file.type || 'application/octet-stream';
 
-                const submitBtn = document.querySelector('.submit-btn');
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Procesando...';
+                    const submitBtn = document.querySelector('.submit-btn');
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Procesando...';
 
-                try {
-                    const API_URL = 'https://monkey-ranch-api.onrender.com';
-                    const response = await fetch(`${API_URL}/api/parking-purchase-proof`, {
-                        method: 'POST',
-                        body: formData
-                    });
+                    try {
+                        const API_URL = 'https://monkey-ranch-api.onrender.com';
+                        const response = await fetch(`${API_URL}/api/parking-purchase-proof`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                nombre: data.nombre,
+                                email: data.email,
+                                telefono: data.telefono,
+                                placas: data.placas,
+                                cantidad: data.cantidad,
+                                total: data.total,
+                                fecha_evento: data.fecha_evento,
+                                comprobante_base64: base64String,
+                                comprobante_tipo: mimeType
+                            })
+                        });
 
-                    const result = await response.json();
+                        const result = await response.json();
 
-                    if (result.success) {
-                        alert('¡Comprobante recibido! Procesaremos tu solicitud pronto.');
-                        sessionStorage.removeItem('purchaseData');
-                        setTimeout(() => {
-                            window.location.href = 'boletos.html';
-                        }, 1500);
-                    } else {
-                        alert('Error: ' + result.message);
+                        if (result.success) {
+                            alert('¡Comprobante recibido! Procesaremos tu solicitud pronto.');
+                            sessionStorage.removeItem('purchaseData');
+                            setTimeout(() => {
+                                window.location.href = 'boletos.html';
+                            }, 1500);
+                        } else {
+                            alert('Error: ' + result.message);
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = 'Verificar Comprobante';
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Error al procesar el comprobante. Intenta de nuevo.');
                         submitBtn.disabled = false;
                         submitBtn.textContent = 'Verificar Comprobante';
                     }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('Error al procesar el comprobante. Intenta de nuevo.');
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Verificar Comprobante';
-                }
+                };
+                reader.readAsDataURL(file);
             });
 
             // Mobile menu toggle

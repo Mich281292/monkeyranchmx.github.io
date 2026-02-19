@@ -184,15 +184,17 @@ async function initializeDatabase() {
                 cantidad INT NOT NULL,
                 fecha_evento DATE NOT NULL,
                 precio VARCHAR(50) NOT NULL,
-                comprobante VARCHAR(500),
+                comprobante BYTEA,
+                comprobante_tipo VARCHAR(50),
                 fecha_compra TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
         
-        // Add comprobante column if it doesn't exist
+        // Add comprobante columns if they don't exist
         await pool.query(`
             ALTER TABLE ticket_purchases 
-            ADD COLUMN IF NOT EXISTS comprobante VARCHAR(500)
+            ADD COLUMN IF NOT EXISTS comprobante BYTEA,
+            ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
         `);
         console.log('Ticket purchases table ready');
 
@@ -207,15 +209,17 @@ async function initializeDatabase() {
                 duracion INT NOT NULL,
                 fecha_evento DATE NOT NULL,
                 precio VARCHAR(50) NOT NULL,
-                comprobante VARCHAR(500),
+                comprobante BYTEA,
+                comprobante_tipo VARCHAR(50),
                 fecha_compra TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
         
-        // Add comprobante column if it doesn't exist
+        // Add comprobante columns if they don't exist
         await pool.query(`
             ALTER TABLE vip_purchases 
-            ADD COLUMN IF NOT EXISTS comprobante VARCHAR(500)
+            ADD COLUMN IF NOT EXISTS comprobante BYTEA,
+            ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
         `);
         console.log('VIP purchases table ready');
 
@@ -230,15 +234,17 @@ async function initializeDatabase() {
                 cantidad INT NOT NULL,
                 fecha_evento DATE NOT NULL,
                 precio VARCHAR(50) NOT NULL,
-                comprobante VARCHAR(500),
+                comprobante BYTEA,
+                comprobante_tipo VARCHAR(50),
                 fecha_compra TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
         
-        // Add comprobante column if it doesn't exist
+        // Add comprobante columns if they don't exist
         await pool.query(`
             ALTER TABLE parking_purchases 
-            ADD COLUMN IF NOT EXISTS comprobante VARCHAR(500)
+            ADD COLUMN IF NOT EXISTS comprobante BYTEA,
+            ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
         `);
         console.log('Parking purchases table ready');
 
@@ -252,10 +258,19 @@ async function initializeDatabase() {
                 cantidad INT NOT NULL,
                 total VARCHAR(50) NOT NULL,
                 fecha_evento DATE NOT NULL,
-                comprobante_url VARCHAR(500) NOT NULL,
+                comprobante BYTEA NOT NULL,
+                comprobante_tipo VARCHAR(50),
                 fecha_carga TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
+        
+        // Add comprobante columns if they don't exist
+        await pool.query(`
+            ALTER TABLE comprobantes_generales 
+            DROP COLUMN IF EXISTS comprobante_url,
+            ADD COLUMN IF NOT EXISTS comprobante BYTEA,
+            ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
+        `).catch(() => {});
         console.log('Comprobantes Generales table ready');
 
         // Comprobantes VIP table
@@ -269,10 +284,19 @@ async function initializeDatabase() {
                 duracion INT NOT NULL,
                 total VARCHAR(50) NOT NULL,
                 fecha_evento DATE NOT NULL,
-                comprobante_url VARCHAR(500) NOT NULL,
+                comprobante BYTEA NOT NULL,
+                comprobante_tipo VARCHAR(50),
                 fecha_carga TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
+        
+        // Add comprobante columns if they don't exist
+        await pool.query(`
+            ALTER TABLE comprobantes_vip 
+            DROP COLUMN IF EXISTS comprobante_url,
+            ADD COLUMN IF NOT EXISTS comprobante BYTEA,
+            ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
+        `).catch(() => {});
         console.log('Comprobantes VIP table ready');
 
         // Comprobantes Estacionamiento table
@@ -286,10 +310,19 @@ async function initializeDatabase() {
                 cantidad INT NOT NULL,
                 total VARCHAR(50) NOT NULL,
                 fecha_evento DATE NOT NULL,
-                comprobante_url VARCHAR(500) NOT NULL,
+                comprobante BYTEA NOT NULL,
+                comprobante_tipo VARCHAR(50),
                 fecha_carga TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
+        
+        // Add comprobante columns if they don't exist
+        await pool.query(`
+            ALTER TABLE comprobantes_estacionamiento 
+            DROP COLUMN IF EXISTS comprobante_url,
+            ADD COLUMN IF NOT EXISTS comprobante BYTEA,
+            ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
+        `).catch(() => {});
         console.log('Comprobantes Estacionamiento table ready');
     } catch (err) {
         console.error('Error creating tables:', err);
@@ -567,20 +600,21 @@ app.post('/api/ticket-purchase', async (req, res) => {
 });
 
 // POST endpoint for uploading ticket proof
-app.post('/api/ticket-purchase-proof', upload.single('comprobante'), async (req, res) => {
+app.post('/api/ticket-purchase-proof', async (req, res) => {
     try {
-        const { nombre, email, telefono, cantidad, fecha_evento, total, compra_id } = req.body;
+        const { nombre, email, telefono, cantidad, fecha_evento, total, compra_id, comprobante_base64, comprobante_tipo } = req.body;
 
-        if (!req.file) {
+        if (!comprobante_base64) {
             return res.status(400).json({
                 success: false,
                 message: 'Por favor, sube un comprobante'
             });
         }
 
-        console.log('Ticket proof upload:', { filename: req.file.filename, size: req.file.size, mimetype: req.file.mimetype });
+        console.log('Ticket proof upload - Base64:', { nombre, email, tipo: comprobante_tipo, size: comprobante_base64.length });
         
-        const comprobanteUrl = `${process.env.BACKEND_URL || 'https://monkey-ranch-api.onrender.com'}/uploads/${req.file.filename}`;
+        // Convert base64 to buffer
+        const comprobanteBuffer = Buffer.from(comprobante_base64, 'base64');
         
         // Get the purchase ID from the latest ticket purchase if not provided
         let purchaseId = compra_id;
@@ -597,27 +631,26 @@ app.post('/api/ticket-purchase-proof', upload.single('comprobante'), async (req,
         if (purchaseId) {
             // Update ticket purchase with proof
             await pool.query(
-                'UPDATE ticket_purchases SET comprobante = $1 WHERE id = $2',
-                [comprobanteUrl, purchaseId]
+                'UPDATE ticket_purchases SET comprobante = $1, comprobante_tipo = $2 WHERE id = $3',
+                [comprobanteBuffer, comprobante_tipo || 'image/jpeg', purchaseId]
             );
         }
         
         // Also insert into comprobantes_generales table
         try {
             await pool.query(
-                'INSERT INTO comprobantes_generales (nombre, email, telefono, cantidad, total, fecha_evento, comprobante_url) VALUES ($1, $2, $3, $4, $5, $6, $7)',
-                [nombre, email, telefono, cantidad, total, fecha_evento, comprobanteUrl]
+                'INSERT INTO comprobantes_generales (nombre, email, telefono, cantidad, total, fecha_evento, comprobante, comprobante_tipo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+                [nombre, email, telefono, cantidad, total, fecha_evento, comprobanteBuffer, comprobante_tipo || 'image/jpeg']
             );
             console.log('Inserted into comprobantes_generales for:', email);
         } catch (insertErr) {
             console.warn('Warning: Could not insert into comprobantes_generales:', insertErr.message);
-            // Don't fail the request if comprobantes_generales insert fails
         }
 
         res.json({
             success: true,
             message: '¡Comprobante recibido! Verificaremos tu pago pronto.',
-            comprobante_url: comprobanteUrl
+            compra_id: purchaseId
         });
     } catch (err) {
         console.error('Error uploading ticket proof:', err.message, err.stack);
@@ -689,20 +722,21 @@ app.post('/api/vip-purchase', async (req, res) => {
 });
 
 // POST endpoint for uploading VIP ticket proof
-app.post('/api/vip-purchase-proof', upload.single('comprobante'), async (req, res) => {
+app.post('/api/vip-purchase-proof', async (req, res) => {
     try {
-        const { nombre, email, telefono, cantidad, duracion, fecha_evento, total, compra_id } = req.body;
+        const { nombre, email, telefono, cantidad, duracion, fecha_evento, total, compra_id, comprobante_base64, comprobante_tipo } = req.body;
 
-        if (!req.file) {
+        if (!comprobante_base64) {
             return res.status(400).json({
                 success: false,
                 message: 'Por favor, sube un comprobante'
             });
         }
 
-        console.log('VIP proof upload:', { filename: req.file.filename, size: req.file.size, mimetype: req.file.mimetype });
+        console.log('VIP proof upload - Base64:', { nombre, email, tipo: comprobante_tipo, size: comprobante_base64.length });
         
-        const comprobanteUrl = `${process.env.BACKEND_URL || 'https://monkey-ranch-api.onrender.com'}/uploads/${req.file.filename}`;
+        // Convert base64 to buffer
+        const comprobanteBuffer = Buffer.from(comprobante_base64, 'base64');
         
         // Get the purchase ID from the latest VIP purchase if not provided
         let purchaseId = compra_id;
@@ -719,27 +753,26 @@ app.post('/api/vip-purchase-proof', upload.single('comprobante'), async (req, re
         if (purchaseId) {
             // Update VIP purchase with proof
             await pool.query(
-                'UPDATE vip_purchases SET comprobante = $1 WHERE id = $2',
-                [comprobanteUrl, purchaseId]
+                'UPDATE vip_purchases SET comprobante = $1, comprobante_tipo = $2 WHERE id = $3',
+                [comprobanteBuffer, comprobante_tipo || 'image/jpeg', purchaseId]
             );
         }
         
         // Also insert into comprobantes_vip table
         try {
             await pool.query(
-                'INSERT INTO comprobantes_vip (nombre, email, telefono, cantidad, duracion, total, fecha_evento, comprobante_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-                [nombre, email, telefono, cantidad, duracion, total, fecha_evento, comprobanteUrl]
+                'INSERT INTO comprobantes_vip (nombre, email, telefono, cantidad, duracion, total, fecha_evento, comprobante, comprobante_tipo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+                [nombre, email, telefono, cantidad, duracion, total, fecha_evento, comprobanteBuffer, comprobante_tipo || 'image/jpeg']
             );
             console.log('Inserted into comprobantes_vip for:', email);
         } catch (insertErr) {
             console.warn('Warning: Could not insert into comprobantes_vip:', insertErr.message);
-            // Don't fail the request if comprobantes_vip insert fails
         }
 
         res.json({
             success: true,
             message: '¡Comprobante recibido! Verificaremos tu pago pronto.',
-            comprobante_url: comprobanteUrl
+            compra_id: purchaseId
         });
     } catch (err) {
         console.error('Error uploading VIP proof:', err.message, err.stack);
@@ -811,20 +844,21 @@ app.post('/api/parking-purchase', async (req, res) => {
 });
 
 // POST endpoint for uploading parking proof
-app.post('/api/parking-purchase-proof', upload.single('comprobante'), async (req, res) => {
+app.post('/api/parking-purchase-proof', async (req, res) => {
     try {
-        const { nombre, email, telefono, placas, cantidad, fecha_evento, total, compra_id } = req.body;
+        const { nombre, email, telefono, placas, cantidad, fecha_evento, total, compra_id, comprobante_base64, comprobante_tipo } = req.body;
 
-        if (!req.file) {
+        if (!comprobante_base64) {
             return res.status(400).json({
                 success: false,
                 message: 'Por favor, sube un comprobante'
             });
         }
 
-        console.log('Parking proof upload:', { filename: req.file.filename, size: req.file.size, mimetype: req.file.mimetype });
+        console.log('Parking proof upload - Base64:', { nombre, email, tipo: comprobante_tipo, size: comprobante_base64.length });
         
-        const comprobanteUrl = `${process.env.BACKEND_URL || 'https://monkey-ranch-api.onrender.com'}/uploads/${req.file.filename}`;
+        // Convert base64 to buffer
+        const comprobanteBuffer = Buffer.from(comprobante_base64, 'base64');
         
         // Get the purchase ID from the latest parking purchase if not provided
         let purchaseId = compra_id;
@@ -841,27 +875,26 @@ app.post('/api/parking-purchase-proof', upload.single('comprobante'), async (req
         if (purchaseId) {
             // Update parking purchase with proof
             await pool.query(
-                'UPDATE parking_purchases SET comprobante = $1 WHERE id = $2',
-                [comprobanteUrl, purchaseId]
+                'UPDATE parking_purchases SET comprobante = $1, comprobante_tipo = $2 WHERE id = $3',
+                [comprobanteBuffer, comprobante_tipo || 'image/jpeg', purchaseId]
             );
         }
         
         // Also insert into comprobantes_estacionamiento table
         try {
             await pool.query(
-                'INSERT INTO comprobantes_estacionamiento (nombre, email, telefono, placas, cantidad, total, fecha_evento, comprobante_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-                [nombre, email, telefono, placas, cantidad, total, fecha_evento, comprobanteUrl]
+                'INSERT INTO comprobantes_estacionamiento (nombre, email, telefono, placas, cantidad, total, fecha_evento, comprobante, comprobante_tipo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+                [nombre, email, telefono, placas, cantidad, total, fecha_evento, comprobanteBuffer, comprobante_tipo || 'image/jpeg']
             );
             console.log('Inserted into comprobantes_estacionamiento for:', email);
         } catch (insertErr) {
             console.warn('Warning: Could not insert into comprobantes_estacionamiento:', insertErr.message);
-            // Don't fail the request if comprobantes_estacionamiento insert fails
         }
 
         res.json({
             success: true,
             message: '¡Comprobante recibido! Procesaremos tu solicitud pronto.',
-            comprobante_url: comprobanteUrl
+            compra_id: purchaseId
         });
     } catch (err) {
         console.error('Error uploading parking proof:', err.message, err.stack);
@@ -1119,6 +1152,41 @@ app.post('/api/save-parking-purchase', async (req, res) => {
     } catch (error) {
         console.error('Error saving parking purchase:', error.message, error.stack);
         res.status(500).json({ success: false, message: 'Error: ' + error.message });
+    }
+});
+
+// GET endpoints to retrieve proofs from database
+app.get('/api/comprobante/:table/:id', async (req, res) => {
+    try {
+        const { table, id } = req.params;
+        
+        // Whitelist allowed tables
+        const allowedTables = ['ticket_purchases', 'vip_purchases', 'parking_purchases', 'comprobantes_generales', 'comprobantes_vip', 'comprobantes_estacionamiento'];
+        if (!allowedTables.includes(table)) {
+            return res.status(400).json({ success: false, message: 'Tabla no válida' });
+        }
+        
+        const result = await pool.query(
+            `SELECT comprobante, comprobante_tipo FROM ${table} WHERE id = $1`,
+            [id]
+        );
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Comprobante no encontrado' });
+        }
+        
+        const { comprobante, comprobante_tipo } = result.rows[0];
+        
+        if (!comprobante) {
+            return res.status(404).json({ success: false, message: 'Comprobante vacío' });
+        }
+        
+        res.set('Content-Type', comprobante_tipo || 'application/octet-stream');
+        res.set('Cache-Control', 'public, max-age=31536000');
+        res.send(comprobante);
+    } catch (err) {
+        console.error('Error retrieving comprobante:', err);
+        res.status(500).json({ success: false, message: 'Error al recuperar comprobante' });
     }
 });
 
