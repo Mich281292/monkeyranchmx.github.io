@@ -1507,6 +1507,10 @@ body.dark-mode .vip-section .section-description {
     padding: 2rem 1.5rem;
 }
 
+.boletos-cards-grid .vip-card.vip-card-reduced-height {
+    min-height: 200px;
+}
+
 .hotel-actions {
     display: flex;
     gap: 12px;
