@@ -151,7 +151,7 @@ if (contactForm) {
     submitBtn.textContent = 'Enviando...';
     submitBtn.disabled = true;
 
-    fetch('https://monkey-ranch-api.onrender.com/api/contact', {
+    fetch('https://api.monkeyranch.com.mx/api/contact', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -297,7 +297,7 @@ if (vipForm) {
         submitBtn.textContent = 'Enviando...';
         submitBtn.disabled = true;
 
-        fetch('https://monkey-ranch-api.onrender.com/api/vip', {
+        fetch('https://api.monkeyranch.com.mx/api/vip', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
