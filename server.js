@@ -41,7 +41,13 @@ const upload = multer({
 
 // Middleware
 const corsOptions = {
-    origin: ['https://mich281292.github.io', 'http://localhost:3000', 'http://localhost'],
+    origin: [
+        'https://mich281292.github.io',
+        'https://monkeyranch.com.mx',
+        'https://www.monkeyranch.com.mx',
+        'http://localhost:3000',
+        'http://localhost'
+    ],
     methods: ['GET', 'POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: false
