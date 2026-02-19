@@ -878,6 +878,8 @@ body.has-top-contact {
     transition: border-color 0.3s;
     background-color: var(--bg-primary);
     color: var(--text-primary);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .contact-form .question-block {
@@ -1656,7 +1658,9 @@ body.dark-mode .vip-section .section-description {
     .contact-form textarea,
     .contact-form select {
         font-size: 0.95rem;
-        padding: 12px;
+        padding: 10px 8px;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     /* Footer */
@@ -1721,6 +1725,33 @@ body.dark-mode .vip-section .section-description {
     
     .form-group {
         flex: 1 1 100%;
+    }
+    
+    /* Form max-width overrides for mobile */
+    .contact-form {
+        max-width: 100%;
+    }
+    
+    .vip-form {
+        max-width: 100%;
+    }
+    
+    .flyer-box {
+        max-width: 100%;
+    }
+    
+    #personasContainer {
+        max-width: 100%;
+        padding: 1.5rem 0.5rem;
+    }
+    
+    #vehiculosContainer {
+        max-width: 100%;
+        padding: 1.5rem 0.5rem;
+    }
+    
+    .inscription-form {
+        max-width: 100%;
     }
 }
 
