@@ -462,12 +462,12 @@ body.dark-mode .nav-links .theme-toggle:hover {
 }
 
 .inscripcion-btn {
-    background: rgba(184, 36, 47, 0.15);
-    color: #b8242f;
+    background: url('logo mx pro series 2026 promotora.png') center/cover no-repeat;
+    color: white;
 }
 
 .inscripcion-btn:hover {
-    background: #b8242f;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url('logo mx pro series 2026 promotora.png') center/cover no-repeat;
     color: white;
 }
 
