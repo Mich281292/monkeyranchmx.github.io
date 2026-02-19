@@ -1575,6 +1575,12 @@ body.dark-mode .vip-section .section-description {
     .contact-cta i {
         font-size: 14px;
     }
+
+    .inscripcion-btn {
+        min-width: 120px;
+        min-height: 28px;
+        padding: 4px 8px;
+    }
     
     /* Mobile Menu adjustments */
     header {
