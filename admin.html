@@ -631,7 +631,7 @@
 
         async function loadTickets() {
             try {
-                const response = await fetch('https://api.monkeyranch.com.mx/api/ticket-purchases');
+                const response = await fetch('https://monkey-ranch-api.onrender.com/api/ticket-purchases');
                 const data = await response.json();
 
                 if (data.success) {
@@ -645,7 +645,7 @@
 
         async function loadTicketsVip() {
             try {
-                const response = await fetch('https://api.monkeyranch.com.mx/api/vip-purchases');
+                const response = await fetch('https://monkey-ranch-api.onrender.com/api/vip-purchases');
                 const data = await response.json();
 
                 if (data.success) {
@@ -659,7 +659,7 @@
 
         async function loadParking() {
             try {
-                const response = await fetch('https://api.monkeyranch.com.mx/api/parking-purchases');
+                const response = await fetch('https://monkey-ranch-api.onrender.com/api/parking-purchases');
                 const data = await response.json();
 
                 if (data.success) {
@@ -918,7 +918,7 @@
         // Load and display Comprobantes (Payment Proofs)
         async function loadProofsGenerales() {
             try {
-                const response = await fetch('https://api.monkeyranch.com.mx/api/comprobantes-generales');
+                const response = await fetch('https://monkey-ranch-api.onrender.com/api/comprobantes-generales');
                 const result = await response.json();
                 if (result.success) {
                     displayProofsGenerales(result.data);
@@ -961,7 +961,7 @@
 
         async function loadProofsVIP() {
             try {
-                const response = await fetch('https://api.monkeyranch.com.mx/api/comprobantes-vip');
+                const response = await fetch('https://monkey-ranch-api.onrender.com/api/comprobantes-vip');
                 const result = await response.json();
                 if (result.success) {
                     displayProofsVIP(result.data);
@@ -1005,7 +1005,7 @@
 
         async function loadProofsParking() {
             try {
-                const response = await fetch('https://api.monkeyranch.com.mx/api/comprobantes-estacionamiento');
+                const response = await fetch('https://monkey-ranch-api.onrender.com/api/comprobantes-estacionamiento');
                 const result = await response.json();
                 if (result.success) {
                     displayProofsParking(result.data);
