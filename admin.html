@@ -335,6 +335,29 @@
             line-height: 1.6;
         }
 
+        .delete-btn {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 0.95em;
+            font-weight: bold;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .delete-btn:hover {
+            background: #cc0000;
+            transform: scale(1.02);
+        }
+
+        .delete-btn:active {
+            transform: scale(0.98);
+        }
+
         .login-container {
             display: flex;
             justify-content: center;
@@ -810,7 +833,7 @@
             }
 
             const inscripcionesHTML = inscripciones.map(insc => `
-                <div class="inscription-card">
+                <div class="inscription-card" data-id="${insc.id}">
                     <div class="contact-header">
                         <div class="contact-name">🏍️ ${escapeHtml(insc.nombre)}</div>
                         <div class="contact-date">📅 ${formatDate(insc.fecha_creacion)}</div>
@@ -829,6 +852,7 @@
                         <strong>🚗 Cantidad de Vehículos:</strong> ${escapeHtml(insc.cantidad_vehiculos || 'N/A')}<br>
                         <strong>💬 Mensaje:</strong> ${escapeHtml(insc.mensaje || 'N/A')}
                     </div>
+                    <button class="delete-btn" onclick="deleteInscripcion(${insc.id})">🗑️ Eliminar</button>
                 </div>
             `).join('');
 
@@ -1104,6 +1128,30 @@
                 hour: '2-digit',
                 minute: '2-digit'
             });
+        }
+
+        async function deleteInscripcion(id) {
+            if (!confirm('¿Estás seguro de que deseas eliminar esta inscripción? Esta acción no puede ser revertida.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://monkey-ranch-api.onrender.com/api/inscripciones/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Inscripción eliminada exitosamente');
+                    loadInscripciones();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al eliminar la inscripción');
+            }
         }
 
         function escapeHtml(text) {

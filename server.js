@@ -498,6 +498,33 @@ app.get('/api/inscripciones', async (req, res) => {
     }
 });
 
+// DELETE endpoint for inscriptions
+app.delete('/api/inscripciones/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const result = await pool.query('DELETE FROM inscriptions WHERE id = $1 RETURNING id', [id]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Inscripción no encontrada'
+            });
+        }
+
+        res.json({
+            success: true,
+            message: 'Inscripción eliminada exitosamente'
+        });
+    } catch (err) {
+        console.error('Error deleting inscription:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al eliminar la inscripción'
+        });
+    }
+});
+
 // POST endpoint for ticket purchases (General)
 app.post('/api/ticket-purchase', async (req, res) => {
     const { nombre, email, telefono, cantidad, fecha_evento, precio, comprobante } = req.body;
