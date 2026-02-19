@@ -476,13 +476,8 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('¡Inscripción completada! Te contactaremos pronto.');
-                    this.reset();
-                    personasContainer.innerHTML = '';
-                    vehiculosContainer.innerHTML = '';
-                    mainInputs.forEach(input => {
-                        input.style.borderColor = 'var(--border-color)';
-                    });
+                    // Redirigir a la página de club
+                    window.location.href = 'club.html';
                 } else {
                     alert('Error: ' + data.message);
                 }
