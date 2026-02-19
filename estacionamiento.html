@@ -170,12 +170,13 @@
             const placas = document.getElementById('placas').value;
             const cantidad = document.getElementById('cantidad').value;
             const fecha_evento = document.getElementById('fecha').value;
-            const totalText = document.getElementById('total').textContent;
+            const totalText = document.getElementById('total').textContent.replace('$', '');
+            const precio = '150';
             
             try {
                 // Save parking purchase to database
                 const API_URL = 'https://monkey-ranch-api.onrender.com';
-                const response = await fetch(`${API_URL}/api/save-parking-purchase`, {
+                const response = await fetch(`${API_URL}/api/parking-purchase`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -183,9 +184,10 @@
                         email: email,
                         telefono: telefono,
                         placas: placas,
-                        cantidad: cantidad,
+                        cantidad: parseInt(cantidad),
                         fecha_evento: fecha_evento,
-                        total: totalText
+                        precio: precio,
+                        comprobante: null
                     })
                 });
 
@@ -204,12 +206,14 @@
                     placas: placas,
                     cantidad: cantidad,
                     fecha_evento: fecha_evento,
-                    total: totalText
+                    total: totalText,
+                    compra_id: result.id
                 };
                 
-                sessionStorage.setItem('purchaseData', JSON.stringify(purchaseData));
+                sessionStorage.setItem('parkingPurchaseData', JSON.stringify(purchaseData));
                 
-                // Redirect to payment proof page with URL parameters                const baseUrl = 'https://mich281292.github.io/monkeyranchmx.github.io';                const params = new URLSearchParams({
+                // Redirect to payment proof page with URL parameters
+                const params = new URLSearchParams({
                     nombre: nombre,
                     email: email,
                     telefono: telefono,
