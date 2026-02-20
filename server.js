@@ -61,6 +61,39 @@ app.use((req, res, next) => {
     next();
 });
 
+function shouldCountPageVisit(req) {
+    if (req.method !== 'GET') {
+        return false;
+    }
+    if (req.path.startsWith('/api/') || req.path.startsWith('/uploads')) {
+        return false;
+    }
+    if (/\.(css|js|png|jpg|jpeg|gif|svg|ico|webp|map)$/i.test(req.path)) {
+        return false;
+    }
+    const acceptHeader = req.headers.accept || '';
+    return acceptHeader.includes('text/html');
+}
+
+async function recordPageVisit() {
+    await pool.query(
+        `INSERT INTO page_visits (visit_date, count)
+         VALUES (CURRENT_DATE, 1)
+         ON CONFLICT (visit_date)
+         DO UPDATE SET count = page_visits.count + 1`
+    );
+}
+
+// Track page visits for HTML pages
+app.use((req, res, next) => {
+    if (shouldCountPageVisit(req)) {
+        recordPageVisit().catch(err => {
+            console.error('Error recording page visit:', err.message);
+        });
+    }
+    next();
+});
+
 // Servir archivos estáticos desde la carpeta uploads
 app.use('/uploads', express.static('uploads'));
 
@@ -127,6 +160,15 @@ async function initializeDatabase() {
         `);
         
         console.log('Contacts table ready');
+
+        // Page visits table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS page_visits (
+                visit_date DATE PRIMARY KEY,
+                count INT NOT NULL DEFAULT 0
+            )
+        `);
+        console.log('Page visits table ready');
 
         // VIP registrations table
         await pool.query(`
@@ -1141,6 +1183,32 @@ app.get('/api/parking-purchases', async (req, res) => {
         return res.status(500).json({
             success: false,
             message: 'Error al obtener estacionamientos'
+        });
+    }
+});
+
+// GET endpoint for page visits (afluencia)
+app.get('/api/visits', async (req, res) => {
+    try {
+        const rawDays = parseInt(req.query.days || '7', 10);
+        const days = Math.min(Math.max(rawDays, 1), 90);
+        const result = await pool.query(
+            `SELECT visit_date, count
+             FROM page_visits
+             WHERE visit_date >= CURRENT_DATE - ($1 || ' days')::interval
+             ORDER BY visit_date ASC`,
+            [days - 1]
+        );
+
+        res.json({
+            success: true,
+            data: result.rows
+        });
+    } catch (err) {
+        console.error('Error fetching visits:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al obtener afluencia'
         });
     }
 });

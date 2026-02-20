@@ -72,6 +72,31 @@
             font-size: 1.1em;
         }
 
+        .traffic-chart {
+            width: 100%;
+            height: 140px;
+            margin-top: 10px;
+        }
+
+        .traffic-chart svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .traffic-chart .traffic-bar {
+            fill: #b8242f;
+        }
+
+        .traffic-chart .traffic-axis {
+            stroke: #e0e0e0;
+            stroke-width: 1;
+        }
+
+        .traffic-chart .traffic-label {
+            fill: #666;
+            font-size: 10px;
+        }
+
         .contacts-container {
             background: white;
             padding: 30px;
@@ -577,6 +602,11 @@
                 <p>Total Estacionamiento</p>
                 <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Hoy: <strong id="todayParking" style="color: #b8242f;">0</strong></p>
             </div>
+            <div class="stat-card">
+                <h3>Afluencia</h3>
+                <p>Ultimos 7 dias</p>
+                <div class="traffic-chart" id="trafficChart"></div>
+            </div>
         </div>
 
         <div class="contacts-container">
@@ -722,6 +752,7 @@
             await loadTickets();
             await loadTicketsVip();
             await loadParking();
+            await loadTraffic();
             updateStats();
         }
 
@@ -807,6 +838,81 @@
             } catch (error) {
                 console.error('Error:', error);
             }
+        }
+
+        async function loadTraffic() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/visits?days=7`);
+                const data = await response.json();
+
+                if (data.success) {
+                    renderTrafficChart(data.data || []);
+                } else {
+                    renderTrafficChart([]);
+                }
+            } catch (error) {
+                console.error('Error loading traffic:', error);
+                renderTrafficChart([]);
+            }
+        }
+
+        function renderTrafficChart(entries) {
+            const container = document.getElementById('trafficChart');
+            if (!container) {
+                return;
+            }
+
+            if (!entries || entries.length === 0) {
+                container.innerHTML = '<div style="color:#999; font-size:0.9em;">Sin datos</div>';
+                return;
+            }
+
+            const countsByDate = {};
+            entries.forEach(item => {
+                const key = new Date(item.visit_date).toISOString().slice(0, 10);
+                countsByDate[key] = Number(item.count) || 0;
+            });
+
+            const days = 7;
+            const today = new Date();
+            const series = [];
+            for (let i = days - 1; i >= 0; i -= 1) {
+                const date = new Date(today);
+                date.setDate(today.getDate() - i);
+                const key = date.toISOString().slice(0, 10);
+                series.push({
+                    date,
+                    count: countsByDate[key] || 0
+                });
+            }
+
+            const maxCount = Math.max(1, ...series.map(item => item.count));
+            const width = 300;
+            const height = 120;
+            const chartHeight = 80;
+            const barWidth = width / series.length;
+
+            let bars = '';
+            let labels = '';
+            series.forEach((item, index) => {
+                const barHeight = Math.round((item.count / maxCount) * chartHeight);
+                const x = Math.round(index * barWidth + 6);
+                const y = Math.round(90 - barHeight);
+                const w = Math.max(10, Math.round(barWidth - 12));
+                bars += `<rect class="traffic-bar" x="${x}" y="${y}" width="${w}" height="${barHeight}"></rect>`;
+
+                const label = item.date.toLocaleDateString('es-ES', { day: '2-digit', month: 'short' });
+                const labelX = Math.round(index * barWidth + barWidth / 2);
+                labels += `<text class="traffic-label" x="${labelX}" y="110" text-anchor="middle">${label}</text>`;
+            });
+
+            container.innerHTML = `
+                <svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">
+                    <line class="traffic-axis" x1="0" y1="90" x2="${width}" y2="90"></line>
+                    ${bars}
+                    ${labels}
+                </svg>
+            `;
         }
 
         function updateStats() {
