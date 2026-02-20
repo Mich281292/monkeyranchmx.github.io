@@ -973,6 +973,7 @@
                         <strong>💬 Mensaje:</strong> ${escapeHtml(insc.mensaje || 'N/A')}
                         ${proofButtonHtml}
                     </div>
+                    <button class="generate-qr-btn" onclick="generateQRInscripcion(${insc.id}, '${escapeHtml(insc.nombre)}', '${insc.email}', '${insc.telefono}')">🔐 Generar QR</button>
                     <button class="delete-btn" onclick="deleteInscripcion(${insc.id})">🗑️ Eliminar</button>
                 </div>
             `}).join('');
@@ -1400,6 +1401,10 @@
 
         async function generateQRParking(id, nombre, email, telefono) {
             await generateAndSaveQR(nombre, email, telefono, `Parking-${id}`);
+        }
+
+        async function generateQRInscripcion(id, nombre, email, telefono) {
+            await generateAndSaveQR(nombre, email, telefono, `Inscripcion-${id}`);
         }
 
         function loadImageAsync(src) {
