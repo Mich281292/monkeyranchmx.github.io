@@ -580,32 +580,35 @@
             <div class="stat-card">
                 <h3 id="totalContacts">0</h3>
                 <p>Total de Contactos</p>
-                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Hoy: <strong id="todayContacts" style="color: #b8242f;">0</strong></p>
+                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Con comprobante: <strong id="todayContacts" style="color: #b8242f;">0</strong></p>
             </div>
             <div class="stat-card">
                 <h3 id="totalVip">0</h3>
                 <p>Total Tickets VIP</p>
-                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Hoy: <strong id="todayVip" style="color: #b8242f;">0</strong></p>
+                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Con comprobante: <strong id="todayVip" style="color: #b8242f;">0</strong></p>
             </div>
             <div class="stat-card">
                 <h3 id="totalInscripciones">0</h3>
                 <p>Total Inscripciones</p>
-                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Hoy: <strong id="todayInscripciones" style="color: #b8242f;">0</strong></p>
+                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Con comprobante: <strong id="todayInscripciones" style="color: #b8242f;">0</strong></p>
             </div>
             <div class="stat-card">
                 <h3 id="totalTickets">0</h3>
                 <p>Total Tickets Generales</p>
-                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Hoy: <strong id="todayTickets" style="color: #b8242f;">0</strong></p>
+                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Con comprobante: <strong id="todayTickets" style="color: #b8242f;">0</strong></p>
             </div>
             <div class="stat-card">
                 <h3 id="totalParking">0</h3>
                 <p>Total Estacionamiento</p>
-                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Hoy: <strong id="todayParking" style="color: #b8242f;">0</strong></p>
+                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Con comprobante: <strong id="todayParking" style="color: #b8242f;">0</strong></p>
             </div>
             <div class="stat-card">
                 <h3>Afluencia</h3>
                 <p>Ultimos 7 dias</p>
                 <div class="traffic-chart" id="trafficChart"></div>
+                <p style="color: #999; font-size: 0.85em; margin-top: 15px; text-align: center;">
+                    Último registro: <span id="lastVisitTime" style="color: #b8242f; font-weight: bold;">Cargando...</span>
+                </p>
             </div>
         </div>
 
@@ -847,12 +850,24 @@
 
                 if (data.success) {
                     renderTrafficChart(data.data || []);
+                    
+                    // Actualizar hora del último registro
+                    if (data.data && data.data.length > 0) {
+                        const lastEntry = data.data[data.data.length - 1];
+                        const lastDate = new Date(lastEntry.visit_date);
+                        const timeString = lastDate.toLocaleString('es-ES');
+                        document.getElementById('lastVisitTime').textContent = timeString;
+                    } else {
+                        document.getElementById('lastVisitTime').textContent = 'Sin registros';
+                    }
                 } else {
                     renderTrafficChart([]);
+                    document.getElementById('lastVisitTime').textContent = 'Error al cargar';
                 }
             } catch (error) {
                 console.error('Error loading traffic:', error);
                 renderTrafficChart([]);
+                document.getElementById('lastVisitTime').textContent = 'Error de conexión';
             }
         }
 
@@ -922,39 +937,27 @@
             document.getElementById('totalTickets').textContent = allTickets.length;
             document.getElementById('totalParking').textContent = allParking.length;
 
-            // Contar registros de hoy
-            const today = new Date().toDateString();
-            
-            const todayContactsCount = allContacts.filter(contact => {
-                const contactDate = new Date(contact.fecha_creacion).toDateString();
-                return contactDate === today;
-            }).length;
+            const hasProof = (value) => {
+                if (value === null || value === undefined) {
+                    return false;
+                }
+                if (typeof value === 'string') {
+                    return value.trim().length > 0;
+                }
+                return Boolean(value);
+            };
 
-            const todayVipCount = allTicketsVip.filter(ticket => {
-                const ticketDate = new Date(ticket.fecha_compra).toDateString();
-                return ticketDate === today;
-            }).length;
+            const contactsWithProof = allContacts.filter(contact => hasProof(contact.comprobante)).length;
+            const vipWithProof = allTicketsVip.filter(ticket => hasProof(ticket.comprobante)).length;
+            const inscripcionesWithProof = allInscripciones.filter(insc => hasProof(insc.comprobante)).length;
+            const ticketsWithProof = allTickets.filter(ticket => hasProof(ticket.comprobante)).length;
+            const parkingWithProof = allParking.filter(park => hasProof(park.comprobante)).length;
 
-            const todayInscripcionesCount = allInscripciones.filter(insc => {
-                const inscDate = new Date(insc.fecha_creacion).toDateString();
-                return inscDate === today;
-            }).length;
-
-            const todayTicketsCount = allTickets.filter(ticket => {
-                const ticketDate = new Date(ticket.fecha_compra).toDateString();
-                return ticketDate === today;
-            }).length;
-
-            const todayParkingCount = allParking.filter(park => {
-                const parkDate = new Date(park.fecha_compra).toDateString();
-                return parkDate === today;
-            }).length;
-
-            document.getElementById('todayContacts').textContent = todayContactsCount;
-            document.getElementById('todayVip').textContent = todayVipCount;
-            document.getElementById('todayInscripciones').textContent = todayInscripcionesCount;
-            document.getElementById('todayTickets').textContent = todayTicketsCount;
-            document.getElementById('todayParking').textContent = todayParkingCount;
+            document.getElementById('todayContacts').textContent = contactsWithProof;
+            document.getElementById('todayVip').textContent = vipWithProof;
+            document.getElementById('todayInscripciones').textContent = inscripcionesWithProof;
+            document.getElementById('todayTickets').textContent = ticketsWithProof;
+            document.getElementById('todayParking').textContent = parkingWithProof;
         }
 
         function switchTab(tab) {
