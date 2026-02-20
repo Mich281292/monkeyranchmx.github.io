@@ -476,8 +476,8 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Redirigir a la página de club
-                    window.location.href = 'club.html';
+                    // Redirigir a la página de pago de inscripción
+                    window.location.href = 'pago_inscripcion.html';
                 } else {
                     alert('Error: ' + data.message);
                 }
