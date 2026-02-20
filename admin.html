@@ -867,8 +867,16 @@
                     if (data.data && data.data.length > 0) {
                         const lastEntry = data.data[data.data.length - 1];
                         const lastDate = new Date(lastEntry.visit_date);
-                        const timeString = lastDate.toLocaleString('es-ES');
-                        document.getElementById('lastVisitTime').textContent = timeString;
+                        const dateStr = lastDate.toLocaleDateString('es-ES', { 
+                            weekday: 'long',
+                            year: 'numeric', 
+                            month: 'long', 
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit'
+                        });
+                        document.getElementById('lastVisitTime').textContent = dateStr;
                     } else {
                         document.getElementById('lastVisitTime').textContent = 'Sin registros';
                     }
