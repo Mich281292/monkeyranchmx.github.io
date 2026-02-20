@@ -716,12 +716,24 @@
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('adminContent').style.display = 'block';
             loadAllData();
+            trackPageVisit();
         }
 
         function logout() {
             sessionStorage.removeItem('adminAuthenticated');
             document.getElementById('loginForm').reset();
             showLoginForm();
+        }
+
+        // Función para registrar visita a la página
+        function trackPageVisit() {
+            fetch(`${API_BASE_URL}/api/visits/track`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ path: 'admin.html' })
+            }).catch(error => {
+                console.error('Error tracking visit:', error);
+            });
         }
 
         // Detectar si estamos en desarrollo y usar localhost, de lo contrario usar API remota
