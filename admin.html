@@ -607,7 +607,7 @@
                 <p>Ultimos 7 dias</p>
                 <div class="traffic-chart" id="trafficChart"></div>
                 <p style="color: #999; font-size: 0.85em; margin-top: 15px; text-align: center;">
-                    Último registro: <span id="lastVisitTime" style="color: #b8242f; font-weight: bold;">Cargando...</span>
+                    Última visita: <span id="lastVisitTime" style="color: #b8242f; font-weight: bold;">Cargando...</span>
                 </p>
             </div>
         </div>
@@ -914,28 +914,43 @@
             }
 
             const maxCount = Math.max(1, ...series.map(item => item.count));
-            const width = 300;
+            const width = 320;
             const height = 120;
             const chartHeight = 80;
-            const barWidth = width / series.length;
+            const chartLeft = 30;
+            const barWidth = (width - chartLeft) / series.length;
 
             let bars = '';
             let labels = '';
             series.forEach((item, index) => {
                 const barHeight = Math.round((item.count / maxCount) * chartHeight);
-                const x = Math.round(index * barWidth + 6);
+                const x = Math.round(chartLeft + index * barWidth + 6);
                 const y = Math.round(90 - barHeight);
                 const w = Math.max(10, Math.round(barWidth - 12));
                 bars += `<rect class="traffic-bar" x="${x}" y="${y}" width="${w}" height="${barHeight}"></rect>`;
 
                 const label = item.date.toLocaleDateString('es-ES', { day: '2-digit', month: 'short' });
-                const labelX = Math.round(index * barWidth + barWidth / 2);
+                const labelX = Math.round(chartLeft + index * barWidth + barWidth / 2);
                 labels += `<text class="traffic-label" x="${labelX}" y="110" text-anchor="middle">${label}</text>`;
             });
 
+            // Generar escala del eje Y
+            let yAxisLabels = '';
+            const scaleLevels = 4;
+            for (let i = 0; i <= scaleLevels; i++) {
+                const value = Math.round((maxCount / scaleLevels) * i);
+                const y = 90 - (i * chartHeight / scaleLevels);
+                yAxisLabels += `<text x="15" y="${y + 4}" text-anchor="end" style="font-size:10px; fill:#999;">${value}</text>`;
+                if (i > 0) {
+                    yAxisLabels += `<line x1="20" y1="${y}" x2="${chartLeft}" y2="${y}" style="stroke:#e0e0e0; stroke-width:0.5"></line>`;
+                }
+            }
+
             container.innerHTML = `
                 <svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">
-                    <line class="traffic-axis" x1="0" y1="90" x2="${width}" y2="90"></line>
+                    <line class="traffic-axis" x1="${chartLeft}" y1="90" x2="${width}" y2="90" style="stroke:#999; stroke-width:1"></line>
+                    <line class="traffic-axis" x1="${chartLeft}" y1="10" x2="${chartLeft}" y2="90" style="stroke:#999; stroke-width:1"></line>
+                    ${yAxisLabels}
                     ${bars}
                     ${labels}
                 </svg>
