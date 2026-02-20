@@ -170,7 +170,8 @@ async function initializeDatabase() {
             ADD COLUMN IF NOT EXISTS numero_licencia VARCHAR(100),
             ADD COLUMN IF NOT EXISTS instagram VARCHAR(255),
             ADD COLUMN IF NOT EXISTS facebook VARCHAR(255),
-            ADD COLUMN IF NOT EXISTS club_exclusivo VARCHAR(50)
+            ADD COLUMN IF NOT EXISTS club_exclusivo VARCHAR(50),
+            ADD COLUMN IF NOT EXISTS comprobante TEXT
         `);
         console.log('Inscriptions table ready');
 
@@ -609,6 +610,70 @@ app.delete('/api/inscripciones/:id', async (req, res) => {
         return res.status(500).json({
             success: false,
             message: 'Error al eliminar la inscripción'
+        });
+    }
+});
+
+// POST endpoint for inscription proof of payment
+app.post('/api/inscription-proof', async (req, res) => {
+    try {
+        const { nombre, email, telefono, cantidad, fecha_evento, total, inscripcion_id, comprobante_base64, comprobante_tipo } = req.body;
+
+        if (!comprobante_base64) {
+            return res.status(400).json({
+                success: false,
+                message: 'Por favor, sube un comprobante'
+            });
+        }
+
+        console.log('Inscription proof upload - Base64:', { nombre, email, tipo: comprobante_tipo, size: comprobante_base64.length });
+        
+        // Validate base64
+        if (!/^[A-Za-z0-9+/=]*$/.test(comprobante_base64)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Formato de archivo inválido'
+            });
+        }
+
+        // Store base64 string directly (simpler and avoids encoding issues)
+        const comprobanteData = comprobante_base64;
+
+        // Get the inscription ID from the latest inscription if not provided
+        let inscriptionId = inscripcion_id;
+        if (!inscriptionId) {
+            const latestInscription = await pool.query(
+                'SELECT id FROM inscriptions WHERE nombre = $1 AND email = $2 ORDER BY fecha_creacion DESC LIMIT 1',
+                [nombre, email]
+            );
+            if (latestInscription.rows.length > 0) {
+                inscriptionId = latestInscription.rows[0].id;
+            }
+        }
+        
+        if (inscriptionId) {
+            // Store base64 string directly in TEXT column
+            try {
+                await pool.query(
+                    'UPDATE inscriptions SET comprobante = $1 WHERE id = $2',
+                    [comprobanteData, inscriptionId]
+                );
+            } catch (updateErr) {
+                console.error('Error updating inscription:', updateErr.message);
+                throw updateErr;
+            }
+        }
+
+        res.json({
+            success: true,
+            message: '¡Comprobante recibido! Verificaremos tu inscripción pronto.',
+            inscripcion_id: inscriptionId
+        });
+    } catch (err) {
+        console.error('Error uploading inscription proof:', err.message, err.stack);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al guardar el comprobante: ' + err.message
         });
     }
 });
