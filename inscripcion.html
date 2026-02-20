@@ -476,8 +476,31 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Redirigir a la página de pago de inscripción
-                    window.location.href = 'pago_inscripcion.html';
+                    // Store data in sessionStorage
+                    const purchaseData = {
+                        nombre: nombre,
+                        email: email,
+                        telefono: telefono,
+                        cantidad: cantidadPersonas,
+                        fecha_evento: new Date().toLocaleDateString('es-ES'),
+                        total: '$1,800.00',
+                        inscripcion_id: data.id
+                    };
+                    
+                    sessionStorage.setItem('purchaseData', JSON.stringify(purchaseData));
+                    
+                    // Redirect to payment proof page with URL parameters
+                    const params = new URLSearchParams({
+                        nombre: nombre,
+                        email: email,
+                        telefono: telefono,
+                        cantidad: cantidadPersonas,
+                        fecha: new Date().toLocaleDateString('es-ES'),
+                        total: '$1,800.00',
+                        inscripcion_id: data.id
+                    });
+                    
+                    window.location.href = `pago_inscripcion.html?${params.toString()}`;
                 } else {
                     alert('Error: ' + data.message);
                 }
