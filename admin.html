@@ -1000,6 +1000,8 @@
                         type: ticket.comprobante_tipo || 'image/png'
                     };
                     proofButtonHtml = `<br><button class="btn-view-proof" onclick="viewProofById('${proofId}')">📸 Ver comprobante</button>`;
+                } else {
+                    proofButtonHtml = `<br><button class="btn-view-proof" onclick="uploadTicketProof(${ticket.id}, '${escapeHtml(ticket.nombre)}', '${ticket.email}', '${ticket.telefono}', '${ticket.cantidad}', '${ticket.fecha_evento}', '${ticket.precio}')">⬆️ Subir comprobante</button>`;
                 }
 
                 return `
@@ -1041,6 +1043,8 @@
                         type: ticket.comprobante_tipo || 'image/png'
                     };
                     proofButtonHtml = `<br><button class="btn-view-proof" onclick="viewProofById('${proofId}')">📸 Ver comprobante</button>`;
+                } else {
+                    proofButtonHtml = `<br><button class="btn-view-proof" onclick="uploadVipProof(${ticket.id}, '${escapeHtml(ticket.nombre)}', '${ticket.email}', '${ticket.telefono}', '${ticket.cantidad}', '${ticket.duracion}', '${ticket.fecha_evento}', '${ticket.precio}')">⬆️ Subir comprobante</button>`;
                 }
 
                 return `
@@ -1083,6 +1087,8 @@
                         type: park.comprobante_tipo || 'image/png'
                     };
                     proofButtonHtml = `<br><button class="btn-view-proof" onclick="viewProofById('${proofId}')">📸 Ver comprobante</button>`;
+                } else {
+                    proofButtonHtml = `<br><button class="btn-view-proof" onclick="uploadParkingProof(${park.id}, '${escapeHtml(park.nombre)}', '${park.email}', '${park.telefono}', '${escapeHtml(park.placas)}', '${park.cantidad}', '${park.fecha_evento}', '${park.precio}')">⬆️ Subir comprobante</button>`;
                 }
 
                 return `
@@ -1450,6 +1456,182 @@
                         }
                     } catch (error) {
                         console.error('Error uploading inscription proof:', error);
+                        alert('❌ Error al subir el comprobante');
+                    }
+                };
+
+                reader.onerror = () => {
+                    alert('❌ Error al leer el archivo');
+                };
+
+                reader.readAsDataURL(file);
+            };
+
+            input.click();
+        }
+
+        function uploadTicketProof(id, nombre, email, telefono, cantidad, fechaEvento, total) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*,application/pdf';
+
+            input.onchange = () => {
+                const file = input.files && input.files[0];
+                if (!file) {
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = async () => {
+                    try {
+                        const result = reader.result || '';
+                        const base64Data = result.toString().split(',')[1] || '';
+
+                        const response = await fetch(`${API_BASE_URL}/api/ticket-purchase-proof`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                compra_id: id,
+                                nombre,
+                                email,
+                                telefono,
+                                cantidad,
+                                fecha_evento: fechaEvento,
+                                total,
+                                comprobante_base64: base64Data,
+                                comprobante_tipo: file.type || 'image/png'
+                            })
+                        });
+
+                        const data = await response.json();
+                        if (data.success) {
+                            alert('✅ Comprobante subido exitosamente');
+                            await loadTickets();
+                        } else {
+                            alert(`❌ Error: ${data.message || 'No se pudo subir el comprobante'}`);
+                        }
+                    } catch (error) {
+                        console.error('Error uploading ticket proof:', error);
+                        alert('❌ Error al subir el comprobante');
+                    }
+                };
+
+                reader.onerror = () => {
+                    alert('❌ Error al leer el archivo');
+                };
+
+                reader.readAsDataURL(file);
+            };
+
+            input.click();
+        }
+
+        function uploadVipProof(id, nombre, email, telefono, cantidad, duracion, fechaEvento, total) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*,application/pdf';
+
+            input.onchange = () => {
+                const file = input.files && input.files[0];
+                if (!file) {
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = async () => {
+                    try {
+                        const result = reader.result || '';
+                        const base64Data = result.toString().split(',')[1] || '';
+
+                        const response = await fetch(`${API_BASE_URL}/api/vip-purchase-proof`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                compra_id: id,
+                                nombre,
+                                email,
+                                telefono,
+                                cantidad,
+                                duracion,
+                                fecha_evento: fechaEvento,
+                                total,
+                                comprobante_base64: base64Data,
+                                comprobante_tipo: file.type || 'image/png'
+                            })
+                        });
+
+                        const data = await response.json();
+                        if (data.success) {
+                            alert('✅ Comprobante subido exitosamente');
+                            await loadTicketsVip();
+                        } else {
+                            alert(`❌ Error: ${data.message || 'No se pudo subir el comprobante'}`);
+                        }
+                    } catch (error) {
+                        console.error('Error uploading VIP proof:', error);
+                        alert('❌ Error al subir el comprobante');
+                    }
+                };
+
+                reader.onerror = () => {
+                    alert('❌ Error al leer el archivo');
+                };
+
+                reader.readAsDataURL(file);
+            };
+
+            input.click();
+        }
+
+        function uploadParkingProof(id, nombre, email, telefono, placas, cantidad, fechaEvento, total) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*,application/pdf';
+
+            input.onchange = () => {
+                const file = input.files && input.files[0];
+                if (!file) {
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = async () => {
+                    try {
+                        const result = reader.result || '';
+                        const base64Data = result.toString().split(',')[1] || '';
+
+                        const response = await fetch(`${API_BASE_URL}/api/parking-purchase-proof`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                compra_id: id,
+                                nombre,
+                                email,
+                                telefono,
+                                placas,
+                                cantidad,
+                                fecha_evento: fechaEvento,
+                                total,
+                                comprobante_base64: base64Data,
+                                comprobante_tipo: file.type || 'image/png'
+                            })
+                        });
+
+                        const data = await response.json();
+                        if (data.success) {
+                            alert('✅ Comprobante subido exitosamente');
+                            await loadParking();
+                        } else {
+                            alert(`❌ Error: ${data.message || 'No se pudo subir el comprobante'}`);
+                        }
+                    } catch (error) {
+                        console.error('Error uploading parking proof:', error);
                         alert('❌ Error al subir el comprobante');
                     }
                 };
