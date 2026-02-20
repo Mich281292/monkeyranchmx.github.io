@@ -480,6 +480,7 @@
             const telefonoFromUrl = urlParams.get('telefono');
             const cantidadFromUrl = urlParams.get('cantidad');
             const fechaFromUrl = urlParams.get('fecha');
+            const inscripcionIdFromUrl = urlParams.get('inscripcion_id');
 
             if (totalFromUrl) {
                 return {
@@ -488,7 +489,8 @@
                     email: emailFromUrl,
                     telefono: telefonoFromUrl,
                     cantidad: cantidadFromUrl,
-                    fecha_evento: fechaFromUrl
+                    fecha_evento: fechaFromUrl,
+                    inscripcion_id: inscripcionIdFromUrl
                 };
             }
 
@@ -505,7 +507,8 @@
                 email: '',
                 telefono: '',
                 cantidad: '1',
-                fecha_evento: ''
+                fecha_evento: '',
+                inscripcion_id: null
             };
         }
 
