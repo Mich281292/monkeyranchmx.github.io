@@ -801,7 +801,7 @@
 
         function updateStats() {
             document.getElementById('totalContacts').textContent = allContacts.length;
-            document.getElementById('totalVip').textContent = allVip.length;
+            document.getElementById('totalVip').textContent = allTicketsVip.length;
             document.getElementById('totalInscripciones').textContent = allInscripciones.length;
 
             // Contar registros de hoy
@@ -812,9 +812,9 @@
                 return contactDate === today;
             }).length;
 
-            const todayVipCount = allVip.filter(vip => {
-                const vipDate = new Date(vip.fecha_creacion).toDateString();
-                return vipDate === today;
+            const todayVipCount = allTicketsVip.filter(ticket => {
+                const ticketDate = new Date(ticket.fecha_compra).toDateString();
+                return ticketDate === today;
             }).length;
 
             const todayInscripcionesCount = allInscripciones.filter(insc => {
