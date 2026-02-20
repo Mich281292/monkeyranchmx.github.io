@@ -950,6 +950,8 @@
                         type: insc.comprobante_tipo || 'image/png'
                     };
                     proofButtonHtml = `<br><button class="btn-view-proof" onclick="viewProofById('${proofId}')">📸 Ver comprobante</button>`;
+                } else {
+                    proofButtonHtml = `<br><button class="btn-view-proof" onclick="uploadInscripcionProof(${insc.id}, '${escapeHtml(insc.nombre)}', '${insc.email}', '${insc.telefono}')">⬆️ Subir comprobante</button>`;
                 }
 
                 return `
@@ -1405,6 +1407,61 @@
 
         async function generateQRInscripcion(id, nombre, email, telefono) {
             await generateAndSaveQR(nombre, email, telefono, `Inscripcion-${id}`);
+        }
+
+        function uploadInscripcionProof(id, nombre, email, telefono) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*,application/pdf';
+
+            input.onchange = () => {
+                const file = input.files && input.files[0];
+                if (!file) {
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = async () => {
+                    try {
+                        const result = reader.result || '';
+                        const base64Data = result.toString().split(',')[1] || '';
+
+                        const response = await fetch(`${API_BASE_URL}/api/inscription-proof`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                inscripcion_id: id,
+                                nombre,
+                                email,
+                                telefono,
+                                comprobante_base64: base64Data,
+                                comprobante_tipo: file.type || 'image/png'
+                            })
+                        });
+
+                        const data = await response.json();
+                        if (data.success) {
+                            alert('✅ Comprobante subido exitosamente');
+                            await loadInscripciones();
+                        } else {
+                            alert(`❌ Error: ${data.message || 'No se pudo subir el comprobante'}`);
+                        }
+                    } catch (error) {
+                        console.error('Error uploading inscription proof:', error);
+                        alert('❌ Error al subir el comprobante');
+                    }
+                };
+
+                reader.onerror = () => {
+                    alert('❌ Error al leer el archivo');
+                };
+
+                reader.readAsDataURL(file);
+            };
+
+            input.click();
         }
 
         function loadImageAsync(src) {
