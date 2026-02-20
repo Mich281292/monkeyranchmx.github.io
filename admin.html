@@ -567,6 +567,16 @@
                 <p>Total Inscripciones</p>
                 <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Hoy: <strong id="todayInscripciones" style="color: #b8242f;">0</strong></p>
             </div>
+            <div class="stat-card">
+                <h3 id="totalTickets">0</h3>
+                <p>Total Tickets Generales</p>
+                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Hoy: <strong id="todayTickets" style="color: #b8242f;">0</strong></p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalParking">0</h3>
+                <p>Total Estacionamiento</p>
+                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">Hoy: <strong id="todayParking" style="color: #b8242f;">0</strong></p>
+            </div>
         </div>
 
         <div class="contacts-container">
@@ -803,6 +813,8 @@
             document.getElementById('totalContacts').textContent = allContacts.length;
             document.getElementById('totalVip').textContent = allTicketsVip.length;
             document.getElementById('totalInscripciones').textContent = allInscripciones.length;
+            document.getElementById('totalTickets').textContent = allTickets.length;
+            document.getElementById('totalParking').textContent = allParking.length;
 
             // Contar registros de hoy
             const today = new Date().toDateString();
@@ -822,9 +834,21 @@
                 return inscDate === today;
             }).length;
 
+            const todayTicketsCount = allTickets.filter(ticket => {
+                const ticketDate = new Date(ticket.fecha_compra).toDateString();
+                return ticketDate === today;
+            }).length;
+
+            const todayParkingCount = allParking.filter(park => {
+                const parkDate = new Date(park.fecha_compra).toDateString();
+                return parkDate === today;
+            }).length;
+
             document.getElementById('todayContacts').textContent = todayContactsCount;
             document.getElementById('todayVip').textContent = todayVipCount;
             document.getElementById('todayInscripciones').textContent = todayInscripcionesCount;
+            document.getElementById('todayTickets').textContent = todayTicketsCount;
+            document.getElementById('todayParking').textContent = todayParkingCount;
         }
 
         function switchTab(tab) {
