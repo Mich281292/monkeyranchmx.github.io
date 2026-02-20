@@ -941,7 +941,18 @@
                 return;
             }
 
-            const inscripcionesHTML = inscripciones.map(insc => `
+            const inscripcionesHTML = inscripciones.map(insc => {
+                let proofButtonHtml = '';
+                if (insc.comprobante) {
+                    const proofId = `proof_${proofCounter++}`;
+                    proofsMap[proofId] = {
+                        data: insc.comprobante,
+                        type: insc.comprobante_tipo || 'image/png'
+                    };
+                    proofButtonHtml = `<br><button class="btn-view-proof" onclick="viewProofById('${proofId}')">📸 Ver comprobante</button>`;
+                }
+
+                return `
                 <div class="inscription-card" data-id="${insc.id}">
                     <div class="contact-header">
                         <div class="contact-name">🏍️ ${escapeHtml(insc.nombre)}</div>
@@ -960,10 +971,11 @@
                         <strong>👥 Cantidad de Personas:</strong> ${escapeHtml(insc.cantidad_personas || 'N/A')}<br>
                         <strong>🚗 Cantidad de Vehículos:</strong> ${escapeHtml(insc.cantidad_vehiculos || 'N/A')}<br>
                         <strong>💬 Mensaje:</strong> ${escapeHtml(insc.mensaje || 'N/A')}
+                        ${proofButtonHtml}
                     </div>
                     <button class="delete-btn" onclick="deleteInscripcion(${insc.id})">🗑️ Eliminar</button>
                 </div>
-            `).join('');
+            `}).join('');
 
             contentDiv.innerHTML = `<div class="contacts-grid">${inscripcionesHTML}</div>`;
         }
