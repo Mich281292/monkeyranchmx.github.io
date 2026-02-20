@@ -1,4 +1,4 @@
-// Deployed: 2026-02-20 14:45 UTC
+// Deployed: 2026-02-20 15:15 UTC - Force rebuild with lastVisitTime query
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
