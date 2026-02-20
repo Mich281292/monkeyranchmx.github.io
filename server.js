@@ -1213,6 +1213,20 @@ app.get('/api/visits', async (req, res) => {
     }
 });
 
+// POST endpoint to track page visits (for static hosting)
+app.post('/api/visits/track', async (req, res) => {
+    try {
+        await recordPageVisit();
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Error recording visit:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al registrar afluencia'
+        });
+    }
+});
+
 // DELETE endpoint for parking purchases
 app.delete('/api/parking-purchases/:id', async (req, res) => {
     const { id } = req.params;
