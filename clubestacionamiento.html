@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación Estacionamiento - Monkey Ranch</title>
+    <link rel="icon" type="image/png" href="icono-monkey.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="logo1.png" alt="Monkey Ranch Logo">
+                    </a>
+                </div>
+                <a href="boletos.html" class="header-accesos-btn" title="Boletos">
+                    <i class="fa fa-ticket-alt"></i>
+                    <span>Boletos</span>
+                </a>
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html#home">Inicio</a></li>
+                    <li><a href="index.html#about">Acerca de</a></li>
+                    <li><a href="index.html#services">Servicios</a></li>
+                    <li><a href="vip.html">Experiencia VIP</a></li>
+                    <li><a href="index.html#contact">Contacto</a></li>
+                    <li><button class="theme-toggle" id="themeToggle">🌙</button></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <nav class="contact-bar" id="contactBar" role="region" aria-label="Barra de contacto">
+        <div class="contact-bar-inner">
+            <div class="contact-info">
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/MonkeyRanchqro" class="social-icon" title="Facebook" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="https://www.instagram.com/monkeyranchrideclub" class="social-icon" title="Instagram" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://wa.me/4422222222" class="social-icon whatsapp-icon" title="WhatsApp" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="contact-actions-right">
+                <a class="contact-cta email" href="mailto:monkeyranchmx@gmail.com" title="Email">
+                    <i class="fa fa-envelope"></i>
+                    <span>monkeyranchmx@gmail.com</span>
+                </a>
+                <button class="contact-action-phone" id="callBtn" aria-label="Llamar">
+                    <i class="fa fa-phone"></i>
+                    <span>+52 442 222 2222</span>
+                </button>
+                <a href="inscripcion.html" class="contact-action inscripcion-btn" title="Inscribirse"></a>
+                <button class="contact-close" id="closeContact" aria-label="Cerrar barra de contacto">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="contact-tab" id="contactTab" role="button" tabindex="0" aria-label="Abrir barra de contacto">
+        <i class="fa fa-phone"></i>
+        <span>Contacto</span>
+    </div>
+
+    <main>
+        <section id="club" class="club-section">
+            <div class="container">
+                <div class="club-success-message">
+                    <i class="fas fa-check-circle"></i>
+                    <h1>¡Estacionamiento Confirmado!</h1>
+                    <p class="section-description">Tu reserva de estacionamiento ha sido confirmada. Accede con tranquilidad el día del evento.</p>
+                </div>
+
+                <div class="club-info-grid">
+                    <div class="club-info-card">
+                        <i class="fas fa-envelope"></i>
+                        <h3>Confirmación por Email</h3>
+                        <p>Revisa tu correo electrónico para los detalles de tu estacionamiento.</p>
+                    </div>
+                    <div class="club-info-card club-join-card">
+                        <h2 class="club-join-title">¡Estacionamiento Seguro!</h2>
+                        <p class="club-join-subtitle">Acceso prioritario y área protegida</p>
+                    </div>
+                </div>
+
+                <div class="club-actions">
+                    <a href="index.html" class="cta-button">Volver al Inicio</a>
+                    <a href="boletos.html" class="cta-button">Ver Más Servicios</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="social-media">
+            <h3>Síguenos</h3>
+            <div class="social-links">
+                <a href="https://www.facebook.com/MonkeyRanchqro" target="_blank" aria-label="Facebook">
+                    <span class="social-icon">f</span>
+                </a>
+                <a href="https://www.twitter.com" target="_blank" aria-label="Twitter">
+                    <span class="social-icon">𝕏</span>
+                </a>
+                <a href="https://www.instagram.com/monkeyranchrideclub" target="_blank" aria-label="Instagram">
+                    <span class="social-icon">📷</span>
+                </a>
+                <a href="https://www.youtube.com" target="_blank" aria-label="YouTube">
+                    <span class="social-icon">▶</span>
+                </a>
+            </div>
+        </div>
+        <p>&copy; 2026 Monkey Ranch. Todos los derechos reservados.</p>
+    </footer>
+
+    <style>
+        .club-success-message {
+            text-align: center;
+            margin: 3rem 0;
+            padding: 3rem;
+            background: rgba(0, 0, 0, 0.75);
+            border-radius: 10px;
+            border: 2px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .club-success-message i {
+            font-size: 4rem;
+            color: #4caf50;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .club-success-message h1 {
+            color: #4caf50;
+            margin: 1rem 0;
+            font-size: 2.5rem;
+        }
+
+        .club-success-message p {
+            color: var(--text-color);
+            font-size: 1.1rem;
+            margin: 1rem auto 0;
+            text-align: center;
+            line-height: 1.6;
+            max-width: 600px;
+        }
+
+        .club-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .club-info-card {
+            background: rgba(0, 0, 0, 0.75);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .club-info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .club-info-card i {
+            font-size: 2.5rem;
+            color: #ff6b35;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .club-info-card h3 {
+            font-size: 1.3rem;
+            margin: 1rem 0;
+            color: var(--text-color);
+        }
+
+        .club-info-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .club-join-title {
+            font-size: 2rem;
+            color: #ff6b35;
+            margin: 1.5rem 0;
+            font-weight: bold;
+        }
+
+        .club-join-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+
+        .club-actions {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .club-actions .cta-button {
+            min-width: 200px;
+        }
+
+        @media (max-width: 768px) {
+            .club-success-message {
+                padding: 2rem 1.5rem;
+            }
+
+            .club-success-message h1 {
+                font-size: 1.8rem;
+            }
+
+            .club-success-message i {
+                font-size: 3rem;
+            }
+
+            .club-actions {
+                flex-direction: column;
+            }
+
+            .club-actions .cta-button {
+                width: 100%;
+            }
+        }
+    </style>
+
+    <script src="script.js"></script>
+</body>
+</html>
