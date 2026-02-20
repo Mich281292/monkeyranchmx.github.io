@@ -1,3 +1,4 @@
+// Deployed: 2026-02-20 14:45 UTC
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -68,6 +69,10 @@ function shouldCountPageVisit(req) {
     if (req.path.startsWith('/api/') || req.path.startsWith('/uploads')) {
         return false;
     }
+    // Excluir admin completamente
+    if (req.path.endsWith('admin.html') || req.path === '/admin.html') {
+        return false;
+    }
     if (/\.(css|js|png|jpg|jpeg|gif|svg|ico|webp|map)$/i.test(req.path)) {
         return false;
     }
@@ -77,10 +82,10 @@ function shouldCountPageVisit(req) {
 
 async function recordPageVisit() {
     await pool.query(
-        `INSERT INTO page_visits (visit_date, count)
-         VALUES (CURRENT_DATE, 1)
+        `INSERT INTO page_visits (visit_date, count, last_visit_timestamp)
+         VALUES (CURRENT_DATE, 1, CURRENT_TIMESTAMP)
          ON CONFLICT (visit_date)
-         DO UPDATE SET count = page_visits.count + 1`
+         DO UPDATE SET count = page_visits.count + 1, last_visit_timestamp = CURRENT_TIMESTAMP`
     );
 }
 
@@ -165,8 +170,14 @@ async function initializeDatabase() {
         await pool.query(`
             CREATE TABLE IF NOT EXISTS page_visits (
                 visit_date DATE PRIMARY KEY,
-                count INT NOT NULL DEFAULT 0
+                count INT NOT NULL DEFAULT 0,
+                last_visit_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
+        `);
+        // Agregar columna last_visit_timestamp si no existe
+        await pool.query(`
+            ALTER TABLE page_visits
+            ADD COLUMN IF NOT EXISTS last_visit_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         `);
         console.log('Page visits table ready');
 
@@ -1193,16 +1204,23 @@ app.get('/api/visits', async (req, res) => {
         const rawDays = parseInt(req.query.days || '7', 10);
         const days = Math.min(Math.max(rawDays, 1), 90);
         const result = await pool.query(
-            `SELECT visit_date, count
+            `SELECT visit_date, count, last_visit_timestamp
              FROM page_visits
              WHERE visit_date >= CURRENT_DATE - ($1 || ' days')::interval
              ORDER BY visit_date ASC`,
             [days - 1]
         );
 
+        // Obtener el último timestamp de cualquier página
+        const lastVisitResult = await pool.query(
+            `SELECT MAX(last_visit_timestamp) as last_visit_time FROM page_visits`
+        );
+        const lastVisitTime = lastVisitResult.rows[0]?.last_visit_time || null;
+
         res.json({
             success: true,
-            data: result.rows
+            data: result.rows,
+            lastVisitTime: lastVisitTime
         });
     } catch (err) {
         console.error('Error fetching visits:', err);
@@ -1216,6 +1234,12 @@ app.get('/api/visits', async (req, res) => {
 // POST endpoint to track page visits (for static hosting)
 app.post('/api/visits/track', async (req, res) => {
     try {
+        const path = req.body.path || '';
+        // Excluir admin completamente
+        if (path.includes('admin')) {
+            res.json({ success: true });
+            return;
+        }
         await recordPageVisit();
         res.json({ success: true });
     } catch (err) {

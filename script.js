@@ -1,4 +1,7 @@
 // Theme toggle functionality
+const API_BASE_URL = window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : 'https://monkey-ranch-api.onrender.com';
 const themeToggle = document.getElementById('themeToggle');
 const htmlElement = document.documentElement;
 const body = document.body;
@@ -151,7 +154,7 @@ if (contactForm) {
     submitBtn.textContent = 'Enviando...';
     submitBtn.disabled = true;
 
-    fetch('https://monkey-ranch-api.onrender.com/api/contact', {
+    fetch(`${API_BASE_URL}/api/contact`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -180,6 +183,20 @@ if (contactForm) {
     });
     });
 }
+
+function trackPageVisit() {
+    fetch(`${API_BASE_URL}/api/visits/track`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ path: window.location.pathname })
+    }).catch(error => {
+        console.error('Error tracking visit:', error);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', trackPageVisit);
 
 // Add scroll animation for service cards
 const observerOptions = {

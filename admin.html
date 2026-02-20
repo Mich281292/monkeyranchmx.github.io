@@ -861,12 +861,13 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    renderTrafficChart(data.data || []);
+                    // Mostrar solo datos con count > 0 (admin está excluido completamente)
+                    const chartData = (data.data || []).filter(d => d.count > 0);
+                    renderTrafficChart(chartData);
                     
-                    // Actualizar hora del último registro
-                    if (data.data && data.data.length > 0) {
-                        const lastEntry = data.data[data.data.length - 1];
-                        const lastDate = new Date(lastEntry.visit_date);
+                    // Mostrar la última visita de páginas públicas
+                    if (data.lastVisitTime) {
+                        const lastDate = new Date(data.lastVisitTime);
                         const dateStr = lastDate.toLocaleDateString('es-ES', { 
                             weekday: 'long',
                             year: 'numeric', 
@@ -1146,7 +1147,7 @@
                     <button class="generate-qr-btn" onclick="generateQRInscripcion(${insc.id}, '${escapeHtml(insc.nombre)}', '${insc.email}', '${insc.telefono}')">🔐 Generar QR</button>
                     <button class="delete-btn" onclick="deleteInscripcion(${insc.id})">🗑️ Eliminar</button>
                 </div>
-            `).join('');
+            `}).join('');
 
             contentDiv.innerHTML = `<div class="contacts-grid">${inscripcionesHTML}</div>`;
         }
