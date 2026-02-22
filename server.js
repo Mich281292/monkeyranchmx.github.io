@@ -645,7 +645,17 @@ app.post('/api/inscripcion', async (req, res) => {
 // GET endpoint to fetch all inscriptions
 app.get('/api/inscripciones', async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM inscriptions ORDER BY fecha_creacion DESC');
+        const result = await pool.query(`
+            SELECT 
+                i.*,
+                t.transponder_option,
+                t.transponder_brand,
+                t.transponder_model,
+                t.transponder_notes
+            FROM inscriptions i
+            LEFT JOIN transponder t ON i.id = t.inscripcion_id
+            ORDER BY i.fecha_creacion DESC
+        `);
 
         res.json({
             success: true,
