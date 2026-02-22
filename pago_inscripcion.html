@@ -398,20 +398,73 @@
                         
                         <div class="deposit-info">
                             <p><strong>Por favor realiza la siguiente transferencia:</strong></p>
-                            <p>Depositar <span class="deposit-amount" id="depositAmount">$1,800.00</span> al siguiente número de cuenta:</p>
+                            <p>Depositar <span class="deposit-amount" id="depositAmount">$1,500.00</span> al siguiente número de cuenta:</p>
                             <div class="bank-account">
                                 <span class="bank-account-number">2705661307</span>
                                 <span class="bank-account-name">Monserrat Araceli Perez Rubio</span>
                                 <span class="bank-account-bank">BBVA</span>
                                 <span class="bank-account-clabe">Transferencia interbancaria clave: 012680027056613078</span>
                             </div>
+                        </div>
+
+                        <!-- Sección de Transponder -->
+                        <div class="transponder-section" style="background: rgba(255, 255, 255, 0.08); padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid rgba(255, 255, 255, 0.1);">
+                            <h3 style="color: #fff; margin-bottom: 15px;"><i class="fas fa-microchip"></i> Opciones de Transponder</h3>
                             
-                            <div class="reminder-box">
-                                <i class="fas fa-info-circle"></i>
-                                <p><strong>Recordatorio importante:</strong> Tu inscripción incluye un <strong>transponder</strong>. </p>
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: flex; align-items: center; cursor: pointer; margin-bottom: 10px; color: #fff;">
+                                    <input type="radio" name="transponder_option" value="rent" checked style="width: 18px; height: 18px; cursor: pointer; margin-right: 10px;">
+                                    <span><strong>Rentar Transponder</strong> <span style="color: #ffd700; margin-left: 5px;">+$300.00</span></span>
+                                </label>
+                                <label style="display: flex; align-items: center; cursor: pointer; margin-bottom: 10px; color: #fff;">
+                                    <input type="radio" name="transponder_option" value="own" style="width: 18px; height: 18px; cursor: pointer; margin-right: 10px;">
+                                    <span><strong>Tengo mi Transponder</strong> <span style="color: #ffd700; margin-left: 5px;">+$150.00</span></span>
+                                </label>
                             </div>
 
-                            <p style="margin-top: 20px; font-size: 14px; color: #7f8c8d;"><i class="fas fa-info-circle"></i> Después de realizar la transferencia, sube la captura o ticket de pago.</p>
+                            <!-- Formulario de Registro de Transponder (Oculto inicialmente) -->
+                            <div id="transponder-form" style="display: none; margin-top: 15px; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                                <h4 style="color: #fff; margin-bottom: 12px;"><i class="fas fa-edit"></i> Registro de Transponder</h4>
+                                
+                                <div style="margin-bottom: 12px;">
+                                    <label for="transponder_number" style="color: #fff; display: block; margin-bottom: 5px;">Número de Transponder:</label>
+                                    <input type="text" id="transponder_number" name="transponder_number" placeholder="Ej: 12345" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ddd; box-sizing: border-box;">
+                                </div>
+
+                                <div style="margin-bottom: 12px;">
+                                    <label for="transponder_brand" style="color: #fff; display: block; margin-bottom: 5px;">Marca del Transponder:</label>
+                                    <input type="text" id="transponder_brand" name="transponder_brand" placeholder="Ej: AMB, Sensormatic, etc." style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ddd; box-sizing: border-box;">
+                                </div>
+
+                                <div style="margin-bottom: 12px;">
+                                    <label for="transponder_model" style="color: #fff; display: block; margin-bottom: 5px;">Modelo:</label>
+                                    <input type="text" id="transponder_model" name="transponder_model" placeholder="Ej: RSA+ Dual" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ddd; box-sizing: border-box;">
+                                </div>
+
+                                <div style="margin-bottom: 12px;">
+                                    <label for="transponder_notes" style="color: #fff; display: block; margin-bottom: 5px;">Notas Adicionales (Opcional):</label>
+                                    <textarea id="transponder_notes" name="transponder_notes" placeholder="Condición, año, u otra información relevante" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ddd; box-sizing: border-box; min-height: 60px;"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Resumen de Costos -->
+                            <div style="background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 6px; margin-top: 15px; color: #fff;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span>Inscripción:</span>
+                                    <span id="inscription-cost">$1,500.00</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span>Transponder:</span>
+                                    <span id="transponder-cost">$300.00</span>
+                                </div>
+                                <hr style="border-color: rgba(255, 255, 255, 0.2); margin: 10px 0;">
+                                <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold;">
+                                    <span>Total a Pagar:</span>
+                                    <span id="total-cost">$1,800.00</span>
+                                </div>
+                            </div>
+
+                            <p style="margin-top: 15px; font-size: 13px; color: #bbb;"><i class="fas fa-info-circle"></i> Después de realizar la transferencia, sube la captura o ticket de pago.</p>
                         </div>
 
                         <form id="proofForm">
@@ -502,20 +555,62 @@
 
             // Default if nothing found
             return {
-                total: '$1,800.00',
+                total: '$1,500.00',
                 nombre: '',
                 email: '',
                 telefono: '',
                 cantidad: '1',
-                fecha_evento: ''}
+                fecha_evento: '',
                 inscripcion_id: null
             };
+        }
+
+        // Transponder functionality
+        function updateTotal() {
+            const inscriptionCost = parseFloat(document.getElementById('inscription-cost').textContent.replace('$', '').replace(',', '')) || 1500;
+            const transponderOption = document.querySelector('input[name="transponder_option"]:checked').value;
+            let transponderCost = 0;
+            
+            if (transponderOption === 'rent') {
+                transponderCost = 300;
+            } else if (transponderOption === 'own') {
+                transponderCost = 150;
+            }
+            
+            document.getElementById('transponder-cost').textContent = '$' + transponderCost.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            const total = inscriptionCost + transponderCost;
+            const depositAmount = '$' + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('total-cost').textContent = depositAmount;
+            document.getElementById('depositAmount').textContent = depositAmount;
         }
 
         // Initialize on page load
         window.addEventListener('DOMContentLoaded', () => {
             const data = getPurchaseData();
-            document.getElementById('depositAmount').textContent = data.total || '$1,800.00';
+            document.getElementById('depositAmount').textContent = data.total || '$1,500.00';
+            document.getElementById('inscription-cost').textContent = data.total || '$1,500.00';
+            
+            // Handle transponder option changes
+            const transponderRadios = document.querySelectorAll('input[name="transponder_option"]');
+            transponderRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    const transponderForm = document.getElementById('transponder-form');
+                    if (e.target.value === 'own') {
+                        transponderForm.style.display = 'block';
+                    } else {
+                        transponderForm.style.display = 'none';
+                        // Clear form when not needed
+                        document.getElementById('transponder_number').value = '';
+                        document.getElementById('transponder_brand').value = '';
+                        document.getElementById('transponder_model').value = '';
+                        document.getElementById('transponder_notes').value = '';
+                    }
+                    updateTotal();
+                });
+            });
+            
+            // Set initial total
+            updateTotal();
 
             // Handle file input display
             const fileInput = document.getElementById('comprobante');
@@ -562,7 +657,12 @@
                                 total: data.total,
                                 fecha_evento: data.fecha_evento,
                                 comprobante_base64: base64String,
-                                comprobante_tipo: mimeType
+                                comprobante_tipo: mimeType,
+                                transponder_option: document.querySelector('input[name="transponder_option"]:checked').value,
+                                transponder_number: document.getElementById('transponder_number').value || null,
+                                transponder_brand: document.getElementById('transponder_brand').value || null,
+                                transponder_model: document.getElementById('transponder_model').value || null,
+                                transponder_notes: document.getElementById('transponder_notes').value || null
                             })
                         });
 
