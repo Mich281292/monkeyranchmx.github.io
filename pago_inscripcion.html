@@ -644,6 +644,10 @@
                     submitBtn.disabled = true;
                     submitBtn.textContent = 'Procesando...';
 
+                    // Calculate total cost with transponder
+                    const totalCostText = document.getElementById('total-cost').textContent;
+                    const totalCost = totalCostText.replace('$', '').replace(',', '');
+
                     try {
                         const API_URL = 'https://monkey-ranch-api.onrender.com';
                         const response = await fetch(`${API_URL}/api/inscription-proof`, {
@@ -654,7 +658,7 @@
                                 email: data.email,
                                 telefono: data.telefono,
                                 cantidad: data.cantidad,
-                                total: data.total,
+                                total: totalCost,
                                 fecha_evento: data.fecha_evento,
                                 comprobante_base64: base64String,
                                 comprobante_tipo: mimeType,
