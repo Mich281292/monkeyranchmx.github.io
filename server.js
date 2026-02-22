@@ -440,6 +440,20 @@ async function initializeDatabase() {
             )
         `);
         console.log('Codigos table ready');
+
+        // Transponder table - stores transponder registration data
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS transponder (
+                id SERIAL PRIMARY KEY,
+                inscripcion_id INT REFERENCES inscriptions(id) ON DELETE CASCADE,
+                transponder_option VARCHAR(50) NOT NULL,
+                transponder_brand VARCHAR(100),
+                transponder_model VARCHAR(100),
+                transponder_notes TEXT,
+                fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+        console.log('Transponder table ready');
     } catch (err) {
         console.error('Error creating tables:', err);
     }
@@ -680,7 +694,7 @@ app.post('/api/inscription-proof', async (req, res) => {
         const { 
             nombre, email, telefono, cantidad, fecha_evento, total, inscripcion_id, 
             comprobante_base64, comprobante_tipo, 
-            transponder_option, transponder_number, transponder_brand, transponder_model, transponder_notes 
+            transponder_option, transponder_brand, transponder_model, transponder_notes 
         } = req.body;
 
         if (!comprobante_base64) {
@@ -716,21 +730,47 @@ app.post('/api/inscription-proof', async (req, res) => {
         }
         
         if (inscriptionId) {
-            // Store base64 string directly in TEXT column with transponder data
+            // Store base64 string directly in TEXT column
             try {
                 await pool.query(
                     `UPDATE inscriptions SET 
                         comprobante = $1,
                         comprobante_tipo = $2,
-                        transponder_option = $3,
-                        transponder_number = $4,
-                        transponder_brand = $5,
-                        transponder_model = $6,
-                        transponder_notes = $7,
-                        total_cost = $8
-                    WHERE id = $9`,
-                    [comprobanteData, comprobante_tipo, transponder_option, transponder_number, transponder_brand, transponder_model, transponder_notes, total, inscriptionId]
+                        total_cost = $3
+                    WHERE id = $4`,
+                    [comprobanteData, comprobante_tipo, total, inscriptionId]
                 );
+
+                // Store transponder data in separate table
+                if (transponder_option) {
+                    // Check if transponder record already exists
+                    const existingTransponder = await pool.query(
+                        'SELECT id FROM transponder WHERE inscripcion_id = $1',
+                        [inscriptionId]
+                    );
+
+                    if (existingTransponder.rows.length > 0) {
+                        // Update existing record
+                        await pool.query(
+                            `UPDATE transponder SET 
+                                transponder_option = $1,
+                                transponder_brand = $2,
+                                transponder_model = $3,
+                                transponder_notes = $4,
+                                fecha_registro = CURRENT_TIMESTAMP
+                            WHERE inscripcion_id = $5`,
+                            [transponder_option, transponder_brand, transponder_model, transponder_notes, inscriptionId]
+                        );
+                    } else {
+                        // Insert new record
+                        await pool.query(
+                            `INSERT INTO transponder 
+                                (inscripcion_id, transponder_option, transponder_brand, transponder_model, transponder_notes) 
+                            VALUES ($1, $2, $3, $4, $5)`,
+                            [inscriptionId, transponder_option, transponder_brand, transponder_model, transponder_notes]
+                        );
+                    }
+                }
             } catch (updateErr) {
                 console.error('Error updating inscription:', updateErr.message);
                 throw updateErr;
