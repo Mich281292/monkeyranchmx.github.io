@@ -373,6 +373,12 @@
                 return;
             }
 
+            // Calcular precio según categoría
+            let total = '$1,800.00';
+            if (categoria.includes('Mx2')) {
+                total = '$2,300.00';
+            }
+
             // Recopilar datos de personas
             const personas = [];
             const personasInputs = this.querySelectorAll('.persona-form');
@@ -483,7 +489,7 @@
                         telefono: telefono,
                         cantidad: cantidadPersonas,
                         fecha_evento: new Date().toLocaleDateString('es-ES'),
-                        total: '$1,800.00',
+                        total: total,
                         inscripcion_id: data.id
                     };
                     
@@ -496,7 +502,7 @@
                         telefono: telefono,
                         cantidad: cantidadPersonas,
                         fecha: new Date().toLocaleDateString('es-ES'),
-                        total: '$1,800.00',
+                        total: total,
                         inscripcion_id: data.id
                     });
                     
