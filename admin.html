@@ -1143,7 +1143,15 @@
                         <strong>🏆 Categoría:</strong> ${escapeHtml(insc.categoria || 'N/A')}<br>
                         <strong>👥 Cantidad de Personas:</strong> ${escapeHtml(insc.cantidad_personas || 'N/A')}<br>
                         <strong>🚗 Cantidad de Vehículos:</strong> ${escapeHtml(insc.cantidad_vehiculos || 'N/A')}<br>
-                        <strong>💬 Mensaje:</strong> ${escapeHtml(insc.mensaje || 'N/A')}
+                        <strong>💬 Mensaje:</strong> ${escapeHtml(insc.mensaje || 'N/A')}<br>
+                        <strong>💰 Costo Total:</strong> ${escapeHtml(insc.total_cost || 'N/A')}<br>
+                        <strong>🔌 Transponder:</strong> ${escapeHtml(insc.transponder_option === 'rent' ? 'Renta ($300)' : insc.transponder_option === 'own' ? 'Propio ($150)' : 'N/A')}<br>
+                        ${insc.transponder_option === 'own' ? `
+                            <strong>📱 Número de Transponder:</strong> ${escapeHtml(insc.transponder_number || 'N/A')}<br>
+                            <strong>🏭 Marca:</strong> ${escapeHtml(insc.transponder_brand || 'N/A')}<br>
+                            <strong>🔧 Modelo:</strong> ${escapeHtml(insc.transponder_model || 'N/A')}<br>
+                            ${insc.transponder_notes ? `<strong>📝 Notas:</strong> ${escapeHtml(insc.transponder_notes)}<br>` : ''}
+                        ` : ''}
                         ${proofButtonHtml}
                     </div>
                     <button class="generate-qr-btn" onclick="generateQRInscripcion(${insc.id}, '${escapeHtml(insc.nombre)}', '${insc.email}', '${insc.telefono}')">🔐 Generar QR</button>

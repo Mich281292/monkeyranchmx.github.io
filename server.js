@@ -224,7 +224,14 @@ async function initializeDatabase() {
             ADD COLUMN IF NOT EXISTS instagram VARCHAR(255),
             ADD COLUMN IF NOT EXISTS facebook VARCHAR(255),
             ADD COLUMN IF NOT EXISTS club_exclusivo VARCHAR(50),
-            ADD COLUMN IF NOT EXISTS comprobante TEXT
+            ADD COLUMN IF NOT EXISTS comprobante TEXT,
+            ADD COLUMN IF NOT EXISTS transponder_option VARCHAR(50),
+            ADD COLUMN IF NOT EXISTS transponder_number VARCHAR(100),
+            ADD COLUMN IF NOT EXISTS transponder_brand VARCHAR(100),
+            ADD COLUMN IF NOT EXISTS transponder_model VARCHAR(100),
+            ADD COLUMN IF NOT EXISTS transponder_notes TEXT,
+            ADD COLUMN IF NOT EXISTS total_cost VARCHAR(50),
+            ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
         `);
         console.log('Inscriptions table ready');
 
@@ -670,7 +677,11 @@ app.delete('/api/inscripciones/:id', async (req, res) => {
 // POST endpoint for inscription proof of payment
 app.post('/api/inscription-proof', async (req, res) => {
     try {
-        const { nombre, email, telefono, cantidad, fecha_evento, total, inscripcion_id, comprobante_base64, comprobante_tipo } = req.body;
+        const { 
+            nombre, email, telefono, cantidad, fecha_evento, total, inscripcion_id, 
+            comprobante_base64, comprobante_tipo, 
+            transponder_option, transponder_number, transponder_brand, transponder_model, transponder_notes 
+        } = req.body;
 
         if (!comprobante_base64) {
             return res.status(400).json({
@@ -705,11 +716,20 @@ app.post('/api/inscription-proof', async (req, res) => {
         }
         
         if (inscriptionId) {
-            // Store base64 string directly in TEXT column
+            // Store base64 string directly in TEXT column with transponder data
             try {
                 await pool.query(
-                    'UPDATE inscriptions SET comprobante = $1 WHERE id = $2',
-                    [comprobanteData, inscriptionId]
+                    `UPDATE inscriptions SET 
+                        comprobante = $1,
+                        comprobante_tipo = $2,
+                        transponder_option = $3,
+                        transponder_number = $4,
+                        transponder_brand = $5,
+                        transponder_model = $6,
+                        transponder_notes = $7,
+                        total_cost = $8
+                    WHERE id = $9`,
+                    [comprobanteData, comprobante_tipo, transponder_option, transponder_number, transponder_brand, transponder_model, transponder_notes, total, inscriptionId]
                 );
             } catch (updateErr) {
                 console.error('Error updating inscription:', updateErr.message);
