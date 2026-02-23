@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pago Inscripción - Monkey Ranch</title>
+        <title>Pago de Inscripción - Monkey Ranch</title>
     <link rel="icon" type="image/png" href="icono-monkey.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
@@ -15,14 +14,13 @@
             background-size: cover;
             background-position: center top;
             background-repeat: no-repeat;
-            
+            background-attachment: fixed;
             position: relative;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-
         @media (max-width: 480px) {
             .proof-section {
                 background-image: url('fondomoviles.png');
@@ -32,7 +30,6 @@
                 background-repeat: no-repeat;
             }
         }
-
         @media (min-width: 481px) and (max-width: 768px) {
             .proof-section {
                 background-attachment: scroll;
@@ -41,7 +38,6 @@
                 background-repeat: no-repeat;
             }
         }
-
         .proof-section::before {
             content: '';
             position: absolute;
@@ -52,34 +48,28 @@
             background-color: rgba(0, 0, 0, 0.45);
             z-index: 1;
         }
-
         .proof-section .container {
             position: relative;
             z-index: 2;
         }
-
         .proof-section h1 {
             font-weight: 700;
             text-align: center;
             font-size: 2.5rem;
             margin-bottom: 1rem;
             color: white;
-        .transponder-section {
-            margin-bottom: 30px;
-            color: #ffe066;
         }
+        .proof-section .section-description {
             text-align: center;
             font-size: 1.1rem;
             margin-bottom: 2rem;
             color: #f0f0f0;
         }
-
         .proof-form-container {
             max-width: 600px;
             margin: 3rem auto;
             animation: slideIn 0.4s ease-out;
         }
-
         .proof-form {
             background: rgba(0, 0, 0, 0.5);
             border: 2px solid #b8242f;
@@ -87,26 +77,22 @@
             padding: 2.5rem;
             backdrop-filter: blur(10px);
         }
-
         .proof-form h2 {
             color: #b8242f;
             font-size: 1.8rem;
             margin-bottom: 2rem;
             text-align: center;
         }
-
         @keyframes slideIn {
-            .transponder-section {
-                margin-bottom: 30px;
-                color: #ffe066;
-            }
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-
         .deposit-info {
             background: rgba(255, 255, 255, 0.1);
             border-left: 4px solid #b8242f;
@@ -115,36 +101,34 @@
             border-radius: 6px;
             margin-bottom: 2rem;
         }
-
         .deposit-info p {
             margin: 10px 0;
             color: rgba(255, 255, 255, 0.9);
             font-size: 1rem;
         }
-
         .deposit-amount {
             font-size: 28px;
-            font-weight: 700;
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: white;
+            font-weight: bold;
+            color: #ff4444;
+            margin: 15px 0;
         }
-
-        .transponder-section {
-            margin-bottom: 30px;
-            color: #ffe066;
-        }
+        .bank-account {
+            font-size: 22px;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #b8242f;
             border-radius: 6px;
             text-align: center;
         }
-
         .bank-account-number {
             display: block;
             font-size: 28px;
             font-weight: 700;
         }
-
         .bank-account-bank {
             display: block;
             font-size: 22px;
@@ -152,7 +136,6 @@
             letter-spacing: 2px;
             margin-top: 6px;
         }
-
         .bank-account-name,
         .bank-account-clabe {
             display: block;
@@ -160,43 +143,11 @@
             letter-spacing: 0;
             margin-top: 6px;
         }
-
-        .reminder-box {
-            background: rgba(76, 175, 80, 0.1);
-            border-left: 4px solid #4caf50;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 6px;
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-        }
-
-        .reminder-box i {
-            color: #4caf50;
-            font-size: 1.3rem;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        .reminder-box p {
-            color: rgba(255, 255, 255, 0.9);
-            margin: 0;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        .reminder-box strong {
-            color: #4caf50;
-            font-weight: 600;
-        }
-
         .file-upload-group {
             margin: 1.5rem 0;
             display: flex;
             flex-direction: column;
         }
-
         .file-upload-group label {
             display: block;
             margin-bottom: 0.7rem;
@@ -204,19 +155,16 @@
             font-weight: 600;
             font-size: 1rem;
         }
-
         .file-input-wrapper {
             position: relative;
             overflow: hidden;
             display: inline-block;
             width: 100%;
         }
-
         .file-input-wrapper input[type=file] {
             position: absolute;
             left: -9999px;
         }
-
         .file-input-label {
             display: flex;
             align-items: center;
@@ -230,18 +178,15 @@
             color: rgba(255, 255, 255, 0.8);
             font-weight: 600;
         }
-
         .file-input-label:hover {
             background: rgba(255, 255, 255, 0.1);
             border-color: #ff4444;
             color: #ff4444;
         }
-
         .file-input-label i {
             margin-right: 10px;
             font-size: 24px;
         }
-
         .file-name {
             margin-top: 10px;
             padding: 10px;
@@ -251,7 +196,6 @@
             display: none;
             border-left: 3px solid #b8242f;
         }
-
         .submit-btn {
             width: 100%;
             padding: 1rem 1.5rem;
@@ -268,58 +212,37 @@
             align-items: center;
             justify-content: center;
         }
-
         .submit-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 15px rgba(184, 36, 47, 0.4);
         }
-
         .submit-btn:active {
             transform: translateY(0);
         }
-
         .submit-btn:disabled {
             background: rgba(255, 255, 255, 0.1);
             cursor: not-allowed;
             transform: none;
         }
-
         @media (max-width: 768px) {
             .proof-section {
                 padding: 40px 20px;
             }
-
             .proof-form-container {
                 margin: 2rem 1rem;
             }
-
             .proof-form {
                 padding: 1.5rem;
             }
-
             .proof-section h1 {
                 font-size: 1.8rem;
             }
-
             .deposit-amount {
                 font-size: 24px;
             }
-
             .bank-account {
                 font-size: 18px;
                 letter-spacing: 2px;
-            }
-
-            .reminder-box {
-                gap: 10px;
-            }
-
-            .reminder-box i {
-                font-size: 1.1rem;
-            }
-
-            .reminder-box p {
-                font-size: 0.9rem;
             }
         }
     </style>
@@ -353,89 +276,70 @@
             </div>
         </nav>
     </header>
-
     <nav class="contact-bar" id="contactBar" role="region" aria-label="Barra de contacto">
-        <div class="deposit-info">
-            <p><strong>Por favor realiza la siguiente transferencia:</strong></p>
-            <p>Depositar <span class="deposit-amount" id="depositAmount">$1,500.00</span> al siguiente número de cuenta:</p>
-            <div class="bank-account">
-                <span class="bank-account-number">2705661307</span>
-                <span class="bank-account-name">Monserrat Araceli Perez Rubio</span>
-                <span class="bank-account-bank">BBVA</span>
-                <span class="bank-account-clabe">Transferencia interbancaria clave: 012680027056613078</span>
-            </div>
-        </div>
-
-        <!-- Sección de Transponder -->
-        <div class="transponder-section" style="margin-bottom: 30px;">
-            <h3>Transponder</h3>
-            <label>
-                <input type="radio" name="transponder_option" value="rent" checked>
-                Renta de transponder <strong>($300)</strong>
-            </label>
-            <label>
-                <input type="radio" name="transponder_option" value="own">
-                Tengo mi Transponder <strong>($150)</strong>
-            </label>
-            <div style="margin-top: 18px;">
-                <div>
-                    <span>Inscripción:</span>
-                    <span id="inscription-cost">$1,500.00</span>
-                </div>
-                <div>
-                    <span>Transponder:</span>
-                    <span id="transponder-cost">$300.00</span>
-                </div>
-                <hr>
-                <div>
-                    <span><strong>Total a pagar:</strong></span>
-                    <span id="total-cost">$1,800.00</span>
+        <div class="contact-bar-inner">
+            <div class="contact-info">
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/MonkeyRanchqro" class="social-icon" title="Facebook" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="https://www.instagram.com/monkeyranchrideclub" class="social-icon" title="Instagram" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://wa.me/5214421234567" class="social-icon" title="WhatsApp" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="tel:+5214421234567" class="social-icon" title="Llamar">
+                        <i class="fas fa-phone"></i>
+                    </a>
+                    <a href="mailto:info@monkeyranch.com" class="social-icon" title="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
                 </div>
             </div>
-            <p style="margin-top: 10px; font-size: 13px; color: #bbb;">Selecciona si deseas rentar un transponder o si ya cuentas con uno propio. El total se actualizará automáticamente.</p>
+            <button class="close-contact-bar" aria-label="Cerrar barra de contacto">
+                <i class="fa fa-times"></i>
+            </button>
         </div>
-                        <h2>Depósito Bancario</h2>
+    </nav>
+    <div class="contact-tab" id="contactTab" role="button" tabindex="0" aria-label="Abrir barra de contacto">
+        <i class="fa fa-phone"></i>
+        <span>Contacto</span>
+    </div>
+    <main>
+        <section id="proof-section" class="proof-section">
+            <div class="container">
+                    <h1>Pago de Inscripción</h1>
+                <p class="section-description">Verifica tu depósito para completar la transacción</p>
+                <div class="proof-form-container">
+                    <div class="proof-form">
+                        <h2>🏁 Depósito Bancario Inscripción</h2>
                         <div class="deposit-info">
                             <p><strong>Por favor realiza la siguiente transferencia:</strong></p>
-                            <p>Depositar <span class="deposit-amount" id="depositAmount">$1,500.00</span> al siguiente número de cuenta:</p>
+                            <p>Depositar <span class="deposit-amount" id="depositAmount">$1800.00</span> al siguiente número de cuenta:</p>
                             <div class="bank-account">
                                 <span class="bank-account-number">2705661307</span>
                                 <span class="bank-account-name">Monserrat Araceli Perez Rubio</span>
                                 <span class="bank-account-bank">BBVA</span>
                                 <span class="bank-account-clabe">Transferencia interbancaria clave: 012680027056613078</span>
                             </div>
+                            <p style="margin-top: 20px; font-size: 14px; color: #7f8c8d;"><i class="fas fa-info-circle"></i> Después de realizar la transferencia, sube la captura o ticket de pago.</p>
                         </div>
-                        <div class="transponder-section" style="margin-bottom: 30px;">
-                            <h3>Transponder</h3>
-                            <label>
-                                <input type="radio" name="transponder_option" value="rent" checked>
-                                Renta de transponder <strong>($300)</strong>
-                            </label>
-                            <label>
-                                <input type="radio" name="transponder_option" value="own">
-                                Tengo mi Transponder <strong>($150)</strong>
-                            </label>
-                            <div style="margin-top: 18px;">
-                                <div>
-                                    <span>Inscripción:</span>
-                                    <span id="inscription-cost">$1,500.00</span>
-                                </div>
-                                <div>
-                                    <span>Transponder:</span>
-                                    <span id="transponder-cost">$300.00</span>
-                                </div>
-                                <hr>
-                                <div>
-                                    <span><strong>Total a pagar:</strong></span>
-                                    <span id="total-cost">$1,800.00</span>
-                                </div>
+                        <!-- Sección Transponder -->
+                        <div class="transponder-section" style="background: rgba(255,255,255,0.08); border-left: 4px solid #b8242f; padding: 20px; border-radius: 6px; margin-bottom: 2rem; margin-top: 1.5rem;">
+                            <h3 style="color:#fff; margin-bottom: 1rem;">Transponder</h3>
+                            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                <label style="color:#fff; font-weight:500;">
+                                    <input type="radio" name="transponder_option" value="rent" checked style="margin-right: 8px;"> Rentar transponder <span style="color:#ff4444; font-weight:700;">$300</span>
+                                </label>
+                                <label style="color:#fff; font-weight:500;">
+                                    <input type="radio" name="transponder_option" value="own" style="margin-right: 8px;"> Tengo mi Transponder (Registro) <span style="color:#ff4444; font-weight:700;">$150</span>
+                                </label>
                             </div>
-                            <p style="margin-top: 10px; font-size: 13px; color: #bbb;">Selecciona si deseas rentar un transponder o si ya cuentas con uno propio. El total se actualizará automáticamente.</p>
                         </div>
-
                         <form id="proofForm">
-                            <div class="file-upload-group">
-                            </div>
+                            <!-- Hidden input for deposit amount -->
+                            <input type="hidden" id="depositAmountInput" name="deposit_amount" value="1500.00">
                             <div class="file-upload-group">
                                 <label for="comprobante">Por favor sube la captura de tu transferencia o ticket de pago:</label>
                                 <div class="file-input-wrapper">
@@ -447,11 +351,10 @@
                                 </div>
                                 <div class="file-name" id="fileName"></div>
                             </div>
-
                             <button type="submit" class="submit-btn">
                                 <i class="fas fa-check"></i> Verificar Comprobante
                             </button>
-                            <button type="button" class="submit-btn" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); margin-top: 10px;" onmouseover="this.style.background='rgba(255, 255, 255, 0.2)'; this.style.borderColor='rgba(255, 255, 255, 0.4)" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.borderColor='rgba(255, 255, 255, 0.2)" onclick="window.location.href='inscripcion.html'">
+                            <button type="button" class="submit-btn" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); margin-top: 10px;" onmouseover="this.style.background='rgba(255, 255, 255, 0.2)'; this.style.borderColor='rgba(255, 255, 255, 0.4)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.borderColor='rgba(255, 255, 255, 0.2)';" onclick="window.location.href='estacionamiento.html'">
                                 <i class="fas fa-arrow-left"></i> Volver
                             </button>
                         </form>
@@ -460,7 +363,6 @@
             </div>
         </section>
     </main>
-
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -489,7 +391,6 @@
             </div>
         </div>
     </footer>
-
     <script>
         // Get purchase data from sessionStorage or URL
         function getPurchaseData() {
@@ -499,164 +400,124 @@
             const nombreFromUrl = urlParams.get('nombre');
             const emailFromUrl = urlParams.get('email');
             const telefonoFromUrl = urlParams.get('telefono');
+            const placasFromUrl = urlParams.get('placas');
             const cantidadFromUrl = urlParams.get('cantidad');
             const fechaFromUrl = urlParams.get('fecha');
-            const inscripcionIdFromUrl = urlParams.get('inscripcion_id');
-
             if (totalFromUrl) {
                 return {
                     total: totalFromUrl,
                     nombre: nombreFromUrl,
                     email: emailFromUrl,
                     telefono: telefonoFromUrl,
+                    placas: placasFromUrl,
                     cantidad: cantidadFromUrl,
-                    fecha_evento: fechaFromUrl,
-                    inscripcion_id: inscripcionIdFromUrl
+                    fecha_evento: fechaFromUrl
                 };
             }
-
             // Otherwise try sessionStorage
             const data = sessionStorage.getItem('purchaseData');
             if (data) {
                 return JSON.parse(data);
             }
-
             // Default if nothing found
             return {
-                total: '$1,500.00',
+                total: '$150.00',
                 nombre: '',
                 email: '',
                 telefono: '',
+                placas: '',
                 cantidad: '1',
-                fecha_evento: '',
-                inscripcion_id: null
+                fecha_evento: ''
             };
         }
+            // Monto dinámico según transponder
+            const INSCRIPCION_COSTO = 1500;
+            const TRANSPONDER_RENTA = 300;
+            const TRANSPONDER_PROPIO = 150;
 
-        // Transponder functionality
-        function updateTotal() {
-            const inscriptionCost = parseFloat(document.getElementById('inscription-cost').textContent.replace('$', '').replace(',', '')) || 1500;
-            const transponderOption = document.querySelector('input[name="transponder_option"]:checked').value;
-            let transponderCost = 0;
-            if (transponderOption === 'rent') {
-                transponderCost = 300;
-            } else if (transponderOption === 'own') {
-                transponderCost = 150;
+            function formatMoney(num) {
+                return '$' + num.toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2});
             }
-            document.getElementById('transponder-cost').textContent = '$' + transponderCost.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            const total = inscriptionCost + transponderCost;
-            const depositAmount = '$' + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            document.getElementById('total-cost').textContent = depositAmount;
-            document.getElementById('depositAmount').textContent = depositAmount;
-        }
+
+            function updateDepositAmount() {
+                const transponder = document.querySelector('input[name="transponder_option"]:checked').value;
+                let total = INSCRIPCION_COSTO;
+                if (transponder === 'rent') {
+                    total += TRANSPONDER_RENTA;
+                } else {
+                    total += TRANSPONDER_PROPIO;
+                }
+                document.getElementById('depositAmount').textContent = formatMoney(total);
+                // Update hidden input value
+                document.getElementById('depositAmountInput').value = total;
+            }
 
         // Initialize on page load
         window.addEventListener('DOMContentLoaded', () => {
             const data = getPurchaseData();
-            document.getElementById('depositAmount').textContent = data.total || '$1,500.00';
-            document.getElementById('inscription-cost').textContent = data.total || '$1,500.00';
-
-            // Handle transponder option changes
-            const transponderRadios = document.querySelectorAll('input[name="transponder_option"]');
-            const transponderForm = document.getElementById('transponder-form');
-            transponderRadios.forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    if (e.target.value === 'rent') {
-                        transponderForm.style.display = 'block';
-                    } else {
-                        transponderForm.style.display = 'none';
-                        // Clear form when not needed
-                        document.getElementById('transponder_brand').value = '';
-                        document.getElementById('transponder_model').value = '';
-                        document.getElementById('transponder_notes').value = '';
-                    }
-                    updateTotal();
-                });
-            });
-            // Set initial state
-            if (document.querySelector('input[name="transponder_option"]:checked').value === 'rent') {
-                transponderForm.style.display = 'block';
-            } else {
-                transponderForm.style.display = 'none';
+            // Mostrar $1800.00 por defecto en el texto
+            document.getElementById('depositAmount').textContent = '$1800.00';
+            // Set initial hidden input value a 1500
+            const depositAmountInput = document.getElementById('depositAmountInput');
+            if (depositAmountInput) {
+                depositAmountInput.value = 1500;
             }
-            // Set initial total
-            updateTotal();
-
+            // Update deposit amount when transponder option changes
+            document.querySelectorAll('input[name="transponder_option"]').forEach(radio => {
+                radio.addEventListener('change', updateDepositAmount);
+            });
             // Handle file input display
             const fileInput = document.getElementById('comprobante');
             const fileLabel = document.querySelector('.file-input-label');
             const fileName = document.getElementById('fileName');
-
             fileInput.addEventListener('change', (e) => {
                 if (e.target.files.length > 0) {
                     fileName.textContent = '✓ Archivo seleccionado: ' + e.target.files[0].name;
                     fileName.style.display = 'block';
                 }
             });
-
             // Handle form submission
             document.getElementById('proofForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
-
                 const file = fileInput.files[0];
                 if (!file) {
                     alert('Por favor selecciona un archivo');
                     return;
                 }
-
-                // Validar campos del transponder si se seleccionó "Tengo mi Transponder"
-                const transponderOption = document.querySelector('input[name="transponder_option"]:checked').value;
-                if (transponderOption === 'own') {
-                    // Ya no se requiere validar campos de transponder
-                }
-
-                // Validar que exista inscripcion_id
-                const data = getPurchaseData();
-                if (!data.inscripcion_id) {
-                    alert('No se encontró el ID de inscripción. Por favor vuelve a inscribirte o recarga la página.');
-                    return;
-                }
-
                 // Convert file to Base64
                 const reader = new FileReader();
                 reader.onload = async (event) => {
                     const base64String = event.target.result.split(',')[1]; // Remove data:image/... prefix
                     const mimeType = file.type || 'application/octet-stream';
-
                     const submitBtn = document.querySelector('.submit-btn');
                     submitBtn.disabled = true;
                     submitBtn.textContent = 'Procesando...';
-
-                    // Calculate total cost with transponder
-                    const totalCostText = document.getElementById('total-cost').textContent;
-                    const totalCost = totalCostText.replace('$', '').replace(',', '');
-
                     try {
                         const API_URL = 'https://monkey-ranch-api.onrender.com';
-                        const response = await fetch(`${API_URL}/api/inscription-proof`, {
+                        // Get the current deposit amount from the hidden input
+                        const depositAmountValue = document.getElementById('depositAmountInput').value;
+                        const response = await fetch(`${API_URL}/api/parking-purchase-proof`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 nombre: data.nombre,
                                 email: data.email,
                                 telefono: data.telefono,
+                                placas: data.placas,
                                 cantidad: data.cantidad,
-                                total: totalCost,
+                                total: data.total,
                                 fecha_evento: data.fecha_evento,
-                                inscripcion_id: data.inscripcion_id || null,
+                                deposit_amount: depositAmountValue,
                                 comprobante_base64: base64String,
-                                comprobante_tipo: mimeType,
-                                transponder_option: document.querySelector('input[name="transponder_option"]:checked').value
+                                comprobante_tipo: mimeType
                             })
                         });
-
                         const result = await response.json();
-
                         if (result.success) {
-                            alert('¡Comprobante recibido! Verificaremos tu inscripción pronto. Tu transponder estará listo para ti.');
+                            alert('¡Comprobante recibido! Procesaremos tu solicitud pronto.');
                             sessionStorage.removeItem('purchaseData');
                             setTimeout(() => {
-                                window.location.href = 'club.html';
+                                window.location.href = 'clubestacionamiento.html';
                             }, 1500);
                         } else {
                             alert('Error: ' + result.message);
@@ -672,7 +533,6 @@
                 };
                 reader.readAsDataURL(file);
             });
-
             // Mobile menu toggle
             const mobileMenuToggle = document.getElementById('mobileMenuToggle');
             const navLinks = document.getElementById('navLinks');
@@ -681,24 +541,20 @@
                     navLinks.classList.toggle('active');
                 });
             }
-
             // Contact bar functionality
             const contactTab = document.getElementById('contactTab');
             const contactBar = document.getElementById('contactBar');
             const closeContactBar = document.querySelector('.close-contact-bar');
-
             if (contactTab) {
                 contactTab.addEventListener('click', () => {
                     contactBar.classList.toggle('active');
                 });
             }
-
             if (closeContactBar) {
                 closeContactBar.addEventListener('click', () => {
                     contactBar.classList.remove('active');
                 });
             }
-
             // Theme toggle
             const themeToggle = document.getElementById('themeToggle');
             if (themeToggle) {
@@ -708,7 +564,6 @@
                     localStorage.setItem('darkMode', isDarkMode);
                     themeToggle.textContent = isDarkMode ? '☀️' : '🌙';
                 });
-
                 const isDarkMode = localStorage.getItem('darkMode') === 'true';
                 if (isDarkMode) {
                     document.body.classList.add('dark-mode');

@@ -1,3 +1,72 @@
+// Inscription form submission
+const inscriptionForm = document.querySelector('#inscriptionForm');
+if (inscriptionForm) {
+    inscriptionForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const nombre = this.querySelector('input[name="nombre"]').value.trim();
+        const email = this.querySelector('input[name="email"]').value.trim();
+        const telefono = this.querySelector('input[name="telefono"]').value.trim();
+        const cc = this.querySelector('input[name="cc"]').value.trim();
+        const edad = this.querySelector('input[name="edad"]').value.trim();
+        const numero_moto = this.querySelector('input[name="numero_moto"]').value.trim();
+        const numero_licencia = this.querySelector('input[name="numero_licencia"]').value.trim();
+        const categoria = this.querySelector('#categoriaSelect').value;
+        const club_exclusivo = this.querySelector('#clubExclusivoSelect').value;
+
+        // Validación básica
+        if (!nombre || !email || !telefono || !cc || !edad || !numero_moto || !numero_licencia || !categoria) {
+            alert('Por favor, completa todos los campos requeridos.');
+            return;
+        }
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert('Por favor, ingresa un email válido.');
+            return;
+        }
+
+        const submitBtn = this.querySelector('.submit-btn');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Enviando...';
+        submitBtn.disabled = true;
+
+        fetch(`${API_BASE_URL}/api/inscripcion`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nombre,
+                email,
+                telefono,
+                cc,
+                edad,
+                numero_moto,
+                numero_licencia,
+                categoria,
+                club_exclusivo
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Redirigir a pago_inscripcion.html
+                window.location.href = 'pago_inscripcion.html';
+            } else {
+                alert('Error: ' + (data.message || 'No se pudo guardar la inscripción.'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al enviar la inscripción. Por favor, intenta de nuevo.');
+        })
+        .finally(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        });
+    });
+}
 // Theme toggle functionality
 const API_BASE_URL = window.location.hostname === 'localhost'
     ? 'http://localhost:3000'
