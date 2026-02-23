@@ -207,26 +207,24 @@ async function initializeDatabase() {
                 numero_moto VARCHAR(100),
                 numero_licencia VARCHAR(100),
                 categoria VARCHAR(100),
-                fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                personas JSONB,
+                vehiculos JSONB,
+                fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                comprobante TEXT,
+                comprobante_tipo VARCHAR(50),
+                transponder_option VARCHAR(50),
+                transponder_number VARCHAR(100),
+                transponder_brand VARCHAR(100),
+                transponder_model VARCHAR(100),
+                transponder_notes TEXT,
+                total_cost VARCHAR(50)
             )
         `);
-        
         // Add new columns if they don't exist
         await pool.query(`
             ALTER TABLE inscriptions 
-            ADD COLUMN IF NOT EXISTS cc VARCHAR(50) NOT NULL,
-            ADD COLUMN IF NOT EXISTS edad INT,
-            ADD COLUMN IF NOT EXISTS numero_moto VARCHAR(100),
-            ADD COLUMN IF NOT EXISTS numero_licencia VARCHAR(100),
-            ADD COLUMN IF NOT EXISTS club_exclusivo VARCHAR(50),
-            ADD COLUMN IF NOT EXISTS comprobante TEXT,
-            ADD COLUMN IF NOT EXISTS transponder_option VARCHAR(50),
-            ADD COLUMN IF NOT EXISTS transponder_number VARCHAR(100),
-            ADD COLUMN IF NOT EXISTS transponder_brand VARCHAR(100),
-            ADD COLUMN IF NOT EXISTS transponder_model VARCHAR(100),
-            ADD COLUMN IF NOT EXISTS transponder_notes TEXT,
-            ADD COLUMN IF NOT EXISTS total_cost VARCHAR(50),
-            ADD COLUMN IF NOT EXISTS comprobante_tipo VARCHAR(50)
+            ADD COLUMN IF NOT EXISTS personas JSONB,
+            ADD COLUMN IF NOT EXISTS vehiculos JSONB
         `);
         console.log('Inscriptions table ready');
 
