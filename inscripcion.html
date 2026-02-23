@@ -84,8 +84,7 @@
                     <input type="text" name="nombre" placeholder="Tu nombre" required>
                     <input type="email" name="email" placeholder="Tu email" required>
                     <input type="tel" name="telefono" placeholder="Tu teléfono" required>
-                    <input type="text" name="instagram" placeholder="Instagram (opcional)">
-                    <input type="text" name="facebook" placeholder="Facebook (opcional)">
+                    <input type="text" name="cc" placeholder="Cédula de identidad" required>
                     <input type="number" name="edad" placeholder="Tu edad" min="1" max="120" required>
                     <input type="text" name="numero_moto" placeholder="Número de moto" required>
                     <input type="text" name="numero_licencia" placeholder="Número de licencia" required>
@@ -118,39 +117,7 @@
                         </select>
                     </div>
                     <div class="question-block">
-                        <label for="cantidadPersonasSelect">¿Cuántas personas ingresan contigo?</label>
-                        <small class="question-help">Incluye acompañantes, mecánicos o staff.</small>
-                        <select id="cantidadPersonasSelect" placeholder="Cantidad de personas" required>
-                            <option value="">Selecciona una opción</option>
-                            <option value="0">Solo yo (0 personas)</option>
-                            <option value="1">1 persona</option>
-                            <option value="2">2 personas</option>
-                            <option value="3">3 personas</option>
-                            <option value="4">4 personas</option>
-                            <option value="contacto">Si requieres acceder con más personas, ponte en contacto con Monkey Ranch; da clic aquí</option>
-                        </select>
-                    </div>
-                    <div id="personasContainer"></div>
-                    <div class="question-block">
-                        <label for="cantidadVehiculosSelect">¿Con cuántos vehículos ingresas?</label>
-                        <small class="question-help">Incluye motos, camionetas y remolques.</small>
-                        <select id="cantidadVehiculosSelect" placeholder="Cantidad de vehículos" required>
-                            <option value="">Selecciona una opción</option>
-                            <option value="1">1 vehículo</option>
-                            <option value="2">2 vehículos</option>
-                            <option value="3">3 vehículos</option>
-                            <option value="4">4 vehículos</option>
-                            <option value="5">5 vehículos</option>
-                            <option value="6">6 vehículos</option>
-                            <option value="7">7 vehículos</option>
-                            <option value="8">8 vehículos</option>
-                            <option value="9">9 vehículos</option>
-                            <option value="10">10 vehículos</option>
-                            <option value="10+">Más de 10 vehículos</option>
-                        </select>
-                    </div>
-                    <div id="vehiculosContainer"></div>
-                    <textarea name="mensaje" placeholder="Tu mensaje" rows="5" required></textarea>
+                    <!-- Eliminado: personas, vehículos, mensaje, instagram, facebook -->
                     <div class="question-block">
                         <label for="clubExclusivoSelect">¿Te gustaría pertenecer a nuestro club exclusivo para practicar en nuestras instalaciones?</label>
                         <small class="question-help">Respuesta opcional, solo para interés general.</small>
@@ -266,15 +233,12 @@
             const nombre = this.querySelector('input[name="nombre"]').value.trim();
             const email = this.querySelector('input[name="email"]').value.trim();
             const telefono = this.querySelector('input[name="telefono"]').value.trim();
-            const instagram = this.querySelector('input[name="instagram"]').value.trim();
-            const facebook = this.querySelector('input[name="facebook"]').value.trim();
+            const cc = this.querySelector('input[name="cc"]').value.trim();
             const edad = this.querySelector('input[name="edad"]').value.trim();
             const numero_moto = this.querySelector('input[name="numero_moto"]').value.trim();
             const numero_licencia = this.querySelector('input[name="numero_licencia"]').value.trim();
             const categoria = this.querySelector('#categoriaSelect').value;
-            const cantidadPersonas = cantidadPersonasSelect.value;
-            const cantidadVehiculos = cantidadVehiculosSelect.value;
-            const mensaje = this.querySelector('textarea[name="mensaje"]').value.trim();
+            // Eliminado: cantidadPersonas, cantidadVehiculos, mensaje
             const club_exclusivo = this.querySelector('select[name="club_exclusivo"]').value;
             const mainInputs = [
                 this.querySelector('input[name="nombre"]'),
@@ -284,9 +248,7 @@
                 this.querySelector('input[name="numero_moto"]'),
                 this.querySelector('input[name="numero_licencia"]'),
                 this.querySelector('#categoriaSelect'),
-                this.querySelector('#cantidadPersonasSelect'),
-                this.querySelector('#cantidadVehiculosSelect'),
-                this.querySelector('textarea[name="mensaje"]')
+                this.querySelector('input[name="cc"]')
             ];
             
             // Validación cliente
@@ -379,78 +341,9 @@
                 total = '$2,000.00';
             }
 
-            // Recopilar datos de personas
-            const personas = [];
-            const personasInputs = this.querySelectorAll('.persona-form');
-            
-            personasInputs.forEach((forma, index) => {
-                const personaNombre = forma.querySelector('.persona-nombre').value.trim();
-                const personaEdad = forma.querySelector('.persona-edad').value.trim();
-                const personaSexo = forma.querySelector('.persona-sexo').value;
-                const personaRol = forma.querySelector('.persona-rol').value;
+            // Eliminado: recopilación y validación de personas y vehículos
 
-                if (!personaNombre || !personaEdad || !personaSexo || !personaRol) {
-                    isValid = false;
-                    if (!personaNombre) forma.querySelector('.persona-nombre').style.borderColor = '#ff6b6b';
-                    if (!personaEdad) forma.querySelector('.persona-edad').style.borderColor = '#ff6b6b';
-                    if (!personaSexo) forma.querySelector('.persona-sexo').style.borderColor = '#ff6b6b';
-                    if (!personaRol) forma.querySelector('.persona-rol').style.borderColor = '#ff6b6b';
-                }
-
-                personas.push({
-                    nombre: personaNombre,
-                    edad: personaEdad,
-                    sexo: personaSexo,
-                    rol: personaRol
-                });
-            });
-
-            if (!isValid) {
-                alert('Por favor, completa todos los campos de las personas.');
-                return;
-            }
-
-            // Recopilar datos de vehiculos
-            const vehiculos = [];
-            const vehiculosInputs = this.querySelectorAll('.vehiculo-form');
-
-            vehiculosInputs.forEach((forma) => {
-                const vehiculoMarca = forma.querySelector('.vehiculo-marca').value.trim();
-                const vehiculoModelo = forma.querySelector('.vehiculo-modelo').value.trim();
-                const vehiculoAno = forma.querySelector('.vehiculo-ano').value.trim();
-                const vehiculoPlaca = forma.querySelector('.vehiculo-placa').value.trim();
-
-                if (!vehiculoMarca || !vehiculoModelo || !vehiculoAno || !vehiculoPlaca) {
-                    isValid = false;
-                    if (!vehiculoMarca) forma.querySelector('.vehiculo-marca').style.borderColor = '#ff6b6b';
-                    if (!vehiculoModelo) forma.querySelector('.vehiculo-modelo').style.borderColor = '#ff6b6b';
-                    if (!vehiculoAno) forma.querySelector('.vehiculo-ano').style.borderColor = '#ff6b6b';
-                    if (!vehiculoPlaca) forma.querySelector('.vehiculo-placa').style.borderColor = '#ff6b6b';
-                }
-
-                vehiculos.push({
-                    marca: vehiculoMarca,
-                    modelo: vehiculoModelo,
-                    ano: vehiculoAno,
-                    placa: vehiculoPlaca
-                });
-            });
-
-            if (!isValid) {
-                alert('Por favor, completa todos los campos de los vehículos.');
-                return;
-            }
-
-            // Build mensaje con datos de personas
-            let personasDetalles = '';
-            personas.forEach((p, i) => {
-                personasDetalles += `\nPersona ${i + 1}:\n  - Nombre: ${p.nombre}\n  - Edad: ${p.edad}\n  - Sexo: ${p.sexo}\n  - Rol: ${p.rol}`;
-            });
-
-            let vehiculosDetalles = '';
-            vehiculos.forEach((v, i) => {
-                vehiculosDetalles += `\nVehículo ${i + 1}:\n  - Marca: ${v.marca}\n  - Modelo: ${v.modelo}\n  - Año: ${v.ano}\n  - Número de placa: ${v.placa}`;
-            });
+            // Eliminado: mensaje de personas y vehículos
 
             // Enviar al backend
             const submitBtn = this.querySelector('.submit-btn');
@@ -467,16 +360,12 @@
                     nombre, 
                     email,
                     telefono,
-                    instagram,
-                    facebook,
+                    cc,
                     club_exclusivo,
                     edad,
                     numero_moto,
                     numero_licencia,
-                    categoria,
-                    cantidad_personas: cantidadPersonas,
-                    cantidad_vehiculos: cantidadVehiculos,
-                    mensaje: `Personas:\n${personasDetalles}\n\nVehículos:\n${vehiculosDetalles}\n\nMensaje adicional: ${mensaje}` 
+                    categoria
                 })
             })
             .then(response => response.json())

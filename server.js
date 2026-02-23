@@ -201,16 +201,12 @@ async function initializeDatabase() {
                 nombre VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL,
                 telefono VARCHAR(50) NOT NULL,
-                instagram VARCHAR(255),
-                facebook VARCHAR(255),
+                cc VARCHAR(50) NOT NULL,
                 club_exclusivo VARCHAR(50),
                 edad INT,
                 numero_moto VARCHAR(100),
                 numero_licencia VARCHAR(100),
                 categoria VARCHAR(100),
-                cantidad_personas VARCHAR(50),
-                cantidad_vehiculos VARCHAR(50),
-                mensaje TEXT,
                 fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
@@ -218,11 +214,10 @@ async function initializeDatabase() {
         // Add new columns if they don't exist
         await pool.query(`
             ALTER TABLE inscriptions 
+            ADD COLUMN IF NOT EXISTS cc VARCHAR(50) NOT NULL,
             ADD COLUMN IF NOT EXISTS edad INT,
             ADD COLUMN IF NOT EXISTS numero_moto VARCHAR(100),
             ADD COLUMN IF NOT EXISTS numero_licencia VARCHAR(100),
-            ADD COLUMN IF NOT EXISTS instagram VARCHAR(255),
-            ADD COLUMN IF NOT EXISTS facebook VARCHAR(255),
             ADD COLUMN IF NOT EXISTS club_exclusivo VARCHAR(50),
             ADD COLUMN IF NOT EXISTS comprobante TEXT,
             ADD COLUMN IF NOT EXISTS transponder_option VARCHAR(50),
@@ -602,10 +597,10 @@ app.get('/api/vip', async (req, res) => {
 
 // POST endpoint for inscriptions (motocross/trackday)
 app.post('/api/inscripcion', async (req, res) => {
-    const { nombre, email, telefono, instagram, facebook, club_exclusivo, edad, numero_moto, numero_licencia, categoria, cantidad_personas, cantidad_vehiculos, mensaje } = req.body;
+    const { nombre, email, telefono, cc, club_exclusivo, edad, numero_moto, numero_licencia, categoria } = req.body;
 
     // Validation
-    if (!nombre || !email || !telefono || !edad || !numero_moto || !numero_licencia) {
+    if (!nombre || !email || !telefono || !cc || !edad || !numero_moto || !numero_licencia) {
         return res.status(400).json({
             success: false,
             message: 'Por favor, completa todos los campos requeridos'
@@ -624,8 +619,8 @@ app.post('/api/inscripcion', async (req, res) => {
     // Insert into database
     try {
         const result = await pool.query(
-            'INSERT INTO inscriptions (nombre, email, telefono, instagram, facebook, club_exclusivo, edad, numero_moto, numero_licencia, categoria, cantidad_personas, cantidad_vehiculos, mensaje) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING id',
-            [nombre, email, telefono, instagram || null, facebook || null, club_exclusivo || null, parseInt(edad), numero_moto, numero_licencia, categoria || null, cantidad_personas || null, cantidad_vehiculos || null, mensaje || null]
+            'INSERT INTO inscriptions (nombre, email, telefono, cc, club_exclusivo, edad, numero_moto, numero_licencia, categoria) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id',
+            [nombre, email, telefono, cc, club_exclusivo || null, parseInt(edad), numero_moto, numero_licencia, categoria || null]
         );
 
         res.status(201).json({
@@ -739,52 +734,64 @@ app.post('/api/inscription-proof', async (req, res) => {
             }
         }
         
-        if (inscriptionId) {
-            // Store base64 string directly in TEXT column
-            try {
-                await pool.query(
-                    `UPDATE inscriptions SET 
-                        comprobante = $1,
-                        comprobante_tipo = $2,
-                        total_cost = $3
-                    WHERE id = $4`,
-                    [comprobanteData, comprobante_tipo, total, inscriptionId]
+        if (!inscriptionId) {
+            return res.status(404).json({
+                success: false,
+                message: 'Inscripcion no encontrada para guardar el comprobante'
+            });
+        }
+
+        // Store base64 string directly in TEXT column
+        try {
+            const updateResult = await pool.query(
+                `UPDATE inscriptions SET 
+                    comprobante = $1,
+                    comprobante_tipo = $2,
+                    total_cost = $3
+                WHERE id = $4`,
+                [comprobanteData, comprobante_tipo, total, inscriptionId]
+            );
+
+            if (updateResult.rowCount === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Inscripcion no encontrada para guardar el comprobante'
+                });
+            }
+
+            // Store transponder data in separate table
+            if (transponder_option) {
+                // Check if transponder record already exists
+                const existingTransponder = await pool.query(
+                    'SELECT id FROM transponder WHERE inscripcion_id = $1',
+                    [inscriptionId]
                 );
 
-                // Store transponder data in separate table
-                if (transponder_option) {
-                    // Check if transponder record already exists
-                    const existingTransponder = await pool.query(
-                        'SELECT id FROM transponder WHERE inscripcion_id = $1',
-                        [inscriptionId]
+                if (existingTransponder.rows.length > 0) {
+                    // Update existing record
+                    await pool.query(
+                        `UPDATE transponder SET 
+                            transponder_option = $1,
+                            transponder_brand = $2,
+                            transponder_model = $3,
+                            transponder_notes = $4,
+                            fecha_registro = CURRENT_TIMESTAMP
+                        WHERE inscripcion_id = $5`,
+                        [transponder_option, transponder_brand, transponder_model, transponder_notes, inscriptionId]
                     );
-
-                    if (existingTransponder.rows.length > 0) {
-                        // Update existing record
-                        await pool.query(
-                            `UPDATE transponder SET 
-                                transponder_option = $1,
-                                transponder_brand = $2,
-                                transponder_model = $3,
-                                transponder_notes = $4,
-                                fecha_registro = CURRENT_TIMESTAMP
-                            WHERE inscripcion_id = $5`,
-                            [transponder_option, transponder_brand, transponder_model, transponder_notes, inscriptionId]
-                        );
-                    } else {
-                        // Insert new record
-                        await pool.query(
-                            `INSERT INTO transponder 
-                                (inscripcion_id, transponder_option, transponder_brand, transponder_model, transponder_notes) 
-                            VALUES ($1, $2, $3, $4, $5)`,
-                            [inscriptionId, transponder_option, transponder_brand, transponder_model, transponder_notes]
-                        );
-                    }
+                } else {
+                    // Insert new record
+                    await pool.query(
+                        `INSERT INTO transponder 
+                            (inscripcion_id, transponder_option, transponder_brand, transponder_model, transponder_notes) 
+                        VALUES ($1, $2, $3, $4, $5)`,
+                        [inscriptionId, transponder_option, transponder_brand, transponder_model, transponder_notes]
+                    );
                 }
-            } catch (updateErr) {
-                console.error('Error updating inscription:', updateErr.message);
-                throw updateErr;
             }
+        } catch (updateErr) {
+            console.error('Error updating inscription:', updateErr.message);
+            throw updateErr;
         }
 
         res.json({

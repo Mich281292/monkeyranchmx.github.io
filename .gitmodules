@@ -1,0 +1,3 @@
+[submodule "monkey-ranch"]
+	path = monkey-ranch
+	url = https://github.com/MichelVasquez/monkey-ranch.git
