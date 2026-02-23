@@ -84,7 +84,11 @@
                     <input type="text" name="nombre" placeholder="Tu nombre" required>
                     <input type="email" name="email" placeholder="Tu email" required>
                     <input type="tel" name="telefono" placeholder="Tu teléfono" required>
-                    <input type="text" name="cc" placeholder="Cédula de identidad" required>
+                    <div class="question-block">
+                        <label for="ccInput">Cilindrada (C.C)</label>
+                        <input type="text" id="ccInput" name="cc" placeholder="Ejemplo: 50cc, 65cc, 85cc, 125cc, 250cc, 450cc" required>
+                        <small class="question-help">Ingresa la cilindrada de tu moto. Ejemplo: 50cc, 65cc, 85cc, 125cc, 250cc, 450cc.</small>
+                    </div>
                     <input type="number" name="edad" placeholder="Tu edad" min="1" max="120" required>
                     <input type="text" name="numero_moto" placeholder="Número de moto" required>
                     <input type="text" name="numero_licencia" placeholder="Número de licencia" required>
