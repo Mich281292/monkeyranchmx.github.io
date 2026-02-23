@@ -14,7 +14,7 @@
             background-size: cover;
             background-position: center top;
             background-repeat: no-repeat;
-            background-attachment: fixed;
+            
             position: relative;
             min-height: 100vh;
             display: flex;
@@ -531,13 +531,13 @@
             const data = getPurchaseData();
             document.getElementById('depositAmount').textContent = data.total || '$1,500.00';
             document.getElementById('inscription-cost').textContent = data.total || '$1,500.00';
-            
+
             // Handle transponder option changes
             const transponderRadios = document.querySelectorAll('input[name="transponder_option"]');
+            const transponderForm = document.getElementById('transponder-form');
             transponderRadios.forEach(radio => {
                 radio.addEventListener('change', (e) => {
-                    const transponderForm = document.getElementById('transponder-form');
-                    if (e.target.value === 'own') {
+                    if (e.target.value === 'rent') {
                         transponderForm.style.display = 'block';
                     } else {
                         transponderForm.style.display = 'none';
@@ -549,7 +549,12 @@
                     updateTotal();
                 });
             });
-            
+            // Set initial state
+            if (document.querySelector('input[name="transponder_option"]:checked').value === 'rent') {
+                transponderForm.style.display = 'block';
+            } else {
+                transponderForm.style.display = 'none';
+            }
             // Set initial total
             updateTotal();
 
@@ -578,13 +583,7 @@
                 // Validar campos del transponder si se seleccionó "Tengo mi Transponder"
                 const transponderOption = document.querySelector('input[name="transponder_option"]:checked').value;
                 if (transponderOption === 'own') {
-                    const brand = document.getElementById('transponder_brand').value.trim();
-                    const model = document.getElementById('transponder_model').value.trim();
-                    
-                    if (!brand || !model) {
-                        alert('Por favor completa todos los campos del transponder (Marca y Modelo)');
-                        return;
-                    }
+                    // Ya no se requiere validar campos de transponder
                 }
 
                 // Validar que exista inscripcion_id
