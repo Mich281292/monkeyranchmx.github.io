@@ -64,9 +64,10 @@
             font-size: 2.5rem;
             margin-bottom: 1rem;
             color: white;
+        .transponder-section {
+            margin-bottom: 30px;
+            color: #ffe066;
         }
-
-        .proof-section .section-description {
             text-align: center;
             font-size: 1.1rem;
             margin-bottom: 2rem;
@@ -354,45 +355,45 @@
     </header>
 
     <nav class="contact-bar" id="contactBar" role="region" aria-label="Barra de contacto">
-        <div class="contact-bar-inner">
-            <div class="contact-info">
-                <div class="social-icons">
-                    <a href="https://www.facebook.com/MonkeyRanchqro" class="social-icon" title="Facebook" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-facebook"></i>
-                    </a>
-                    <a href="https://www.instagram.com/monkeyranchrideclub" class="social-icon" title="Instagram" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://wa.me/5214421234567" class="social-icon" title="WhatsApp" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-whatsapp"></i>
-                    </a>
-                    <a href="tel:+5214421234567" class="social-icon" title="Llamar">
-                        <i class="fas fa-phone"></i>
-                    </a>
-                    <a href="mailto:info@monkeyranch.com" class="social-icon" title="Email">
-                        <i class="fas fa-envelope"></i>
-                    </a>
+        <div class="deposit-info">
+            <p><strong>Por favor realiza la siguiente transferencia:</strong></p>
+            <p>Depositar <span class="deposit-amount" id="depositAmount">$1,500.00</span> al siguiente número de cuenta:</p>
+            <div class="bank-account">
+                <span class="bank-account-number">2705661307</span>
+                <span class="bank-account-name">Monserrat Araceli Perez Rubio</span>
+                <span class="bank-account-bank">BBVA</span>
+                <span class="bank-account-clabe">Transferencia interbancaria clave: 012680027056613078</span>
+            </div>
+        </div>
+
+        <!-- Sección de Transponder -->
+        <div class="transponder-section" style="margin-bottom: 30px;">
+            <h3>Transponder</h3>
+            <label>
+                <input type="radio" name="transponder_option" value="rent" checked>
+                Renta de transponder <strong>($300)</strong>
+            </label>
+            <label>
+                <input type="radio" name="transponder_option" value="own">
+                Tengo mi Transponder <strong>($150)</strong>
+            </label>
+            <div style="margin-top: 18px;">
+                <div>
+                    <span>Inscripción:</span>
+                    <span id="inscription-cost">$1,500.00</span>
+                </div>
+                <div>
+                    <span>Transponder:</span>
+                    <span id="transponder-cost">$300.00</span>
+                </div>
+                <hr>
+                <div>
+                    <span><strong>Total a pagar:</strong></span>
+                    <span id="total-cost">$1,800.00</span>
                 </div>
             </div>
-            <button class="close-contact-bar" aria-label="Cerrar barra de contacto">
-                <i class="fa fa-times"></i>
-            </button>
+            <p style="margin-top: 10px; font-size: 13px; color: #bbb;">Selecciona si deseas rentar un transponder o si ya cuentas con uno propio. El total se actualizará automáticamente.</p>
         </div>
-    </nav>
-
-    <div class="contact-tab" id="contactTab" role="button" tabindex="0" aria-label="Abrir barra de contacto">
-        <i class="fa fa-phone"></i>
-        <span>Contacto</span>
-    </div>
-
-    <main>
-        <section id="proof-section" class="proof-section">
-            <div class="container">
-                <h1>Pago de Inscripción</h1>
-                <p class="section-description">Completa tu inscripción realizando el depósito y verificando tu comprobante</p>
-
-                <div class="proof-form-container">
-                    <div class="proof-form">
                         <h2>Depósito Bancario</h2>
                         <div class="deposit-info">
                             <p><strong>Por favor realiza la siguiente transferencia:</strong></p>
@@ -537,13 +538,11 @@
             const inscriptionCost = parseFloat(document.getElementById('inscription-cost').textContent.replace('$', '').replace(',', '')) || 1500;
             const transponderOption = document.querySelector('input[name="transponder_option"]:checked').value;
             let transponderCost = 0;
-            
             if (transponderOption === 'rent') {
                 transponderCost = 300;
             } else if (transponderOption === 'own') {
                 transponderCost = 150;
             }
-            
             document.getElementById('transponder-cost').textContent = '$' + transponderCost.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             const total = inscriptionCost + transponderCost;
             const depositAmount = '$' + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -647,10 +646,7 @@
                                 inscripcion_id: data.inscripcion_id || null,
                                 comprobante_base64: base64String,
                                 comprobante_tipo: mimeType,
-                                transponder_option: document.querySelector('input[name="transponder_option"]:checked').value,
-                                transponder_brand: document.getElementById('transponder_brand').value || null,
-                                transponder_model: document.getElementById('transponder_model').value || null,
-                                transponder_notes: document.getElementById('transponder_notes').value || null
+                                transponder_option: document.querySelector('input[name="transponder_option"]:checked').value
                             })
                         });
 
