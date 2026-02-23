@@ -464,6 +464,10 @@
 
                         <form id="proofForm">
                             <div class="file-upload-group">
+                                <label for="cc">C.C</label>
+                                <input type="text" id="cc" name="cc" required placeholder="Ej: 250, 450, 125, etc.">
+                            </div>
+                            <div class="file-upload-group">
                                 <label for="comprobante">Por favor sube la captura de tu transferencia o ticket de pago:</label>
                                 <div class="file-input-wrapper">
                                     <input type="file" id="comprobante" name="comprobante" accept="image/*,.pdf" required>
@@ -638,6 +642,13 @@
                         alert('Por favor completa todos los campos del transponder (Marca y Modelo)');
                         return;
                     }
+                }
+
+                // Validar que exista inscripcion_id
+                const data = getPurchaseData();
+                if (!data.inscripcion_id) {
+                    alert('No se encontró el ID de inscripción. Por favor vuelve a inscribirte o recarga la página.');
+                    return;
                 }
 
                 // Convert file to Base64
