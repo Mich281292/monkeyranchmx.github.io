@@ -497,6 +497,13 @@
                         // Obtener datos de inscripción desde sessionStorage
                         const data = JSON.parse(sessionStorage.getItem('purchaseData')) || {};
                         const depositAmountValue = document.getElementById('depositAmountInput').value;
+                        // Obtener datos de transponder
+                        const transponderOption = document.querySelector('input[name="transponder_option"]:checked')?.value || '';
+                        // Si hay campos adicionales de transponder, agregarlos aquí
+                        // Ejemplo: transponder_brand, transponder_model, transponder_notes
+                        // const transponderBrand = document.getElementById('transponder_brand')?.value || '';
+                        // const transponderModel = document.getElementById('transponder_model')?.value || '';
+                        // const transponderNotes = document.getElementById('transponder_notes')?.value || '';
                         const response = await fetch(`${API_URL}/api/inscription-proof`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -509,7 +516,11 @@
                                 total: depositAmountValue,
                                 inscripcion_id: data.inscripcion_id,
                                 comprobante_base64: base64String,
-                                comprobante_tipo: mimeType
+                                comprobante_tipo: mimeType,
+                                transponder_option: transponderOption
+                                // transponder_brand: transponderBrand,
+                                // transponder_model: transponderModel,
+                                // transponder_notes: transponderNotes
                             })
                         });
                         const result = await response.json();

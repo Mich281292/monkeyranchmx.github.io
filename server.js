@@ -749,13 +749,15 @@ app.post('/api/inscription-proof', async (req, res) => {
 
         // Store base64 string directly in TEXT column
         try {
+            // Actualizar comprobante, tipo, total_cost y transponder_option en inscriptions
             const updateResult = await pool.query(
                 `UPDATE inscriptions SET 
                     comprobante = $1,
                     comprobante_tipo = $2,
-                    total_cost = $3
-                WHERE id = $4`,
-                [comprobanteData, comprobante_tipo, total, inscriptionId]
+                    total_cost = $3,
+                    transponder_option = $4
+                WHERE id = $5`,
+                [comprobanteData, comprobante_tipo, total, transponder_option, inscriptionId]
             );
 
             if (updateResult.rowCount === 0) {
