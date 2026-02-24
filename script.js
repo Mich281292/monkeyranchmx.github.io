@@ -51,7 +51,8 @@ if (inscriptionForm) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Redirigir a pago_inscripcion.html
+                // Mensaje de confirmación antes de redirigir
+                alert('¡Inscripción guardada correctamente! Ahora serás redirigido al pago.');
                 window.location.href = 'pago_inscripcion.html';
             } else {
                 alert('Error: ' + (data.message || 'No se pudo guardar la inscripción.'));

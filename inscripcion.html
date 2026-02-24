@@ -156,11 +156,11 @@
 
     <script src="script.js"></script>
     <script>
-        const cantidadPersonasSelect = document.getElementById('cantidadPersonasSelect');
-        const cantidadVehiculosSelect = document.getElementById('cantidadVehiculosSelect');
-        const personasContainer = document.getElementById('personasContainer');
-        const vehiculosContainer = document.getElementById('vehiculosContainer');
-        const inscriptionForm = document.getElementById('inscriptionForm');
+        // const cantidadPersonasSelect = document.getElementById('cantidadPersonasSelect');
+        // const cantidadVehiculosSelect = document.getElementById('cantidadVehiculosSelect');
+        // const personasContainer = document.getElementById('personasContainer');
+        // const vehiculosContainer = document.getElementById('vehiculosContainer');
+        // Eliminada la declaración duplicada de inscriptionForm, ya está en script.js
 
         // Generar formularios de personas dinámicamente
         cantidadPersonasSelect.addEventListener('change', function() {
@@ -361,8 +361,8 @@
                     email,
                     telefono,
                     cc,
-                    club_exclusivo,
-                    edad,
+                    club_exclusivo: club_exclusivo === '' ? null : club_exclusivo,
+                    edad: parseInt(edad),
                     numero_moto,
                     numero_licencia,
                     categoria
@@ -376,25 +376,20 @@
                         nombre: nombre,
                         email: email,
                         telefono: telefono,
-                        cantidad: cantidadPersonas,
                         fecha_evento: new Date().toLocaleDateString('es-ES'),
                         total: total,
                         inscripcion_id: data.id
                     };
-                    
                     sessionStorage.setItem('purchaseData', JSON.stringify(purchaseData));
-                    
                     // Redirect to payment proof page with URL parameters
                     const params = new URLSearchParams({
                         nombre: nombre,
                         email: email,
                         telefono: telefono,
-                        cantidad: cantidadPersonas,
                         fecha: new Date().toLocaleDateString('es-ES'),
                         total: total,
                         inscripcion_id: data.id
                     });
-                    
                     window.location.href = `pago_inscripcion.html?${params.toString()}`;
                 } else {
                     alert('Error: ' + data.message);
