@@ -82,33 +82,24 @@
 
     <main>
         <section id="inscription" class="inscription-section">
-            <div class="container" style="max-width:900px; margin:auto;">
+            <div class="container inscription-mobile-container">
                 <h1>Inscríbete</h1>
                 <p class="section-description">Completa tus datos para inscribirte en la carrera en Monkey Ranch.</p>
-                <form class="contact-form" id="inscriptionForm">
-                    <div class="boletos-cards-grid" style="margin-bottom:2rem; width:100%;">
-                        <div class="vip-card"
-                            style="background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.7) 100%); max-width:none; width:100%; margin:auto;">
+                <form class="contact-form inscription-form" id="inscriptionForm">
+                    <div class="boletos-cards-grid">
+                        <div class="vip-card vip-card-mobile">
                             <h2 style="color:#b8242f; text-align:center; margin-bottom:1.5rem;">Formulario de
                                 Inscripción</h2>
-                            <div class="form-fields" style="width:100%; margin:auto;">
+                            <div class="form-fields">
                                 <!-- ...existing questions and fields... -->
-                                <input type="text" name="nombre" placeholder="Tu nombre" required
-                                    style="margin-bottom:1rem;">
-                                <input type="email" name="email" placeholder="Tu email" required
-                                    style="margin-bottom:1rem;">
-                                <input type="tel" name="telefono" placeholder="Tu teléfono" required
-                                    style="margin-bottom:1rem;">
-                                <input type="text" name="cc"
-                                    placeholder="Cilindrada (C.C) Ejemplo: 50cc, 65cc, 85cc, 125cc, 250cc, 450cc"
-                                    required style="margin-bottom:1rem;">
-                                <input type="number" name="edad" placeholder="Tu edad" min="1" max="120" required
-                                    style="margin-bottom:1rem;">
-                                <input type="text" name="numero_moto" placeholder="Número de moto" required
-                                    style="margin-bottom:1rem;">
-                                <input type="text" name="numero_licencia" placeholder="Número de licencia" required
-                                    style="margin-bottom:1rem;">
-                                <div class="question-block" style="margin-bottom:1rem;">
+                                <input type="text" name="nombre" placeholder="Tu nombre" required>
+                                <input type="email" name="email" placeholder="Tu email" required>
+                                <input type="tel" name="telefono" placeholder="Tu teléfono" required>
+                                <input type="text" name="cc" placeholder="Cilindrada (C.C) Ejemplo: 50cc, 65cc, 85cc, 125cc, 250cc, 450cc" required>
+                                <input type="number" name="edad" placeholder="Tu edad" min="1" max="120" required>
+                                <input type="text" name="numero_moto" placeholder="Número de moto" required>
+                                <input type="text" name="numero_licencia" placeholder="Número de licencia" required>
+                                <div class="question-block">
                                     <label for="categoriaSelect" style="color:#fff;">¿Categoría a la que
                                         ingresas?</label>
                                     <small class="question-help" style="color:#ccc;">Selecciona la categoría principal
@@ -144,7 +135,7 @@
                                 </div>
                                 <!-- ...existing code... -->
                                 <!-- ...existing code... -->
-                                <div class="question-block" style="margin-bottom:1rem;">
+                                <div class="question-block">
                                     <label for="clubExclusivoSelect" style="color:#fff;">¿Te gustaría pertenecer a
                                         nuestro club exclusivo para practicar en nuestras instalaciones?</label>
                                     <small class="question-help" style="color:#ccc;">Respuesta opcional, solo para
@@ -157,7 +148,7 @@
                                 </div>
                                 <!-- ...existing code... -->
                                 <!-- Pregunta sobre transponder justo antes del botón -->
-                                <div class="question-block" style="margin-bottom:1rem;">
+                                <div class="question-block">
                                     <label for="transponderSelect" style="color:#fff;">¿Cuenta con transponder?</label>
                                     <small class="question-help" style="color:#ccc;">Para competir necesitas un
                                         transponder. Si no cuentas con uno, puedes rentarlo por <b>$300</b>. Si ya
@@ -173,14 +164,12 @@
                                 </div>
 
                                 <!-- Datos bancarios para inscripción -->
-                                <div class="deposit-info"
-                                    style="background: rgba(255,255,255,0.1); border-left: 4px solid #b8242f; padding: 20px; border-radius: 6px; margin-bottom: 2rem;">
+                                <div class="deposit-info">
                                     <p><strong>Por favor realiza la siguiente transferencia:</strong></p>
                                     <p>Depositar <span id="depositAmount" class="deposit-amount"
                                             style="font-size: 1.2rem; font-weight: bold; color: #ff4444;">$1800.00</span>
                                         al siguiente número de cuenta:</p>
-                                    <div class="bank-account"
-                                        style="font-size: 1.1rem; font-family: 'Courier New', monospace; letter-spacing: 2px; color: rgba(255,255,255,0.9); margin: 15px 0; padding: 15px; background: rgba(255,255,255,0.1); border: 2px solid #b8242f; border-radius: 6px; text-align: center;">
+                                    <div class="bank-account">
                                         <span class="bank-account-number"
                                             style="display:block; font-size:1.3rem; font-weight:700;">2705661307</span>
                                         <span class="bank-account-name"
@@ -197,16 +186,13 @@
                                         la captura o ticket de pago.</p>
                                 </div>
                                 <!-- Contenedor para subir comprobante de pago -->
-                                <div class="file-upload-group"
-                                    style="margin: 1.5rem 0; display: flex; flex-direction: column;">
+                                <div class="file-upload-group">
                                     <label for="comprobante">Por favor sube la captura de tu transferencia o ticket de
                                         pago:</label>
-                                    <div class="file-input-wrapper"
-                                        style="position: relative; overflow: hidden; display: inline-block; width: 100%;">
+                                    <div class="file-input-wrapper">
                                         <input type="file" id="comprobante" name="comprobante" accept="image/*,.pdf"
                                             required>
-                                        <label for="comprobante" class="file-input-label"
-                                            style="display: flex; align-items: center; justify-content: center; padding: 30px; border: 2px dashed #b8242f; border-radius: 6px; background: rgba(255,255,255,0.05); cursor: pointer; transition: all 0.3s ease; color: rgba(255,255,255,0.8); font-weight: 600;">
+                                        <label for="comprobante" class="file-input-label">
                                             <i class="fas fa-cloud-upload-alt"
                                                 style="margin-right: 10px; font-size: 24px;"></i>
                                             <span>Haz clic o arrastra tu archivo aquí</span>
@@ -214,11 +200,9 @@
                                     </div>
                                     </label>
                                 </div>
-                                <div class="file-name" id="fileName"
-                                    style="margin-top: 10px; padding: 10px; background: rgba(184,36,47,0.2); border-radius: 6px; color: rgba(255,255,255,0.9); display: none; border-left: 3px solid #b8242f;">
+                                <div class="file-name" id="fileName">
                                 </div>
-                            </div> <button type="submit" class="submit-btn cta-button"
-                                style="width:100%; margin-top:1rem;">Inscribirse</button>
+                            </div> <button type="submit" class="submit-btn cta-button">Inscribirse</button>
                         </div>
                     </div>
 

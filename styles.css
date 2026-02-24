@@ -1,3 +1,108 @@
+/* Mejoras responsivas para inscripción */
+.inscription-mobile-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 0 15px;
+}
+
+.vip-card-mobile {
+    background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.7) 100%);
+    max-width: none;
+    width: 100%;
+    margin: auto;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+    padding: 2rem 2rem;
+}
+
+.form-fields input,
+.form-fields select {
+    margin-bottom: 1rem;
+}
+
+.deposit-info {
+    background: rgba(255,255,255,0.1);
+    border-left: 4px solid #b8242f;
+    padding: 20px;
+    border-radius: 6px;
+    margin-bottom: 2rem;
+}
+
+.bank-account {
+    font-size: 1.1rem;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.9);
+    margin: 15px 0;
+    padding: 15px;
+    background: rgba(255,255,255,0.1);
+    border: 2px solid #b8242f;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.file-upload-group {
+    margin: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+}
+
+.file-input-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    border: 2px dashed #b8242f;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.05);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: rgba(255,255,255,0.8);
+    font-weight: 600;
+}
+
+.file-name {
+    margin-top: 10px;
+    padding: 10px;
+    background: rgba(184,36,47,0.2);
+    border-radius: 6px;
+    color: rgba(255,255,255,0.9);
+    display: none;
+    border-left: 3px solid #b8242f;
+}
+
+@media (max-width: 640px) {
+    .inscription-mobile-container {
+        padding: 0 5px;
+    }
+    .vip-card-mobile {
+        padding: 1rem 0.5rem;
+    }
+    .form-fields input,
+    .form-fields select {
+        font-size: 1rem;
+        padding: 10px 8px;
+    }
+    .deposit-info {
+        padding: 12px;
+        font-size: 0.95rem;
+    }
+    .bank-account {
+        font-size: 0.95rem;
+        padding: 10px;
+    }
+    .file-input-label {
+        padding: 18px;
+        font-size: 0.95rem;
+    }
+}
 * {
     margin: 0;
     padding: 0;
