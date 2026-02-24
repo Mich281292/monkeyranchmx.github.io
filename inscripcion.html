@@ -233,7 +233,7 @@
         inscriptionForm.addEventListener('submit', function(e) {
             e.preventDefault();
             // Evitar doble submit
-            const submitBtn = this.querySelector('.submit-btn');
+            let submitBtn = this.querySelector('.submit-btn');
             if (submitBtn.disabled) return;
             submitBtn.disabled = true;
             
@@ -353,10 +353,8 @@
             // Eliminado: mensaje de personas y vehículos
 
             // Enviar al backend
-            const submitBtn = this.querySelector('.submit-btn');
             const originalText = submitBtn.textContent;
             submitBtn.textContent = 'Enviando...';
-            submitBtn.disabled = true;
 
             fetch('https://monkey-ranch-api.onrender.com/api/inscripcion', {
                 method: 'POST',
