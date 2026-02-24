@@ -1199,10 +1199,11 @@ app.delete('/api/vip-purchases/:id', async (req, res) => {
 
 // POST endpoint for parking purchases
 app.post('/api/parking-purchase', async (req, res) => {
+
     const { nombre, email, telefono, placas, cantidad, fecha_evento, precio, comprobante } = req.body;
 
-    // Validation
-    if (!nombre || !email || !telefono || !placas || !cantidad || !fecha_evento) {
+    // Validation: placas y fecha_evento ahora son opcionales
+    if (!nombre || !email || !telefono || !cantidad) {
         return res.status(400).json({
             success: false,
             message: 'Por favor, completa todos los campos'
@@ -1219,9 +1220,19 @@ app.post('/api/parking-purchase', async (req, res) => {
     }
 
     try {
+
         const result = await pool.query(
             'INSERT INTO parking_purchases (nombre, email, telefono, placas, cantidad, fecha_evento, precio, comprobante) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id',
-            [nombre, email, telefono, placas, parseInt(cantidad), fecha_evento, precio, comprobante || null]
+            [
+                nombre,
+                email,
+                telefono,
+                placas !== undefined ? placas : null,
+                parseInt(cantidad),
+                fecha_evento !== undefined ? fecha_evento : null,
+                precio,
+                comprobante || null
+            ]
         );
 
         res.status(201).json({

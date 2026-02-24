@@ -308,6 +308,7 @@
                                     alert('Inscripción enviada correctamente');
                                     form.reset();
                                     updateDepositAmount();
+                                    window.location.href = 'club.html';
                                 } else {
                                     const errorData = await response.json();
                                     alert('Error al enviar la inscripción: ' + (errorData.message || 'Error desconocido'));

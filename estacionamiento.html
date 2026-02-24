@@ -100,20 +100,12 @@
                                 <input type="tel" id="telefono" name="telefono" placeholder="+52 442 222 2222" required>
                             </div>
 
-                            <div class="form-group">
-                                <label for="placas">Placa del Vehículo:</label>
-                                <input type="text" id="placas" name="placas" placeholder="Ej: ABC-1234" required>
-                            </div>
                             
                             <div class="form-group">
                                 <label for="cantidad">Cantidad de Espacios:</label>
                                 <input type="number" id="cantidad" name="cantidad" min="1" value="1" required>
                             </div>
                             
-                            <div class="form-group">
-                                <label for="fecha">Fecha del Evento:</label>
-                                <input type="date" id="fecha" name="fecha" min="2026-03-14" max="2026-03-15" required>
-                            </div>
 
                             <div class="form-group">
                                 <label for="total">Total:</label>
@@ -167,9 +159,7 @@
             const nombre = document.getElementById('nombre').value;
             const email = document.getElementById('email').value;
             const telefono = document.getElementById('telefono').value;
-            const placas = document.getElementById('placas').value;
             const cantidad = document.getElementById('cantidad').value;
-            const fecha_evento = document.getElementById('fecha').value;
             const totalText = document.getElementById('total').textContent.replace('$', '');
             const precio = '150';
             
@@ -183,9 +173,7 @@
                         nombre: nombre,
                         email: email,
                         telefono: telefono,
-                        placas: placas,
                         cantidad: parseInt(cantidad),
-                        fecha_evento: fecha_evento,
                         precio: precio,
                         comprobante: null
                     })
@@ -203,9 +191,7 @@
                     nombre: nombre,
                     email: email,
                     telefono: telefono,
-                    placas: placas,
                     cantidad: cantidad,
-                    fecha_evento: fecha_evento,
                     total: totalText,
                     compra_id: result.id
                 };
@@ -217,9 +203,7 @@
                     nombre: nombre,
                     email: email,
                     telefono: telefono,
-                    placas: placas,
                     cantidad: cantidad,
-                    fecha: fecha_evento,
                     total: totalText
                 });
                 
