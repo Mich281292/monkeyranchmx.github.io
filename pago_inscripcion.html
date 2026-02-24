@@ -396,6 +396,8 @@
         function getPurchaseData() {
             // Check URL parameter first
             const urlParams = new URLSearchParams(window.location.search);
+            const inscripcionIdFromUrl = urlParams.get('inscripcion_id');
+            const categoriaFromUrl = urlParams.get('categoria');
             const totalFromUrl = urlParams.get('total');
             const nombreFromUrl = urlParams.get('nombre');
             const emailFromUrl = urlParams.get('email');
@@ -403,16 +405,21 @@
             const placasFromUrl = urlParams.get('placas');
             const cantidadFromUrl = urlParams.get('cantidad');
             const fechaFromUrl = urlParams.get('fecha');
-            if (totalFromUrl) {
-                return {
-                    total: totalFromUrl,
-                    nombre: nombreFromUrl,
-                    email: emailFromUrl,
-                    telefono: telefonoFromUrl,
-                    placas: placasFromUrl,
-                    cantidad: cantidadFromUrl,
-                    fecha_evento: fechaFromUrl
-                };
+            // Si inscripcion_id está en la URL, actualiza sessionStorage.purchaseData
+            if (inscripcionIdFromUrl) {
+                let purchaseData = sessionStorage.getItem('purchaseData');
+                purchaseData = purchaseData ? JSON.parse(purchaseData) : {};
+                purchaseData.inscripcion_id = inscripcionIdFromUrl;
+                if (categoriaFromUrl) purchaseData.categoria = categoriaFromUrl;
+                if (nombreFromUrl) purchaseData.nombre = nombreFromUrl;
+                if (emailFromUrl) purchaseData.email = emailFromUrl;
+                if (telefonoFromUrl) purchaseData.telefono = telefonoFromUrl;
+                if (fechaFromUrl) purchaseData.fecha_evento = fechaFromUrl;
+                if (totalFromUrl) purchaseData.total = totalFromUrl;
+                if (cantidadFromUrl) purchaseData.cantidad = cantidadFromUrl;
+                if (placasFromUrl) purchaseData.placas = placasFromUrl;
+                sessionStorage.setItem('purchaseData', JSON.stringify(purchaseData));
+                return purchaseData;
             }
             // Otherwise try sessionStorage
             const data = sessionStorage.getItem('purchaseData');
@@ -427,7 +434,8 @@
                 telefono: '',
                 placas: '',
                 cantidad: '1',
-                fecha_evento: ''
+                fecha_evento: '',
+                inscripcion_id: ''
             };
         }
             // Monto dinámico según transponder
@@ -513,7 +521,16 @@
                     try {
                         const API_URL = 'https://monkey-ranch-api.onrender.com';
                         // Obtener datos de inscripción desde sessionStorage
-                        const data = JSON.parse(sessionStorage.getItem('purchaseData')) || {};
+                        let data = sessionStorage.getItem('purchaseData');
+                        data = data ? JSON.parse(data) : {};
+                        // Si algún campo falta, intenta recuperarlo de la URL
+                        const urlParams = new URLSearchParams(window.location.search);
+                        if (!data.nombre) data.nombre = urlParams.get('nombre') || '';
+                        if (!data.email) data.email = urlParams.get('email') || '';
+                        if (!data.telefono) data.telefono = urlParams.get('telefono') || '';
+                        if (!data.fecha_evento) data.fecha_evento = urlParams.get('fecha') || '';
+                        if (!data.inscripcion_id) data.inscripcion_id = urlParams.get('inscripcion_id') || '';
+                        if (!data.categoria) data.categoria = urlParams.get('categoria') || '';
                         const depositAmountValue = document.getElementById('depositAmountInput').value;
                         // Obtener datos de transponder
                         const transponderOption = document.querySelector('input[name="transponder_option"]:checked')?.value || '';

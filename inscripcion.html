@@ -1,3 +1,5 @@
+                                                
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -77,349 +79,158 @@
 
     <main>
         <section id="inscription" class="inscription-section">
-            <div class="container">
+            <div class="container" style="max-width:900px; margin:auto;">
                 <h1>Inscríbete</h1>
                 <p class="section-description">Completa tus datos para inscribirte en la carrera en Monkey Ranch.</p>
                 <form class="contact-form" id="inscriptionForm">
-                    <input type="text" name="nombre" placeholder="Tu nombre" required>
-                    <input type="email" name="email" placeholder="Tu email" required>
-                    <input type="tel" name="telefono" placeholder="Tu teléfono" required>
-                    <input type="text" name="cc" placeholder="Cilindrada (C.C) Ejemplo: 50cc, 65cc, 85cc, 125cc, 250cc, 450cc" required>
-                    <input type="number" name="edad" placeholder="Tu edad" min="1" max="120" required>
-                    <input type="text" name="numero_moto" placeholder="Número de moto" required>
-                    <input type="text" name="numero_licencia" placeholder="Número de licencia" required>
-                    <div class="question-block">
-                        <label for="categoriaSelect">¿Categoría a la que ingresas?</label>
-                        <small class="question-help">Selecciona la categoría principal con la que competirás.</small>
-                        <select id="categoriaSelect" placeholder="Categoría" required>
-                            <option value="">Selecciona una opción</option>
-                            <option value="50cc mini 1 (4 a 6 años)">50cc mini 1 (4 a 6 años)</option>
-                            <option value="50cc mini 2 (7 a 8 años)">50cc mini 2 (7 a 8 años)</option>
-                            <option value="50cc junior (Open de 4 a 8 años)">50cc junior (Open de 4 a 8 años)</option>
-                            <option value="65cc mini 1 (7 a 8 años)">65cc mini 1 (7 a 8 años)</option>
-                            <option value="65cc mini 2 (9 a 10 años)">65cc mini 2 (9 a 10 años)</option>
-                            <option value="65cc junior (Open)">65cc junior (Open)</option>
-                            <option value="85cc mini 1 (10 a 12 años)">85cc mini 1 (10 a 12 años)</option>
-                            <option value="85cc mini 2 (13 a 15 años)">85cc mini 2 (13 a 15 años)</option>
-                            <option value="85cc junior (Open)">85cc junior (Open)</option>
-                            <option value="125cc B (15 a 23 años)">125cc B (15 a 23 años)</option>
-                            <option value="125cc A (18 años mínimo)">125cc A (18 años mínimo)</option>
-                            <option value="Femenil Juvenil">Femenil Juvenil</option>
-                            <option value="Femenil Elite">Femenil Elite</option>
-                            <option value="N3">N3</option>
-                            <option value="N2">N2</option>
-                            <option value="MXB Open">MXB Open</option>
-                            <option value="Veteranos 30 (30 años mínimo)">Veteranos 30 (30 años mínimo)</option>
-                            <option value="Veteranos 40 (40 años mínimo)">Veteranos 40 (40 años mínimo)</option>
-                            <option value="Veteranos 50 (50 años mínimo)">Veteranos 50 (50 años mínimo)</option>
-                            <option value="Mx2 (15 a 23 años)">Mx2 (15 a 23 años)</option>
-                            <option value="Mx1 Open (18 años mínimo)">Mx1 Open (18 años mínimo)</option>
-                        </select>
-                    </div>
-                    <div class="question-block">
-                    <!-- Eliminado: personas, vehículos, mensaje, instagram, facebook -->
-                    <div class="question-block">
-                        <label for="clubExclusivoSelect">¿Te gustaría pertenecer a nuestro club exclusivo para practicar en nuestras instalaciones?</label>
-                        <small class="question-help">Respuesta opcional, solo para interés general.</small>
-                        <select id="clubExclusivoSelect" name="club_exclusivo">
-                            <option value="">Selecciona una opción</option>
-                            <option value="si">Sí</option>
-                            <option value="no">Por ahora no</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="submit-btn">Inscribirse</button>
-                </form>
-            </div>
-        </section>
-    </main>
+                                        <div class="boletos-cards-grid" style="margin-bottom:2rem; width:100%;">
+                                                                    <div class="vip-card" style="background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.7) 100%); max-width:none; width:100%; margin:auto;">
+                                            <h2 style="color:#b8242f; text-align:center; margin-bottom:1.5rem;">Formulario de Inscripción</h2>
+                                            <div class="form-fields" style="width:100%; margin:auto;">
+                                                <!-- ...existing questions and fields... -->
+                                                <input type="text" name="nombre" placeholder="Tu nombre" required style="margin-bottom:1rem;">
+                                                <input type="email" name="email" placeholder="Tu email" required style="margin-bottom:1rem;">
+                                                <input type="tel" name="telefono" placeholder="Tu teléfono" required style="margin-bottom:1rem;">
+                                                <input type="text" name="cc" placeholder="Cilindrada (C.C) Ejemplo: 50cc, 65cc, 85cc, 125cc, 250cc, 450cc" required style="margin-bottom:1rem;">
+                                                <input type="number" name="edad" placeholder="Tu edad" min="1" max="120" required style="margin-bottom:1rem;">
+                                                <input type="text" name="numero_moto" placeholder="Número de moto" required style="margin-bottom:1rem;">
+                                                <input type="text" name="numero_licencia" placeholder="Número de licencia" required style="margin-bottom:1rem;">
+                                                <div class="question-block" style="margin-bottom:1rem;">
+                                                    <label for="categoriaSelect" style="color:#fff;">¿Categoría a la que ingresas?</label>
+                                                    <small class="question-help" style="color:#ccc;">Selecciona la categoría principal con la que competirás.</small>
+                                                    <select id="categoriaSelect" name="categoria" required style="margin-top:0.5rem;">
+                                                        <option value="">Selecciona una opción</option>
+                                                        <option value="50cc mini 1 (4 a 6 años)">50cc mini 1 (4 a 6 años)</option>
+                                                        <option value="50cc mini 2 (7 a 8 años)">50cc mini 2 (7 a 8 años)</option>
+                                                        <option value="50cc junior (Open de 4 a 8 años)">50cc junior (Open de 4 a 8 años)</option>
+                                                        <option value="65cc mini 1 (7 a 8 años)">65cc mini 1 (7 a 8 años)</option>
+                                                        <option value="65cc mini 2 (9 a 10 años)">65cc mini 2 (9 a 10 años)</option>
+                                                        <option value="65cc junior (Open)">65cc junior (Open)</option>
+                                                        <option value="85cc mini 1 (10 a 12 años)">85cc mini 1 (10 a 12 años)</option>
+                                                        <option value="85cc mini 2 (13 a 15 años)">85cc mini 2 (13 a 15 años)</option>
+                                                        <option value="85cc junior (Open)">85cc junior (Open)</option>
+                                                        <option value="125cc B (15 a 23 años)">125cc B (15 a 23 años)</option>
+                                                        <option value="125cc A (18 años mínimo)">125cc A (18 años mínimo)</option>
+                                                        <option value="Femenil Juvenil">Femenil Juvenil</option>
+                                                        <option value="Femenil Elite">Femenil Elite</option>
+                                                        <option value="N3">N3</option>
+                                                        <option value="N2">N2</option>
+                                                        <option value="MXB Open">MXB Open</option>
+                                                        <option value="Veteranos 30 (30 años mínimo)">Veteranos 30 (30 años mínimo)</option>
+                                                        <option value="Veteranos 40 (40 años mínimo)">Veteranos 40 (40 años mínimo)</option>
+                                                        <option value="Veteranos 50 (50 años mínimo)">Veteranos 50 (50 años mínimo)</option>
+                                                        <option value="Mx2 (15 a 23 años)">Mx2 (15 a 23 años)</option>
+                                                        <option value="Mx1 Open (18 años mínimo)">Mx1 Open (18 años mínimo)</option>
+                                                    </select>
+                                                </div>
+                                                <!-- ...existing code... -->
+                                                                                                <!-- ...existing code... -->
+                                                <div class="question-block" style="margin-bottom:1rem;">
+                                                    <label for="clubExclusivoSelect" style="color:#fff;">¿Te gustaría pertenecer a nuestro club exclusivo para practicar en nuestras instalaciones?</label>
+                                                    <small class="question-help" style="color:#ccc;">Respuesta opcional, solo para interés general.</small>
+                                                    <select id="clubExclusivoSelect" name="club_exclusivo" style="margin-top:0.5rem;">
+                                                        <option value="">Selecciona una opción</option>
+                                                        <option value="si">Sí</option>
+                                                        <option value="no">Por ahora no</option>
+                                                    </select>
+                                                </div>
+                                                <!-- ...existing code... -->
+                                                                                            <!-- Pregunta sobre transponder justo antes del botón -->
+                                                                                            <div class="question-block" style="margin-bottom:1rem;">
+                                                                                                <label for="transponderSelect" style="color:#fff;">¿Cuenta con transponder?</label>
+                                                                                                <small class="question-help" style="color:#ccc;">Para competir necesitas un transponder. Si no cuentas con uno, puedes rentarlo por <b>$300</b>. Si ya tienes tu transponder, el registro cuesta <b>$150</b>.<br>El transponder es un dispositivo necesario para registrar tus tiempos en la pista. Si no tienes uno, podrás rentarlo el día del evento.</small>
+                                                                                                <select id="transponderSelect" name="transponder" required style="margin-top:0.5rem;">
+                                                                                                    <option value="">Selecciona una opción</option>
+                                                                                                    <option value="si">Sí, cuento con transponder</option>
+                                                                                                    <option value="no">No cuento con transponder</option>
+                                                                                                </select>
+                                                                                            </div>
+                                                    
+                                                                                            <!-- Datos bancarios para inscripción -->
+                                                                                            <div class="deposit-info" style="background: rgba(255,255,255,0.1); border-left: 4px solid #b8242f; padding: 20px; border-radius: 6px; margin-bottom: 2rem;">
+                                                                                                <p><strong>Por favor realiza la siguiente transferencia:</strong></p>
+                                                                                                    <p>Depositar <span id="depositAmount" class="deposit-amount" style="font-size: 1.2rem; font-weight: bold; color: #ff4444;">$1800.00</span> al siguiente número de cuenta:</p>
+                                                                                                <div class="bank-account" style="font-size: 1.1rem; font-family: 'Courier New', monospace; letter-spacing: 2px; color: rgba(255,255,255,0.9); margin: 15px 0; padding: 15px; background: rgba(255,255,255,0.1); border: 2px solid #b8242f; border-radius: 6px; text-align: center;">
+                                                                                                    <span class="bank-account-number" style="display:block; font-size:1.3rem; font-weight:700;">2705661307</span>
+                                                                                                    <span class="bank-account-name" style="display:block; font-size:1rem; margin-top:6px;">Monserrat Araceli Perez Rubio</span>
+                                                                                                    <span class="bank-account-bank" style="display:block; font-size:1.1rem; font-weight:700; letter-spacing:2px; margin-top:6px;">BBVA</span>
+                                                                                                    <span class="bank-account-clabe" style="display:block; font-size:0.95rem; margin-top:6px;">Transferencia interbancaria clave: 012680027056613078</span>
+                                                                                                </div>
+                                                                                                <p style="margin-top: 20px; font-size: 0.95rem; color: #7f8c8d;"><i class="fas fa-info-circle"></i> Después de realizar la transferencia, sube la captura o ticket de pago.</p>
+                                                                                            </div>
+                                                    <!-- Contenedor para subir comprobante de pago -->
+                                                    <div class="file-upload-group" style="margin: 1.5rem 0; display: flex; flex-direction: column;">
+    <label for="comprobante">Por favor sube la captura de tu transferencia o ticket de pago:</label>
+    <div class="file-input-wrapper" style="position: relative; overflow: hidden; display: inline-block; width: 100%;">
+        <input type="file" id="comprobante" name="comprobante" accept="image/*,.pdf" required>
+        <label for="comprobante" class="file-input-label" style="display: flex; align-items: center; justify-content: center; padding: 30px; border: 2px dashed #b8242f; border-radius: 6px; background: rgba(255,255,255,0.05); cursor: pointer; transition: all 0.3s ease; color: rgba(255,255,255,0.8); font-weight: 600;">
+            <i class="fas fa-cloud-upload-alt" style="margin-right: 10px; font-size: 24px;"></i>
+            <span>Haz clic o arrastra tu archivo aquí</span>
+        </label>
+    </div>
+                                                        </label>
+                                                    </div>
+                                                    <div class="file-name" id="fileName" style="margin-top: 10px; padding: 10px; background: rgba(184,36,47,0.2); border-radius: 6px; color: rgba(255,255,255,0.9); display: none; border-left: 3px solid #b8242f;"></div>
+                                                </div>                                         <button type="submit" class="submit-btn cta-button" style="width:100%; margin-top:1rem;">Inscribirse</button>
+                                            </div>
+                                        </div>
 
-    <footer>
-        <div class="social-media">
-            <h3>Síguenos</h3>
-            <div class="social-links">
-                <a href="https://www.facebook.com/MonkeyRanchqro" target="_blank" aria-label="Facebook">
-                    <span class="social-icon">f</span>
-                </a>
-                <a href="https://www.twitter.com" target="_blank" aria-label="Twitter">
-                    <span class="social-icon">𝕏</span>
-                </a>
-                <a href="https://www.instagram.com/monkeyranchrideclub" target="_blank" aria-label="Instagram">
-                    <span class="social-icon">📷</span>
-                </a>
-                <a href="https://www.youtube.com" target="_blank" aria-label="YouTube">
-                    <span class="social-icon">▶</span>
-                </a>
-            </div>
-        </div>
-        <p>&copy; 2026 Monkey Ranch. Todos los derechos reservados.</p>
-    </footer>
-
-    <script src="script.js"></script>
-    <script>
-        // const cantidadPersonasSelect = document.getElementById('cantidadPersonasSelect');
-        // const cantidadVehiculosSelect = document.getElementById('cantidadVehiculosSelect');
-        // const personasContainer = document.getElementById('personasContainer');
-        // const vehiculosContainer = document.getElementById('vehiculosContainer');
-        // Eliminada la declaración duplicada de inscriptionForm, ya está en script.js
-
-        // Código comentado porque las variables no están definidas ni usadas actualmente
-        /*
-        // Generar formularios de personas dinámicamente
-        cantidadPersonasSelect.addEventListener('change', function() {
-            const cantidad = this.value;
-            personasContainer.innerHTML = '';
-
-            // Si selecciona la opción de contacto, redirigir
-            if (cantidad === 'contacto') {
-                window.location.href = 'index.html#contact';
-                return;
-            }
-
-            if (cantidad && parseInt(cantidad) > 0) {
-                for (let i = 1; i <= parseInt(cantidad); i++) {
-                    const personaForm = document.createElement('div');
-                    personaForm.className = 'persona-form';
-                    personaForm.innerHTML = `
+                                    </div>
         
-                        <h3>Persona ${i}</h3>
-                        <input type="text" placeholder="Nombre de la persona ${i}" class="persona-nombre" required>
-                        <input type="number" placeholder="Edad" class="persona-edad" min="1" max="120" required>
-                        <select class="persona-sexo" required>
-                            <option value="">Selecciona sexo</option>
-                            <option value="Masculino">Masculino</option>
-                            <option value="Femenino">Femenino</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-                        <select class="persona-rol" required>
-                            <option value="">Selecciona rol</option>
-                            <option value="Espectador">Espectador</option>
-                            <option value="Mecánico">Mecánico</option>
-                            <option value="Piloto extra">Piloto extra</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-                    `;
-                    personasContainer.appendChild(personaForm);
-                }
+    <script>
+    // Asegura que el valor de transponder se envía al backend
+        // Actualiza el monto a depositar dinámicamente
+        function updateDepositAmount() {
+            const transponder = document.getElementById('transponderSelect').value;
+            const categoria = document.getElementById('categoriaSelect').value;
+            let transponderValue = 0;
+            let inscripcionValue = 1500;
+            if (transponder === 'si') {
+                transponderValue = 150;
+            } else if (transponder === 'no') {
+                transponderValue = 300;
             }
-        });
-
-        // Generar formularios de vehiculos dinamicamente
-        cantidadVehiculosSelect.addEventListener('change', function() {
-            const cantidad = this.value;
-            vehiculosContainer.innerHTML = '';
-
-            if (cantidad && cantidad !== '10+') {
-                for (let i = 1; i <= parseInt(cantidad); i++) {
-                    const vehiculoForm = document.createElement('div');
-                    vehiculoForm.className = 'vehiculo-form';
-                    vehiculoForm.innerHTML = `
-                        <h3>Vehículo ${i}</h3>
-                        <input type="text" placeholder="Marca" class="vehiculo-marca" required>
-                        <input type="text" placeholder="Modelo" class="vehiculo-modelo" required>
-                        <input type="number" placeholder="Año" class="vehiculo-ano" min="1900" max="2100" required>
-                        <input type="text" placeholder="Número de placa" class="vehiculo-placa" required>
-                    `;
-                    vehiculosContainer.appendChild(vehiculoForm);
-                }
-            } else if (cantidad === '10+') {
-                const alertDiv = document.createElement('div');
-                alertDiv.className = 'alert-message';
-                alertDiv.textContent = 'Por favor, contacta directamente para grupos de más de 10 vehículos.';
-                vehiculosContainer.appendChild(alertDiv);
+            // Si la categoría es Mx2 (15 a 23 años), el costo es 2000
+            if (categoria === 'Mx2 (15 a 23 años)') {
+                inscripcionValue = 2000;
             }
-        });
-*/
-        // Manejo del formulario de inscripción
-        inscriptionForm.addEventListener('submit', function(e) {
+            const total = inscripcionValue + transponderValue;
+            document.getElementById('depositAmount').textContent = `$${total}.00`;
+        }
+
+        document.getElementById('transponderSelect').addEventListener('change', updateDepositAmount);
+        document.getElementById('categoriaSelect').addEventListener('change', updateDepositAmount);
+        // Inicializa el monto al cargar
+        updateDepositAmount();
+
+        // Asegura que el valor de transponder se envía al backend
+        document.getElementById('inscriptionForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            // Evitar doble submit
-            let submitBtn = this.querySelector('.submit-btn');
-            if (submitBtn.disabled) return;
-            submitBtn.disabled = true;
-            
-            const nombre = this.querySelector('input[name="nombre"]').value.trim();
-            const email = this.querySelector('input[name="email"]').value.trim();
-            const telefono = this.querySelector('input[name="telefono"]').value.trim();
-            const cc = this.querySelector('input[name="cc"]').value.trim();
-            const edad = this.querySelector('input[name="edad"]').value.trim();
-            const numero_moto = this.querySelector('input[name="numero_moto"]').value.trim();
-            const numero_licencia = this.querySelector('input[name="numero_licencia"]').value.trim();
-            const categoria = this.querySelector('#categoriaSelect').value;
-            // Eliminado: cantidadPersonas, cantidadVehiculos, mensaje
-            const club_exclusivo = this.querySelector('select[name="club_exclusivo"]').value;
-            const mainInputs = [
-                this.querySelector('input[name="nombre"]'),
-                this.querySelector('input[name="email"]'),
-                this.querySelector('input[name="telefono"]'),
-                this.querySelector('input[name="edad"]'),
-                this.querySelector('input[name="numero_moto"]'),
-                this.querySelector('input[name="numero_licencia"]'),
-                this.querySelector('#categoriaSelect'),
-                this.querySelector('input[name="cc"]')
-            ];
-            
-            // Validación cliente
-            let isValid = true;
-            mainInputs.forEach(input => {
-                if (!input.value.trim()) {
-                    isValid = false;
-                    input.style.borderColor = '#ff6b6b';
-                } else {
-                    input.style.borderColor = 'var(--border-color)';
-                }
+            const form = e.target;
+            const formData = new FormData(form);
+            // El valor de transponder se incluye automáticamente por el atributo name="transponder"
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
             });
-            
-            if (!isValid) {
-                alert('Por favor, completa todos los campos del formulario principal.');
-                return;
-            }
-
-            // Validación de email
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                alert('Por favor, ingresa un email válido.');
-                return;
-            }
-
-            // Validación de teléfono
-            const telefonoRegex = /^[0-9\-\+\s\(\)]{10,}$/;
-            if (!telefonoRegex.test(telefono)) {
-                alert('Por favor, ingresa un teléfono válido.');
-                return;
-            }
-
-            // Validación de edad según categoría
-            const edadNum = parseInt(edad);
-            let edadValida = true;
-            let mensajeEdad = '';
-
-            if (categoria.includes('50cc mini 1')) {
-                edadValida = edadNum >= 4 && edadNum <= 6;
-                mensajeEdad = 'La categoría 50cc mini 1 requiere edad entre 4 y 6 años';
-            } else if (categoria.includes('50cc mini 2')) {
-                edadValida = edadNum >= 7 && edadNum <= 8;
-                mensajeEdad = 'La categoría 50cc mini 2 requiere edad entre 7 y 8 años';
-            } else if (categoria.includes('50cc junior')) {
-                edadValida = edadNum >= 4 && edadNum <= 8;
-                mensajeEdad = 'La categoría 50cc junior requiere edad entre 4 y 8 años';
-            } else if (categoria.includes('65cc mini 1')) {
-                edadValida = edadNum >= 7 && edadNum <= 8;
-                mensajeEdad = 'La categoría 65cc mini 1 requiere edad entre 7 y 8 años';
-            } else if (categoria.includes('65cc mini 2')) {
-                edadValida = edadNum >= 9 && edadNum <= 10;
-                mensajeEdad = 'La categoría 65cc mini 2 requiere edad entre 9 y 10 años';
-            } else if (categoria.includes('85cc mini 1')) {
-                edadValida = edadNum >= 10 && edadNum <= 12;
-                mensajeEdad = 'La categoría 85cc mini 1 requiere edad entre 10 y 12 años';
-            } else if (categoria.includes('85cc mini 2')) {
-                edadValida = edadNum >= 13 && edadNum <= 15;
-                mensajeEdad = 'La categoría 85cc mini 2 requiere edad entre 13 y 15 años';
-            } else if (categoria.includes('125cc B')) {
-                edadValida = edadNum >= 15 && edadNum <= 23;
-                mensajeEdad = 'La categoría 125cc B requiere edad entre 15 y 23 años';
-            } else if (categoria.includes('125cc A')) {
-                edadValida = edadNum >= 18;
-                mensajeEdad = 'La categoría 125cc A requiere edad mínima de 18 años';
-            } else if (categoria.includes('Veteranos 30')) {
-                edadValida = edadNum >= 30;
-                mensajeEdad = 'La categoría Veteranos 30 requiere edad mínima de 30 años';
-            } else if (categoria.includes('Veteranos 40')) {
-                edadValida = edadNum >= 40;
-                mensajeEdad = 'La categoría Veteranos 40 requiere edad mínima de 40 años';
-            } else if (categoria.includes('Veteranos 50')) {
-                edadValida = edadNum >= 50;
-                mensajeEdad = 'La categoría Veteranos 50 requiere edad mínima de 50 años';
-            } else if (categoria.includes('Mx2')) {
-                edadValida = edadNum >= 15 && edadNum <= 23;
-                mensajeEdad = 'La categoría Mx2 requiere edad entre 15 y 23 años';
-            } else if (categoria.includes('Mx1 Open')) {
-                edadValida = edadNum >= 18;
-                mensajeEdad = 'La categoría Mx1 Open requiere edad mínima de 18 años';
-            }
-
-            if (!edadValida) {
-                alert('La edad no es correcta. ' + mensajeEdad);
-                return;
-            }
-
-            // Calcular precio según categoría
-            let total = '$1,500.00';
-            if (categoria.includes('Mx2')) {
-                total = '$2,000.00';
-            }
-
-            // Eliminado: recopilación y validación de personas y vehículos
-
-            // Eliminado: mensaje de personas y vehículos
-
-            // Enviar al backend
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Enviando...';
-
-            fetch('https://monkey-ranch-api.onrender.com/api/inscripcion', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ 
-                    nombre, 
-                    email,
-                    telefono,
-                    cc,
-                    club_exclusivo: club_exclusivo === '' ? null : club_exclusivo,
-                    edad: parseInt(edad),
-                    numero_moto,
-                    numero_licencia,
-                    categoria
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('¡Inscripción completada! Te contactaremos pronto.');
-                    // Remover event listener para evitar doble submit
-                    inscriptionForm.onsubmit = null;
-                    // Store data in sessionStorage
-                    const purchaseData = {
-                        nombre: nombre,
-                        email: email,
-                        telefono: telefono,
-                        fecha_evento: new Date().toLocaleDateString('es-ES'),
-                        total: total,
-                        inscripcion_id: data.id
-                    };
-                    sessionStorage.setItem('purchaseData', JSON.stringify(purchaseData));
-                    // Redirect to payment proof page with URL parameters
-                    const params = new URLSearchParams({
-                        nombre: nombre,
-                        email: email,
-                        telefono: telefono,
-                        fecha: new Date().toLocaleDateString('es-ES'),
-                        total: total,
-                        inscripcion_id: data.id
-                    });
-                    window.location.href = `pago_inscripcion.html?${params.toString()}`;
+            try {
+                const response = await fetch('/api/inscripcion', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                if (response.ok) {
+                    alert('Inscripción enviada correctamente');
+                    form.reset();
+                    updateDepositAmount();
                 } else {
-                    alert('Error: ' + data.message);
-                    // Deshabilitar el botón hasta que el usuario modifique el email
-                    submitBtn.disabled = true;
-                    // Rehabilitar el botón si el usuario cambia el email
-                    const emailInput = document.querySelector('input[name="email"]');
-                    if (emailInput) {
-                        emailInput.addEventListener('input', () => {
-                            submitBtn.disabled = false;
-                        }, { once: true });
-                    }
+                    alert('Error al enviar la inscripción');
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error al enviar la inscripción. Por favor, intenta de nuevo.');
-            })
-            .finally(() => {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            });
+            } catch (err) {
+                alert('Error de conexión');
+            }
         });
     </script>
 </body>

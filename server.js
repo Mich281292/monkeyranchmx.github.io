@@ -718,7 +718,14 @@ app.post('/api/inscription-proof', async (req, res) => {
             transponder_option, transponder_brand, transponder_model, transponder_notes 
         } = req.body;
 
+        // LOGS INICIALES
+        console.log('--- INSCRIPTION PROOF REQUEST ---');
+        console.log('Request body:', req.body);
+        console.log('inscripcion_id recibido:', inscripcion_id);
+        console.log('nombre:', nombre, 'email:', email);
+
         if (!comprobante_base64) {
+            console.log('Falta comprobante_base64');
             return res.status(400).json({
                 success: false,
                 message: 'Por favor, sube un comprobante'
@@ -729,6 +736,7 @@ app.post('/api/inscription-proof', async (req, res) => {
         
         // Validate base64
         if (!/^[A-Za-z0-9+/=]*$/.test(comprobante_base64)) {
+            console.log('Formato de archivo inválido');
             return res.status(400).json({
                 success: false,
                 message: 'Formato de archivo inválido'
@@ -741,16 +749,33 @@ app.post('/api/inscription-proof', async (req, res) => {
         // Get the inscription ID from the latest inscription if not provided
         let inscriptionId = inscripcion_id;
         if (!inscriptionId) {
+            console.log('inscripcion_id no proporcionado, buscando por nombre/email...');
             const latestInscription = await pool.query(
                 'SELECT id FROM inscriptions WHERE nombre = $1 AND email = $2 ORDER BY fecha_creacion DESC LIMIT 1',
                 [nombre, email]
             );
             if (latestInscription.rows.length > 0) {
                 inscriptionId = latestInscription.rows[0].id;
+                console.log('inscriptionId encontrado por nombre/email:', inscriptionId);
+            } else {
+                console.log('No se encontró inscripción por nombre/email');
             }
         }
         
-        if (!inscriptionId) {
+        // LOG: Verifica si el id existe en la base
+        if (inscriptionId) {
+            const checkInscription = await pool.query('SELECT id FROM inscriptions WHERE id = $1', [inscriptionId]);
+            if (checkInscription.rows.length === 0) {
+                console.log('inscriptionId no existe en inscriptions:', inscriptionId);
+                return res.status(404).json({
+                    success: false,
+                    message: 'Inscripcion no encontrada para guardar el comprobante'
+                });
+            } else {
+                console.log('inscriptionId existe en inscriptions:', inscriptionId);
+            }
+        } else {
+            console.log('inscriptionId sigue siendo null/undefined');
             return res.status(404).json({
                 success: false,
                 message: 'Inscripcion no encontrada para guardar el comprobante'
@@ -771,6 +796,7 @@ app.post('/api/inscription-proof', async (req, res) => {
             );
 
             if (updateResult.rowCount === 0) {
+                console.log('No se pudo actualizar inscription, rowCount=0');
                 return res.status(404).json({
                     success: false,
                     message: 'Inscripcion no encontrada para guardar el comprobante'
