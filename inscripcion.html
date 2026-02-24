@@ -232,6 +232,10 @@
         // Manejo del formulario de inscripción
         inscriptionForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            // Evitar doble submit
+            const submitBtn = this.querySelector('.submit-btn');
+            if (submitBtn.disabled) return;
+            submitBtn.disabled = true;
             
             const nombre = this.querySelector('input[name="nombre"]').value.trim();
             const email = this.querySelector('input[name="email"]').value.trim();
@@ -375,6 +379,8 @@
             .then(data => {
                 if (data.success) {
                     alert('¡Inscripción completada! Te contactaremos pronto.');
+                    // Remover event listener para evitar doble submit
+                    inscriptionForm.onsubmit = null;
                     // Store data in sessionStorage
                     const purchaseData = {
                         nombre: nombre,
