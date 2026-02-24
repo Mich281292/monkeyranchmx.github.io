@@ -1125,6 +1125,18 @@
                     proofButtonHtml = `<br><button class="btn-view-proof" onclick="uploadInscripcionProof(${insc.id}, '${escapeHtml(insc.nombre)}', '${insc.email}', '${insc.telefono}')">⬆️ Subir comprobante</button>`;
                 }
 
+                // Mostrar la respuesta de transponder
+                let transponderLabel = 'N/A';
+                if (insc.transponder !== undefined && insc.transponder !== null) {
+                    if (insc.transponder === 'si') {
+                        transponderLabel = 'Sí, cuenta con transponder';
+                    } else if (insc.transponder === 'no') {
+                        transponderLabel = 'No cuenta con transponder';
+                    } else {
+                        transponderLabel = escapeHtml(insc.transponder);
+                    }
+                }
+
                 return `
                 <div class="inscription-card" data-id="${insc.id}">
                     <div class="contact-header">
@@ -1141,16 +1153,11 @@
                         <strong>🏍️ Número de Moto:</strong> ${escapeHtml(insc.numero_moto || 'N/A')}<br>
                         <strong>📜 Número de Licencia:</strong> ${escapeHtml(insc.numero_licencia || 'N/A')}<br>
                         <strong>🏆 Categoría:</strong> ${escapeHtml(insc.categoria || 'N/A')}<br>
+                        <strong>🔌 Transponder:</strong> ${transponderLabel}<br>
                         <strong>👥 Cantidad de Personas:</strong> ${escapeHtml(insc.cantidad_personas || 'N/A')}<br>
                         <strong>🚗 Cantidad de Vehículos:</strong> ${escapeHtml(insc.cantidad_vehiculos || 'N/A')}<br>
                         <strong>💬 Mensaje:</strong> ${escapeHtml(insc.mensaje || 'N/A')}<br>
                         <strong>💰 Costo Total:</strong> ${escapeHtml(insc.total_cost || 'N/A')}<br>
-                        <strong>🔌 Transponder:</strong> ${escapeHtml(insc.transponder_option === 'rent' ? 'Renta ($300)' : insc.transponder_option === 'own' ? 'Propio ($150)' : 'N/A')}<br>
-                        ${insc.transponder_option === 'own' ? `
-                            <strong>🏭 Marca:</strong> ${escapeHtml(insc.transponder_brand || 'N/A')}<br>
-                            <strong>🔧 Modelo:</strong> ${escapeHtml(insc.transponder_model || 'N/A')}<br>
-                            ${insc.transponder_notes ? `<strong>📝 Notas:</strong> ${escapeHtml(insc.transponder_notes)}<br>` : ''}
-                        ` : ''}
                         ${proofButtonHtml}
                     </div>
                     <button class="generate-qr-btn" onclick="generateQRInscripcion(${insc.id}, '${escapeHtml(insc.nombre)}', '${insc.email}', '${insc.telefono}')">🔐 Generar QR</button>
