@@ -207,8 +207,6 @@ async function initializeDatabase() {
                 numero_moto VARCHAR(100),
                 numero_licencia VARCHAR(100),
                 categoria VARCHAR(100),
-                personas JSONB,
-                vehiculos JSONB,
                 fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 comprobante TEXT,
                 comprobante_tipo VARCHAR(50),
@@ -220,11 +218,11 @@ async function initializeDatabase() {
                 total_cost VARCHAR(50)
             )
         `);
-        // Add new columns if they don't exist
+        // Eliminar columnas personas y vehiculos si existen
         await pool.query(`
             ALTER TABLE inscriptions 
-            ADD COLUMN IF NOT EXISTS personas JSONB,
-            ADD COLUMN IF NOT EXISTS vehiculos JSONB
+            DROP COLUMN IF EXISTS personas,
+            DROP COLUMN IF EXISTS vehiculos
         `);
         console.log('Inscriptions table ready');
 
