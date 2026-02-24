@@ -162,6 +162,8 @@
         // const vehiculosContainer = document.getElementById('vehiculosContainer');
         // Eliminada la declaración duplicada de inscriptionForm, ya está en script.js
 
+        // Código comentado porque las variables no están definidas ni usadas actualmente
+        /*
         // Generar formularios de personas dinámicamente
         cantidadPersonasSelect.addEventListener('change', function() {
             const cantidad = this.value;
@@ -178,6 +180,7 @@
                     const personaForm = document.createElement('div');
                     personaForm.className = 'persona-form';
                     personaForm.innerHTML = `
+        
                         <h3>Persona ${i}</h3>
                         <input type="text" placeholder="Nombre de la persona ${i}" class="persona-nombre" required>
                         <input type="number" placeholder="Edad" class="persona-edad" min="1" max="120" required>
@@ -225,7 +228,7 @@
                 vehiculosContainer.appendChild(alertDiv);
             }
         });
-
+*/
         // Manejo del formulario de inscripción
         inscriptionForm.addEventListener('submit', function(e) {
             e.preventDefault();
