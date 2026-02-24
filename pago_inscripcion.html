@@ -455,16 +455,31 @@
         // Initialize on page load
         window.addEventListener('DOMContentLoaded', () => {
             const data = getPurchaseData();
-            // Mostrar $1800.00 por defecto en el texto
-            document.getElementById('depositAmount').textContent = '$1800.00';
-            // Set initial hidden input value a 1500
+            // Determinar costo base según categoría
+            let baseCost = 1500;
+            if (data.categoria && data.categoria.trim() === 'Mx2(15 a23 años)') {
+                baseCost = 2000;
+            }
+            // Mostrar monto inicial
+            document.getElementById('depositAmount').textContent = formatMoney(baseCost + 300); // Por defecto transponder rent
+            // Set initial hidden input value
             const depositAmountInput = document.getElementById('depositAmountInput');
             if (depositAmountInput) {
-                depositAmountInput.value = 1500;
+                depositAmountInput.value = baseCost;
             }
-            // Update deposit amount when transponder option changes
+            // Actualizar monto cuando cambia transponder
             document.querySelectorAll('input[name="transponder_option"]').forEach(radio => {
-                radio.addEventListener('change', updateDepositAmount);
+                radio.addEventListener('change', () => {
+                    let total = baseCost;
+                    const transponder = document.querySelector('input[name="transponder_option"]:checked').value;
+                    if (transponder === 'rent') {
+                        total += 300;
+                    } else {
+                        total += 150;
+                    }
+                    document.getElementById('depositAmount').textContent = formatMoney(total);
+                    depositAmountInput.value = baseCost;
+                });
             });
             // Handle file input display
             const fileInput = document.getElementById('comprobante');
@@ -480,18 +495,20 @@
             document.getElementById('proofForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const file = fileInput.files[0];
+                const submitBtn = document.querySelector('.submit-btn');
                 if (!file) {
                     alert('Por favor selecciona un archivo');
                     return;
                 }
+                // Evitar doble submit
+                if (submitBtn.disabled) return;
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Procesando...';
                 // Convert file to Base64
                 const reader = new FileReader();
                 reader.onload = async (event) => {
                     const base64String = event.target.result.split(',')[1]; // Remove data:image/... prefix
                     const mimeType = file.type || 'application/octet-stream';
-                    const submitBtn = document.querySelector('.submit-btn');
-                    submitBtn.disabled = true;
-                    submitBtn.textContent = 'Procesando...';
                     try {
                         const API_URL = 'https://monkey-ranch-api.onrender.com';
                         // Obtener datos de inscripción desde sessionStorage
@@ -499,11 +516,6 @@
                         const depositAmountValue = document.getElementById('depositAmountInput').value;
                         // Obtener datos de transponder
                         const transponderOption = document.querySelector('input[name="transponder_option"]:checked')?.value || '';
-                        // Si hay campos adicionales de transponder, agregarlos aquí
-                        // Ejemplo: transponder_brand, transponder_model, transponder_notes
-                        // const transponderBrand = document.getElementById('transponder_brand')?.value || '';
-                        // const transponderModel = document.getElementById('transponder_model')?.value || '';
-                        // const transponderNotes = document.getElementById('transponder_notes')?.value || '';
                         const response = await fetch(`${API_URL}/api/inscription-proof`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -518,15 +530,14 @@
                                 comprobante_base64: base64String,
                                 comprobante_tipo: mimeType,
                                 transponder_option: transponderOption
-                                // transponder_brand: transponderBrand,
-                                // transponder_model: transponderModel,
-                                // transponder_notes: transponderNotes
                             })
                         });
                         const result = await response.json();
                         if (result.success) {
                             alert('¡Comprobante recibido! Procesaremos tu solicitud pronto.');
                             sessionStorage.removeItem('purchaseData');
+                            // Remover event listener para evitar doble submit
+                            document.getElementById('proofForm').onsubmit = null;
                             setTimeout(() => {
                                 window.location.href = 'club.html';
                             }, 1500);
