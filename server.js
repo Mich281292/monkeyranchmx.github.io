@@ -617,13 +617,23 @@ app.post('/api/inscripcion', async (req, res) => {
         });
     }
 
-    // Insert into database
+    // Verificar si ya existe una inscripción con el mismo email
     try {
+        const existing = await pool.query(
+            'SELECT id FROM inscriptions WHERE email = $1',
+            [email]
+        );
+        if (existing.rows.length > 0) {
+            return res.status(409).json({
+                success: false,
+                message: 'Ya existe una inscripción con este email',
+                id: existing.rows[0].id
+            });
+        }
         const result = await pool.query(
             'INSERT INTO inscriptions (nombre, email, telefono, cc, club_exclusivo, edad, numero_moto, numero_licencia, categoria) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id',
             [nombre, email, telefono, cc, club_exclusivo || null, parseInt(edad), numero_moto, numero_licencia, categoria || null]
         );
-
         res.status(201).json({
             success: true,
             message: '¡Inscripción completada! Te contactaremos pronto.',
