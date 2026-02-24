@@ -41,11 +41,11 @@ if (inscriptionForm) {
                 email,
                 telefono,
                 cc,
-                edad,
+                edad: edad ? parseInt(edad) : null,
                 numero_moto,
                 numero_licencia,
-                categoria,
-                club_exclusivo
+                categoria: categoria === '' ? null : categoria,
+                club_exclusivo: club_exclusivo === '' ? null : club_exclusivo
             })
         })
         .then(response => response.json())

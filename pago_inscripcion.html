@@ -494,20 +494,20 @@
                     submitBtn.textContent = 'Procesando...';
                     try {
                         const API_URL = 'https://monkey-ranch-api.onrender.com';
-                        // Get the current deposit amount from the hidden input
+                        // Obtener datos de inscripción desde sessionStorage
+                        const data = JSON.parse(sessionStorage.getItem('purchaseData')) || {};
                         const depositAmountValue = document.getElementById('depositAmountInput').value;
-                        const response = await fetch(`${API_URL}/api/parking-purchase-proof`, {
+                        const response = await fetch(`${API_URL}/api/inscription-proof`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 nombre: data.nombre,
                                 email: data.email,
                                 telefono: data.telefono,
-                                placas: data.placas,
-                                cantidad: data.cantidad,
-                                total: data.total,
+                                cantidad: 1,
                                 fecha_evento: data.fecha_evento,
-                                deposit_amount: depositAmountValue,
+                                total: depositAmountValue,
+                                inscripcion_id: data.inscripcion_id,
                                 comprobante_base64: base64String,
                                 comprobante_tipo: mimeType
                             })
@@ -517,7 +517,7 @@
                             alert('¡Comprobante recibido! Procesaremos tu solicitud pronto.');
                             sessionStorage.removeItem('purchaseData');
                             setTimeout(() => {
-                                window.location.href = 'clubestacionamiento.html';
+                                window.location.href = 'club.html';
                             }, 1500);
                         } else {
                             alert('Error: ' + result.message);

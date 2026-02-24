@@ -595,8 +595,12 @@ app.get('/api/vip', async (req, res) => {
 app.post('/api/inscripcion', async (req, res) => {
     const { nombre, email, telefono, cc, club_exclusivo, edad, numero_moto, numero_licencia, categoria } = req.body;
 
+    // Log incoming data for debugging
+    console.log('POST /api/inscripcion - req.body:', req.body);
+
     // Validation
     if (!nombre || !email || !telefono || !cc || !edad || !numero_moto || !numero_licencia) {
+        console.warn('Faltan campos requeridos:', { nombre, email, telefono, cc, edad, numero_moto, numero_licencia });
         return res.status(400).json({
             success: false,
             message: 'Por favor, completa todos los campos requeridos'
@@ -606,6 +610,7 @@ app.post('/api/inscripcion', async (req, res) => {
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
+        console.warn('Email inválido:', email);
         return res.status(400).json({
             success: false,
             message: 'Por favor, ingresa un email válido'
@@ -626,9 +631,14 @@ app.post('/api/inscripcion', async (req, res) => {
         });
     } catch (err) {
         console.error('Error inserting inscription:', err);
+        // Log detailed error info
+        if (err && err.detail) {
+            console.error('Detalle del error:', err.detail);
+        }
         return res.status(500).json({
             success: false,
-            message: 'Error al guardar la inscripción'
+            message: 'Error al guardar la inscripción',
+            error: err.message || err.toString()
         });
     }
 });
