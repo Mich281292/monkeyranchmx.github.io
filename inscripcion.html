@@ -374,6 +374,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
+                    alert('¡Inscripción completada! Te contactaremos pronto.');
                     // Store data in sessionStorage
                     const purchaseData = {
                         nombre: nombre,
@@ -396,6 +397,7 @@
                     window.location.href = `pago_inscripcion.html?${params.toString()}`;
                 } else {
                     alert('Error: ' + data.message);
+                    // No guardar ni redirigir si hay error
                 }
             })
             .catch(error => {
