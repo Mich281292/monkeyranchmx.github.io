@@ -397,7 +397,15 @@
                     window.location.href = `pago_inscripcion.html?${params.toString()}`;
                 } else {
                     alert('Error: ' + data.message);
-                    // No guardar ni redirigir si hay error
+                    // Deshabilitar el botón hasta que el usuario modifique el email
+                    submitBtn.disabled = true;
+                    // Rehabilitar el botón si el usuario cambia el email
+                    const emailInput = document.querySelector('input[name="email"]');
+                    if (emailInput) {
+                        emailInput.addEventListener('input', () => {
+                            submitBtn.disabled = false;
+                        }, { once: true });
+                    }
                 }
             })
             .catch(error => {
