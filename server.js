@@ -593,7 +593,7 @@ app.get('/api/vip', async (req, res) => {
 
 // POST endpoint for inscriptions (motocross/trackday)
 app.post('/api/inscripcion', async (req, res) => {
-    const { nombre, email, telefono, cc, club_exclusivo, edad, numero_moto, numero_licencia, categoria } = req.body;
+    const { nombre, email, telefono, cc, club_exclusivo, edad, numero_moto, numero_licencia, categoria, comprobante, comprobante_tipo, total, transponder, transponder_brand, transponder_model, transponder_notes } = req.body;
 
     // Log incoming data for debugging
     console.log('POST /api/inscripcion - req.body:', req.body);
@@ -604,6 +604,13 @@ app.post('/api/inscripcion', async (req, res) => {
         return res.status(400).json({
             success: false,
             message: 'Por favor, completa todos los campos requeridos'
+        });
+    }
+    // Validar comprobante y total
+    if (!comprobante || !comprobante_tipo || !total) {
+        return res.status(400).json({
+            success: false,
+            message: 'Faltan comprobante, tipo de comprobante o total.'
         });
     }
 
@@ -631,8 +638,14 @@ app.post('/api/inscripcion', async (req, res) => {
             });
         }
         const result = await pool.query(
-            'INSERT INTO inscriptions (nombre, email, telefono, cc, club_exclusivo, edad, numero_moto, numero_licencia, categoria) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id',
-            [nombre, email, telefono, cc, club_exclusivo || null, parseInt(edad), numero_moto, numero_licencia, categoria || null]
+            `INSERT INTO inscriptions 
+                (nombre, email, telefono, cc, club_exclusivo, edad, numero_moto, numero_licencia, categoria, comprobante, comprobante_tipo, total_cost, transponder_option, transponder_brand, transponder_model, transponder_notes)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING id`,
+            [
+                nombre, email, telefono, cc, club_exclusivo || null, parseInt(edad), numero_moto, numero_licencia, categoria || null,
+                comprobante, comprobante_tipo, total,
+                transponder || null, transponder_brand || null, transponder_model || null, transponder_notes || null
+            ]
         );
         res.status(201).json({
             success: true,

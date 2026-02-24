@@ -208,28 +208,74 @@
             e.preventDefault();
             const form = e.target;
             const formData = new FormData(form);
-            // El valor de transponder se incluye automáticamente por el atributo name="transponder"
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
             const data = {};
             formData.forEach((value, key) => {
-                data[key] = value;
-            });
-            try {
-                const response = await fetch('/api/inscripcion', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-                if (response.ok) {
-                    alert('Inscripción enviada correctamente');
-                    form.reset();
-                    updateDepositAmount();
+                if (key === 'edad') {
+                    data[key] = Number(value);
                 } else {
-                    alert('Error al enviar la inscripción');
+                    data[key] = value;
+                }
+            });
+            // Calcular el total a depositar igual que en el frontend
+            const transponder = data['transponder'];
+            const categoria = data['categoria'];
+            let transponderValue = 0;
+            let inscripcionValue = 1500;
+            if (transponder === 'si') {
+                transponderValue = 150;
+            } else if (transponder === 'no') {
+                transponderValue = 300;
+            }
+            if (categoria === 'Mx2 (15 a 23 años)') {
+                inscripcionValue = 2000;
+            }
+            data['total'] = inscripcionValue + transponderValue;
+
+            // Obtener archivo y convertir a base64
+            const fileInput = document.getElementById('comprobante');
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Por favor sube la captura de tu transferencia o ticket de pago.');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                const base64String = event.target.result.split(',')[1];
+                data['comprobante'] = base64String;
+                data['comprobante_tipo'] = file.type || 'application/octet-stream';
+                // Datos de transponder extra opcionales
+                data['transponder_brand'] = '';
+                data['transponder_model'] = '';
+                data['transponder_notes'] = '';
+                try {
+                    const API_URL = 'https://monkey-ranch-api.onrender.com';
+                    const response = await fetch(`${API_URL}/api/inscripcion`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    if (response.ok) {
+                        alert('Inscripción enviada correctamente');
+                        form.reset();
+                        updateDepositAmount();
+                    } else {
+                        const errorData = await response.json();
+                        alert('Error al enviar la inscripción: ' + (errorData.message || 'Error desconocido'));
+                    }
+                } catch (err) {
+                    alert('Error de conexión: ' + err.message);
+                }
+            };
+            reader.readAsDataURL(file);
+                    alert('Error al enviar la inscripción: ' + (errorData.message || 'Error desconocido'));
                 }
             } catch (err) {
-                alert('Error de conexión');
+                alert('Error de conexión: ' + err.message);
             }
         });
     </script>
