@@ -1126,8 +1126,8 @@
                 }
 
                 // Mostrar la respuesta de transponder (usar transponder_option si existe, si no fallback a transponder)
-                let transponderLabel = 'N/A';
-                if (insc.transponder_option !== undefined && insc.transponder_option !== null) {
+                let transponderLabel = '';
+                if (insc.transponder_option && insc.transponder_option.trim() !== '') {
                     if (insc.transponder_option === 'own') {
                         transponderLabel = 'Sí, cuenta con transponder';
                     } else if (insc.transponder_option === 'rent') {
@@ -1135,7 +1135,7 @@
                     } else {
                         transponderLabel = escapeHtml(insc.transponder_option);
                     }
-                } else if (insc.transponder !== undefined && insc.transponder !== null) {
+                } else if (insc.transponder && insc.transponder.trim() !== '') {
                     if (insc.transponder === 'si') {
                         transponderLabel = 'Sí, cuenta con transponder';
                     } else if (insc.transponder === 'no') {
@@ -1143,6 +1143,8 @@
                     } else {
                         transponderLabel = escapeHtml(insc.transponder);
                     }
+                } else {
+                    transponderLabel = 'No especificado';
                 }
 
                 return `
