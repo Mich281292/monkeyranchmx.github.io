@@ -1127,21 +1127,20 @@
 
                 // Mostrar la respuesta de transponder (usar transponder_option si existe, si no fallback a transponder)
                 let transponderLabel = '';
-                if (insc.transponder_option && insc.transponder_option.trim() !== '') {
-                    if (insc.transponder_option === 'own') {
+                // Usar el valor de transponder_option del objeto base si existe, si no el del JOIN, si no el campo transponder
+                let transponderValue = (insc.transponder_option !== undefined && insc.transponder_option !== null && insc.transponder_option !== '')
+                    ? insc.transponder_option
+                    : (insc.transponder !== undefined && insc.transponder !== null && insc.transponder !== '')
+                        ? insc.transponder
+                        : null;
+
+                if (transponderValue) {
+                    if (transponderValue === 'own' || transponderValue === 'si') {
                         transponderLabel = 'Sí, cuenta con transponder';
-                    } else if (insc.transponder_option === 'rent') {
+                    } else if (transponderValue === 'rent' || transponderValue === 'no') {
                         transponderLabel = 'No cuenta con transponder (renta)';
                     } else {
-                        transponderLabel = escapeHtml(insc.transponder_option);
-                    }
-                } else if (insc.transponder && insc.transponder.trim() !== '') {
-                    if (insc.transponder === 'si') {
-                        transponderLabel = 'Sí, cuenta con transponder';
-                    } else if (insc.transponder === 'no') {
-                        transponderLabel = 'No cuenta con transponder';
-                    } else {
-                        transponderLabel = escapeHtml(insc.transponder);
+                        transponderLabel = escapeHtml(transponderValue);
                     }
                 } else {
                     transponderLabel = 'No especificado';
