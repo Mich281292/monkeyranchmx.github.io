@@ -669,13 +669,14 @@ app.post('/api/inscripcion', async (req, res) => {
 // GET endpoint to fetch all inscriptions
 app.get('/api/inscripciones', async (req, res) => {
     try {
+
         const result = await pool.query(`
             SELECT 
                 i.*,
-                t.transponder_option,
-                t.transponder_brand,
-                t.transponder_model,
-                t.transponder_notes
+                COALESCE(t.transponder_option, i.transponder_option) AS transponder_option,
+                COALESCE(t.transponder_brand, i.transponder_brand) AS transponder_brand,
+                COALESCE(t.transponder_model, i.transponder_model) AS transponder_model,
+                COALESCE(t.transponder_notes, i.transponder_notes) AS transponder_notes
             FROM inscriptions i
             LEFT JOIN transponder t ON i.id = t.inscripcion_id
             ORDER BY i.fecha_creacion DESC
