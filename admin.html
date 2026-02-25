@@ -1526,7 +1526,7 @@
             }
 
             try {
-                const response = await fetch(`/api/ticket-purchases/${id}`, {
+                const response = await fetch(`${API_BASE_URL}/api/ticket-purchases/${id}`, {
                     method: 'DELETE'
                 });
                 console.log('DELETE /api/ticket-purchases response:', response);
@@ -1550,7 +1550,7 @@
             }
 
             try {
-                const response = await fetch(`/api/vip-purchases/${id}`, {
+                const response = await fetch(`${API_BASE_URL}/api/vip-purchases/${id}`, {
                     method: 'DELETE'
                 });
                 console.log('DELETE /api/vip-purchases response:', response);
@@ -1574,7 +1574,7 @@
             }
 
             try {
-                const response = await fetch(`/api/parking-purchases/${id}`, {
+                const response = await fetch(`${API_BASE_URL}/api/parking-purchases/${id}`, {
                     method: 'DELETE'
                 });
                 console.log('DELETE /api/parking-purchases response:', response);
