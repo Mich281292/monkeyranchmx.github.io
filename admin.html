@@ -1125,9 +1125,17 @@
                     proofButtonHtml = `<br><button class="btn-view-proof" onclick="uploadInscripcionProof(${insc.id}, '${escapeHtml(insc.nombre)}', '${insc.email}', '${insc.telefono}')">⬆️ Subir comprobante</button>`;
                 }
 
-                // Mostrar la respuesta de transponder
+                // Mostrar la respuesta de transponder (usar transponder_option si existe, si no fallback a transponder)
                 let transponderLabel = 'N/A';
-                if (insc.transponder !== undefined && insc.transponder !== null) {
+                if (insc.transponder_option !== undefined && insc.transponder_option !== null) {
+                    if (insc.transponder_option === 'own') {
+                        transponderLabel = 'Sí, cuenta con transponder';
+                    } else if (insc.transponder_option === 'rent') {
+                        transponderLabel = 'No cuenta con transponder (renta)';
+                    } else {
+                        transponderLabel = escapeHtml(insc.transponder_option);
+                    }
+                } else if (insc.transponder !== undefined && insc.transponder !== null) {
                     if (insc.transponder === 'si') {
                         transponderLabel = 'Sí, cuenta con transponder';
                     } else if (insc.transponder === 'no') {
