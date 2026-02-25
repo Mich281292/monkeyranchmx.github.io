@@ -1006,8 +1006,6 @@ app.delete('/api/ticket-purchases/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
-        // First delete related comprobantes
-        await pool.query('DELETE FROM comprobantes_generales WHERE ticket_id = $1', [id]);
 
         // Then delete the ticket purchase
         const result = await pool.query('DELETE FROM ticket_purchases WHERE id = $1 RETURNING id', [id]);
