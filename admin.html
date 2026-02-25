@@ -1529,9 +1529,9 @@
                 const response = await fetch(`/api/ticket-purchases/${id}`, {
                     method: 'DELETE'
                 });
-
+                console.log('DELETE /api/ticket-purchases response:', response);
                 const data = await response.json();
-
+                console.log('DELETE /api/ticket-purchases data:', data);
                 if (data.success) {
                     alert('Ticket eliminado exitosamente');
                     loadTickets();
@@ -1539,7 +1539,7 @@
                     alert('Error: ' + data.message);
                 }
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error al eliminar el ticket:', error);
                 alert('Error al eliminar el ticket');
             }
         }
@@ -1553,9 +1553,9 @@
                 const response = await fetch(`/api/vip-purchases/${id}`, {
                     method: 'DELETE'
                 });
-
+                console.log('DELETE /api/vip-purchases response:', response);
                 const data = await response.json();
-
+                console.log('DELETE /api/vip-purchases data:', data);
                 if (data.success) {
                     alert('Ticket VIP eliminado exitosamente');
                     loadTicketsVip();
@@ -1563,7 +1563,7 @@
                     alert('Error: ' + data.message);
                 }
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error al eliminar el ticket VIP:', error);
                 alert('Error al eliminar el ticket VIP');
             }
         }
@@ -1577,9 +1577,9 @@
                 const response = await fetch(`/api/parking-purchases/${id}`, {
                     method: 'DELETE'
                 });
-
+                console.log('DELETE /api/parking-purchases response:', response);
                 const data = await response.json();
-
+                console.log('DELETE /api/parking-purchases data:', data);
                 if (data.success) {
                     alert('Estacionamiento eliminado exitosamente');
                     loadParking();
@@ -1587,7 +1587,7 @@
                     alert('Error: ' + data.message);
                 }
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error al eliminar el estacionamiento:', error);
                 alert('Error al eliminar el estacionamiento');
             }
         }
