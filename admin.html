@@ -553,9 +553,35 @@
         .admin-content {
             display: none;
         }
+        /* Botón flotante inferior estilo WhatsApp */
+        #mv-float-btn {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            z-index: 9999;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 0 18px 6px rgba(33,150,243,0.35), 0 2px 12px rgba(0,0,0,0.18);
+            border: 3px solid #2196f3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: box-shadow 0.3s, border-color 0.3s;
+        }
+        #mv-float-btn:hover {
+            box-shadow: 0 0 32px 12px rgba(33,150,243,0.55), 0 4px 24px rgba(0,0,0,0.22);
+            border-color: #1976d2;
+        }
     </style>
 </head>
 <body>
+    <!-- Botón flotante inferior con imagen mv.png -->
+    <a href="#" id="mv-float-btn" title="MV Logo">
+        <img src="mv.png" alt="MV Logo" style="width:120px;height:120px;display:block;border-radius:50%;">
+    </a>
+            
     <!-- Login Section -->
     <div id="loginSection" class="login-container">
         <div class="login-box">
