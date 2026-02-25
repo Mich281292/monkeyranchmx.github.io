@@ -1006,8 +1006,6 @@ app.delete('/api/ticket-purchases/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
-    // First delete related comprobantes
-    await pool.query('DELETE FROM comprobantes_generales WHERE ticket_id = $1', [id]);
 
         // Then delete the ticket purchase
         const result = await pool.query('DELETE FROM ticket_purchases WHERE id = $1 RETURNING id', [id]);
@@ -1172,8 +1170,6 @@ app.delete('/api/vip-purchases/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
-        // First delete related comprobantes
-        await pool.query('DELETE FROM comprobantes_vip WHERE vip_id = $1', [id]);
 
         // Then delete the VIP purchase
         const result = await pool.query('DELETE FROM vip_purchases WHERE id = $1 RETURNING id', [id]);
@@ -1402,8 +1398,6 @@ app.delete('/api/parking-purchases/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
-        // First delete related comprobantes
-        await pool.query('DELETE FROM comprobantes_estacionamiento WHERE parking_id = $1', [id]);
 
         // Then delete the parking purchase
         const result = await pool.query('DELETE FROM parking_purchases WHERE id = $1 RETURNING id', [id]);
