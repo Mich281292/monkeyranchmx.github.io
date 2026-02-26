@@ -624,7 +624,7 @@
             <h2 style="color:#2196f3; margin-bottom:20px;">QR para Monkey Ranch</h2>
             <div id="qrVisualContainer" style="display:flex; flex-direction:column; align-items:center; justify-content:center; background:#fff; border-radius:15px; box-shadow:0 2px 12px rgba(0,0,0,0.12); padding:20px; margin-bottom:20px; max-width:260px; margin:auto;">
                 <img src="fondonew1.jpeg" alt="Fondo QR" style="width:100%; max-width:220px; border-radius:10px; margin-bottom:10px;">
-                <img id="qrImage" src="https://api.qrserver.com/v1/create-qr-code/?data=https://monkeyranch.com.mx/&size=200x200" alt="QR Monkey Ranch" style="margin-bottom:10px;">
+                <img id="qrImage" src="https://api.qrserver.com/v1/create-qr-code/?data=https://monkeyranch.com.mx/&size=200x200" alt="QR Monkey Ranch" style="margin-bottom:10px;" crossorigin="anonymous">
                 <div style="color:#b8242f; font-weight:bold; font-size:1.2em; margin-top:8px;">Monkey Ranch</div>
             </div>
             <button id="downloadQR" style="display:inline-block; margin-bottom:15px; background:#2196f3; color:#fff; padding:10px 20px; border-radius:8px; font-weight:bold; border:none; cursor:pointer;">⬇️ Descargar QR</button>
@@ -637,8 +637,10 @@
                         alert('No se encontró el contenedor del QR o la imagen.');
                         return;
                     }
-                    // Espera a que la imagen QR esté completamente cargada
+                    // Forzar recarga con crossOrigin
                     if (!qrImg.complete || qrImg.naturalWidth === 0) {
+                        qrImg.crossOrigin = 'anonymous';
+                        qrImg.src = qrImg.src; // Forzar recarga
                         qrImg.onload = function() {
                             html2canvas(qrContainer, {backgroundColor: null}).then(function(canvas) {
                                 var link = document.createElement('a');
