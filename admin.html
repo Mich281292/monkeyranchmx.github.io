@@ -1219,8 +1219,32 @@
                         <strong>💬 Mensaje:</strong><br>
                         ${escapeHtml(contact.mensaje)}
                     </div>
+                    <button class="delete-btn" onclick="deleteContacto(${contact.id})">🗑️ Eliminar</button>
                 </div>
             `).join('');
+        async function deleteContacto(id) {
+            if (!confirm('¿Estás seguro de que deseas eliminar este contacto? Esta acción no puede ser revertida.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/contactos/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Contacto eliminado exitosamente');
+                    loadContacts();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al eliminar el contacto');
+            }
+        }
 
             contentDiv.innerHTML = `<div class="contacts-grid">${contactsHTML}</div>`;
         }
@@ -2173,7 +2197,7 @@
                         <strong>Correo:</strong> ${escapeHtml(codigo.correo)}<br>
                         <strong>Teléfono:</strong> <a href="https://wa.me/${codigo.telefono}" target="_blank">📱 ${escapeHtml(codigo.telefono)}</a><br>
                         <strong>Código/Imagen:</strong><br>
-                        <img src="data:image/png;base64,${codigo.imagen.substring(0, 100)}..." alt="Código" style="max-width: 150px; margin-top: 10px; cursor: pointer;" onclick="viewCodigoImage('${codigo.id}')">
+                        <img src="data:image/png;base64,${codigo.imagen}" alt="Código" style="max-width: 150px; margin-top: 10px; cursor: pointer;" onclick="viewCodigoImage('${codigo.id}')">
                         <br>
                         <button onclick="downloadCodigoImage('${codigo.id}', '${codigo.nombre}')" style="margin-top: 10px; margin-right: 5px; padding: 8px 15px; background: #b8242f; color: white; border: none; border-radius: 5px; cursor: pointer;">⬇️ Descargar</button>
                         <button onclick="deleteCodigo('${codigo.id}')" style="margin-top: 10px; padding: 8px 15px; background: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;">🗑️ Eliminar</button>
