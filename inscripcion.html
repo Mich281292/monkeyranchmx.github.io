@@ -187,18 +187,13 @@
                                 </div>
                                 <!-- Contenedor para subir comprobante de pago -->
                                 <div class="file-upload-group">
-                                    <label for="comprobante">Por favor sube la captura de tu transferencia o ticket de
-                                        pago:</label>
                                     <div class="file-input-wrapper">
-                                        <input type="file" id="comprobante" name="comprobante" accept="image/*,.pdf"
-                                            required>
                                         <label for="comprobante" class="file-input-label">
-                                            <i class="fas fa-cloud-upload-alt"
-                                                style="margin-right: 10px; font-size: 24px;"></i>
+                                            <i class="fas fa-cloud-upload-alt" style="margin-right: 10px; font-size: 24px;"></i>
+                                            <input type="file" id="comprobante" name="comprobante" accept="image/*,.pdf" required style="opacity:0;position:absolute;width:0;height:0;pointer-events:none;">
                                             <span>Haz clic o arrastra tu archivo aquí</span>
                                         </label>
                                     </div>
-                                    </label>
                                 </div>
                                 <div class="file-name" id="fileName">
                                 </div>
