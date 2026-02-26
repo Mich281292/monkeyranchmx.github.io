@@ -631,7 +631,18 @@
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
                 <script>
                 function downloadQRContainer() {
-                    var qrContainer = document.querySelector('#qrModal > div > div');
+                    // Selecciona el contenedor visual del QR
+                    var qrContainer = document.querySelector('#qrModal > div > div[style*="flex-direction:column"]');
+                    if (!qrContainer) {
+                        // Alternativa: busca el primer div con flex-direction:column dentro del modal
+                        var modalDivs = document.querySelectorAll('#qrModal > div > div');
+                        for (var i = 0; i < modalDivs.length; i++) {
+                            if (modalDivs[i].style.flexDirection === 'column') {
+                                qrContainer = modalDivs[i];
+                                break;
+                            }
+                        }
+                    }
                     if (!qrContainer) {
                         alert('No se encontró el contenedor del QR.');
                         return;
