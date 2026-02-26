@@ -632,12 +632,24 @@
                 <script>
                 document.getElementById('downloadQR').addEventListener('click', function() {
                     var qrContainer = document.getElementById('qrVisualContainer');
-                    if (!qrContainer) {
-                        alert('No se encontró el contenedor del QR.');
+                    var qrImg = document.getElementById('qrImage');
+                    if (!qrContainer || !qrImg) {
+                        alert('No se encontró el contenedor del QR o la imagen.');
                         return;
                     }
-                    // Espera 100ms para asegurar que el contenedor esté renderizado
-                    setTimeout(function() {
+                    // Espera a que la imagen QR esté completamente cargada
+                    if (!qrImg.complete || qrImg.naturalWidth === 0) {
+                        qrImg.onload = function() {
+                            html2canvas(qrContainer, {backgroundColor: null}).then(function(canvas) {
+                                var link = document.createElement('a');
+                                link.download = 'monkeyranch-qr-completo.png';
+                                link.href = canvas.toDataURL('image/png');
+                                document.body.appendChild(link);
+                                link.click();
+                                document.body.removeChild(link);
+                            });
+                        };
+                    } else {
                         html2canvas(qrContainer, {backgroundColor: null}).then(function(canvas) {
                             var link = document.createElement('a');
                             link.download = 'monkeyranch-qr-completo.png';
@@ -646,7 +658,7 @@
                             link.click();
                             document.body.removeChild(link);
                         });
-                    }, 100);
+                    }
                 });
                 </script>
             <p style="color:#333;">Escanea el QR para ir a <br><b>https://monkeyranch.com.mx/</b></p>
