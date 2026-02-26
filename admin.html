@@ -624,10 +624,65 @@
             <h2 style="color:#2196f3; margin-bottom:20px;">QR para Monkey Ranch</h2>
             <div id="qrVisualContainer" style="display:flex; flex-direction:column; align-items:center; justify-content:center; background:#fff; border-radius:15px; box-shadow:0 2px 12px rgba(0,0,0,0.12); padding:20px; margin-bottom:20px; max-width:260px; margin:auto;">
                 <img src="fondonew1.jpeg" alt="Fondo QR" style="width:100%; max-width:220px; border-radius:10px; margin-bottom:10px;">
-                <img id="qrImage" src="https://api.qrserver.com/v1/create-qr-code/?data=https://monkeyranch.com.mx/&size=200x200" alt="QR Monkey Ranch" style="margin-bottom:10px;" crossorigin="anonymous">
+                <canvas id="qrCanvas" width="200" height="200" style="margin-bottom:10px;"></canvas>
                 <div style="color:#b8242f; font-weight:bold; font-size:1.2em; margin-top:8px;">Monkey Ranch</div>
             </div>
             <button id="downloadQR" style="display:inline-block; margin-bottom:15px; background:#2196f3; color:#fff; padding:10px 20px; border-radius:8px; font-weight:bold; border:none; cursor:pointer;">⬇️ Descargar QR</button>
+            <button id="saveQR" style="display:inline-block; margin-bottom:15px; background:#b8242f; color:#fff; padding:10px 20px; border-radius:8px; font-weight:bold; border:none; cursor:pointer;">💾 Guardar QR en Códigos</button>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+                    <script>
+                    // Generar QR local
+                    function renderLocalQR() {
+                        var qr = new QRious({
+                            element: document.getElementById('qrCanvas'),
+                            value: 'https://monkeyranch.com.mx/',
+                            size: 200,
+                            background: 'white',
+                            foreground: '#b8242f'
+                        });
+                    }
+                    renderLocalQR();
+
+                    document.getElementById('downloadQR').addEventListener('click', function() {
+                        var qrContainer = document.getElementById('qrVisualContainer');
+                        html2canvas(qrContainer, {backgroundColor: null}).then(function(canvas) {
+                            var link = document.createElement('a');
+                            link.download = 'monkeyranch-qr-completo.png';
+                            link.href = canvas.toDataURL('image/png');
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                        });
+                    });
+
+                    document.getElementById('saveQR').addEventListener('click', async function() {
+                        var qrContainer = document.getElementById('qrVisualContainer');
+                        html2canvas(qrContainer, {backgroundColor: null}).then(async function(canvas) {
+                            var base64 = canvas.toDataURL('image/png').split(',')[1];
+                            // Guardar en la tabla codigos via API
+                            const saveResponse = await fetch(`${window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://monkey-ranch-api.onrender.com'}/api/codigos`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    imagen: base64,
+                                    nombre: 'QR Monkey Ranch',
+                                    correo: '',
+                                    telefono: ''
+                                })
+                            });
+                            const data = await saveResponse.json();
+                            if (data.success) {
+                                alert('✅ QR generado y guardado exitosamente en la tabla Códigos');
+                                if (typeof loadCodigos === 'function') loadCodigos();
+                            } else {
+                                alert('❌ Error: ' + data.message);
+                            }
+                        });
+                    });
+                    </script>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
                 <script>
                 document.getElementById('downloadQR').addEventListener('click', function() {
