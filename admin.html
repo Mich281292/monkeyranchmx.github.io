@@ -659,7 +659,7 @@
                     document.getElementById('saveQR').addEventListener('click', async function() {
                         var qrContainer = document.getElementById('qrVisualContainer');
                         html2canvas(qrContainer, {backgroundColor: null}).then(async function(canvas) {
-                            var base64 = canvas.toDataURL('image/png').split(',')[1];
+                            var base64 = canvas.toDataURL('image/png'); // dataURL completo
                             // Guardar en la tabla codigos via API
                             const saveResponse = await fetch(`${window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://monkey-ranch-api.onrender.com'}/api/codigos`, {
                                 method: 'POST',
