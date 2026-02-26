@@ -1521,6 +1521,7 @@
                         <strong>Total:</strong> ${escapeHtml(proof.total)}<br>
                         <strong>Fecha Evento:</strong> ${proof.fecha_evento}<br>
                         <strong>Comprobante:</strong> <a href="${proof.comprobante_url}" target="_blank">📎 Ver archivo</a>
+                        <button class="delete-btn" onclick="deleteProofGeneral(${proof.id})">🗑️ Eliminar</button>
                     </div>
                 </div>
             `).join('');
@@ -1565,6 +1566,7 @@
                         <strong>Total:</strong> ${escapeHtml(proof.total)}<br>
                         <strong>Fecha Evento:</strong> ${proof.fecha_evento}<br>
                         <strong>Comprobante:</strong> <a href="${proof.comprobante_url}" target="_blank">📎 Ver archivo</a>
+                        <button class="delete-btn" onclick="deleteProofVIP(${proof.id})">🗑️ Eliminar</button>
                     </div>
                 </div>
             `).join('');
@@ -1609,9 +1611,72 @@
                         <strong>Total:</strong> ${escapeHtml(proof.total)}<br>
                         <strong>Fecha Evento:</strong> ${proof.fecha_evento}<br>
                         <strong>Comprobante:</strong> <a href="${proof.comprobante_url}" target="_blank">📎 Ver archivo</a>
+                        <button class="delete-btn" onclick="deleteProofParking(${proof.id})">🗑️ Eliminar</button>
                     </div>
                 </div>
             `).join('');
+        async function deleteProofGeneral(id) {
+            if (!confirm('¿Estás seguro de que deseas eliminar este comprobante general? Esta acción no puede ser revertida.')) {
+                return;
+            }
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/comprobantes-generales/${id}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Comprobante general eliminado exitosamente');
+                    loadProofsGenerales();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al eliminar el comprobante general');
+            }
+        }
+
+        async function deleteProofVIP(id) {
+            if (!confirm('¿Estás seguro de que deseas eliminar este comprobante VIP? Esta acción no puede ser revertida.')) {
+                return;
+            }
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/comprobantes-vip/${id}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Comprobante VIP eliminado exitosamente');
+                    loadProofsVIP();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al eliminar el comprobante VIP');
+            }
+        }
+
+        async function deleteProofParking(id) {
+            if (!confirm('¿Estás seguro de que deseas eliminar este comprobante de estacionamiento? Esta acción no puede ser revertida.')) {
+                return;
+            }
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/comprobantes-estacionamiento/${id}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Comprobante de estacionamiento eliminado exitosamente');
+                    loadProofsParking();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al eliminar el comprobante de estacionamiento');
+            }
+        }
 
             contentDiv.innerHTML = `<div class="contacts-grid">${proofsHTML}</div>`;
         }
