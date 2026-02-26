@@ -74,7 +74,7 @@
 }
 /* Palco card igual a terraza-card pero con imagen terraza.jpg */
 .palco-card {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), url('terraza.jpg') center/cover no-repeat !important;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), url('terraza2.jpg') center/cover no-repeat !important;
     color: white;
 }
 
