@@ -627,10 +627,10 @@
                 <img id="qrImage" src="https://api.qrserver.com/v1/create-qr-code/?data=https://monkeyranch.com.mx/&size=200x200" alt="QR Monkey Ranch" style="margin-bottom:10px;">
                 <div style="color:#b8242f; font-weight:bold; font-size:1.2em; margin-top:8px;">Monkey Ranch</div>
             </div>
-            <button id="downloadQR" onclick="downloadQRContainer()" style="display:inline-block; margin-bottom:15px; background:#2196f3; color:#fff; padding:10px 20px; border-radius:8px; font-weight:bold; border:none; cursor:pointer;">⬇️ Descargar QR</button>
+            <button id="downloadQR" style="display:inline-block; margin-bottom:15px; background:#2196f3; color:#fff; padding:10px 20px; border-radius:8px; font-weight:bold; border:none; cursor:pointer;">⬇️ Descargar QR</button>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
                 <script>
-                function downloadQRContainer() {
+                document.getElementById('downloadQR').addEventListener('click', function() {
                     var qrContainer = document.getElementById('qrVisualContainer');
                     if (!qrContainer) {
                         alert('No se encontró el contenedor del QR.');
@@ -640,9 +640,11 @@
                         var link = document.createElement('a');
                         link.download = 'monkeyranch-qr-completo.png';
                         link.href = canvas.toDataURL('image/png');
+                        document.body.appendChild(link);
                         link.click();
+                        document.body.removeChild(link);
                     });
-                }
+                });
                 </script>
             <p style="color:#333;">Escanea el QR para ir a <br><b>https://monkeyranch.com.mx/</b></p>
         </div>
