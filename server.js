@@ -1,3 +1,26 @@
+// DELETE endpoint for comprobantes generales
+app.delete('/api/comprobantes-generales/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query('DELETE FROM comprobantes_generales WHERE id = $1 RETURNING id', [id]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Comprobante general no encontrado'
+            });
+        }
+        res.json({
+            success: true,
+            message: 'Comprobante general eliminado exitosamente'
+        });
+    } catch (err) {
+        console.error('Error deleting comprobante general:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al eliminar el comprobante general'
+        });
+    }
+});
 // Deployed: 2026-02-20 15:15 UTC - Force rebuild with lastVisitTime query
 require('dotenv').config();
 const express = require('express');
