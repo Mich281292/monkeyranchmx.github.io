@@ -1,5 +1,10 @@
+...existing code...
+<!-- Mover funciones globales al final del archivo -->
+</body>
+<script>
 // Función global para eliminar contacto
 async function deleteContacto(id) {
+    console.log('deleteContacto llamado con id:', id);
     if (!confirm('¿Estás seguro de que deseas eliminar este contacto? Esta acción no puede ser revertida.')) {
         return;
     }
@@ -7,30 +12,22 @@ async function deleteContacto(id) {
         const response = await fetch(`${API_BASE_URL}/api/contacts/${id}`, {
             method: 'DELETE'
         });
-        console.log('DELETE /api/contacts response:', response);
-        let data = null;
-        try {
-            data = await response.json();
-        } catch (jsonError) {
-            console.error('Error parsing JSON:', jsonError);
-            alert('Error al eliminar el contacto: respuesta inválida del servidor');
-            return;
-        }
-        console.log('DELETE /api/contacts data:', data);
-        if (data && data.success) {
+        const data = await response.json();
+        if (data.success) {
             alert('Contacto eliminado exitosamente');
             loadContacts();
         } else {
-            alert('Error: ' + (data && data.message ? data.message : 'Error desconocido'));
+            alert('Error: ' + data.message);
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('Error al eliminar el contacto: ' + error);
+        alert('Error al eliminar el contacto');
     }
 }
 
 // Función global para eliminar comprobante general
 async function deleteProofGeneral(id) {
+    console.log('deleteProofGeneral llamado con id:', id);
     if (!confirm('¿Estás seguro de que deseas eliminar este comprobante general? Esta acción no puede ser revertida.')) {
         return;
     }
@@ -53,6 +50,7 @@ async function deleteProofGeneral(id) {
 
 // Función global para eliminar comprobante VIP
 async function deleteProofVIP(id) {
+    console.log('deleteProofVIP llamado con id:', id);
     if (!confirm('¿Estás seguro de que deseas eliminar este comprobante VIP? Esta acción no puede ser revertida.')) {
         return;
     }
@@ -75,6 +73,7 @@ async function deleteProofVIP(id) {
 
 // Función global para eliminar comprobante de estacionamiento
 async function deleteProofParking(id) {
+    console.log('deleteProofParking llamado con id:', id);
     if (!confirm('¿Estás seguro de que deseas eliminar este comprobante de estacionamiento? Esta acción no puede ser revertida.')) {
         return;
     }
@@ -94,6 +93,7 @@ async function deleteProofParking(id) {
         alert('Error al eliminar el comprobante de estacionamiento');
     }
 }
+</script>
 <!DOCTYPE html>
 <html lang="es">
 <head>
