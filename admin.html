@@ -1,3 +1,90 @@
+// Función global para eliminar contacto
+async function deleteContacto(id) {
+    if (!confirm('¿Estás seguro de que deseas eliminar este contacto? Esta acción no puede ser revertida.')) {
+        return;
+    }
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/contacts/${id}`, {
+            method: 'DELETE'
+        });
+        const data = await response.json();
+        if (data.success) {
+            alert('Contacto eliminado exitosamente');
+            loadContacts();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error al eliminar el contacto');
+    }
+}
+
+// Función global para eliminar comprobante general
+async function deleteProofGeneral(id) {
+    if (!confirm('¿Estás seguro de que deseas eliminar este comprobante general? Esta acción no puede ser revertida.')) {
+        return;
+    }
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/comprobantes-generales/${id}`, {
+            method: 'DELETE'
+        });
+        const data = await response.json();
+        if (data.success) {
+            alert('Comprobante general eliminado exitosamente');
+            loadProofsGenerales();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error al eliminar el comprobante general');
+    }
+}
+
+// Función global para eliminar comprobante VIP
+async function deleteProofVIP(id) {
+    if (!confirm('¿Estás seguro de que deseas eliminar este comprobante VIP? Esta acción no puede ser revertida.')) {
+        return;
+    }
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/comprobantes-vip/${id}`, {
+            method: 'DELETE'
+        });
+        const data = await response.json();
+        if (data.success) {
+            alert('Comprobante VIP eliminado exitosamente');
+            loadProofsVIP();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error al eliminar el comprobante VIP');
+    }
+}
+
+// Función global para eliminar comprobante de estacionamiento
+async function deleteProofParking(id) {
+    if (!confirm('¿Estás seguro de que deseas eliminar este comprobante de estacionamiento? Esta acción no puede ser revertida.')) {
+        return;
+    }
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/comprobantes-estacionamiento/${id}`, {
+            method: 'DELETE'
+        });
+        const data = await response.json();
+        if (data.success) {
+            alert('Comprobante de estacionamiento eliminado exitosamente');
+            loadProofsParking();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error al eliminar el comprobante de estacionamiento');
+    }
+}
 <!DOCTYPE html>
 <html lang="es">
 <head>
