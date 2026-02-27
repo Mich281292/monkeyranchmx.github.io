@@ -465,6 +465,29 @@ app.get('/api/status', (req, res) => {
 });
 
 // GET endpoint to fetch all contacts (admin use)
+// DELETE endpoint to remove a contact by id
+app.delete('/api/contacts/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query('DELETE FROM contacts WHERE id = $1 RETURNING id', [id]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Contacto no encontrado'
+            });
+        }
+        res.json({
+            success: true,
+            message: 'Contacto eliminado exitosamente'
+        });
+    } catch (err) {
+        console.error('Error deleting contact:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al eliminar el contacto'
+        });
+    }
+});
 app.get('/api/contacts', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM contacts ORDER BY fecha_creacion DESC');
