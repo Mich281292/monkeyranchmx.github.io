@@ -1309,29 +1309,6 @@ async function deleteProofParking(id) {
                     <button class="delete-btn" onclick="deleteContacto(${contact.id})">🗑️ Eliminar</button>
                 </div>
             `).join('');
-        async function deleteContacto(id) {
-            if (!confirm('¿Estás seguro de que deseas eliminar este contacto? Esta acción no puede ser revertida.')) {
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/contacts/${id}`, {
-                    method: 'DELETE'
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    alert('Contacto eliminado exitosamente');
-                    loadContacts();
-                } else {
-                    alert('Error: ' + data.message);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error al eliminar el contacto');
-            }
-        }
 
             contentDiv.innerHTML = `<div class="contacts-grid">${contactsHTML}</div>`;
         }
