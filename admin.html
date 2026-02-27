@@ -7,16 +7,25 @@ async function deleteContacto(id) {
         const response = await fetch(`${API_BASE_URL}/api/contacts/${id}`, {
             method: 'DELETE'
         });
-        const data = await response.json();
-        if (data.success) {
+        console.log('DELETE /api/contacts response:', response);
+        let data = null;
+        try {
+            data = await response.json();
+        } catch (jsonError) {
+            console.error('Error parsing JSON:', jsonError);
+            alert('Error al eliminar el contacto: respuesta inválida del servidor');
+            return;
+        }
+        console.log('DELETE /api/contacts data:', data);
+        if (data && data.success) {
             alert('Contacto eliminado exitosamente');
             loadContacts();
         } else {
-            alert('Error: ' + data.message);
+            alert('Error: ' + (data && data.message ? data.message : 'Error desconocido'));
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('Error al eliminar el contacto');
+        alert('Error al eliminar el contacto: ' + error);
     }
 }
 
