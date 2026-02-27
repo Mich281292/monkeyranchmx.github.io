@@ -1,3 +1,50 @@
+// DELETE endpoint for comprobantes VIP
+app.delete('/api/comprobantes-vip/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query('DELETE FROM comprobantes_vip WHERE id = $1 RETURNING id', [id]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Comprobante VIP no encontrado'
+            });
+        }
+        res.json({
+            success: true,
+            message: 'Comprobante VIP eliminado exitosamente'
+        });
+    } catch (err) {
+        console.error('Error deleting comprobante VIP:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al eliminar el comprobante VIP'
+        });
+    }
+});
+
+// DELETE endpoint for comprobantes de estacionamiento
+app.delete('/api/comprobantes-estacionamiento/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query('DELETE FROM comprobantes_estacionamiento WHERE id = $1 RETURNING id', [id]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Comprobante de estacionamiento no encontrado'
+            });
+        }
+        res.json({
+            success: true,
+            message: 'Comprobante de estacionamiento eliminado exitosamente'
+        });
+    } catch (err) {
+        console.error('Error deleting comprobante de estacionamiento:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al eliminar el comprobante de estacionamiento'
+        });
+    }
+});
 // DELETE endpoint for comprobantes generales
 app.delete('/api/comprobantes-generales/:id', async (req, res) => {
     const { id } = req.params;
