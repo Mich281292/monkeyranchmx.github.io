@@ -77,14 +77,7 @@ app.delete('/api/comprobantes-generales/:id', async (req, res) => {
 // ...existing code...
 
 // ...existing code...
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const { Pool } = require('pg');
-const path = require('path');
-const multer = require('multer');
-const fs = require('fs');
+// ...existing code...
 
 const app = express();
 const PORT = process.env.PORT || 3000;
