@@ -1,3 +1,4 @@
+// Deployed: 2026-02-20 15:15 UTC - Force rebuild with lastVisitTime query
 // DELETE endpoint for comprobantes VIP
 app.delete('/api/comprobantes-vip/:id', async (req, res) => {
     const { id } = req.params;
@@ -45,6 +46,7 @@ app.delete('/api/comprobantes-estacionamiento/:id', async (req, res) => {
         });
     }
 });
+
 // DELETE endpoint for comprobantes generales
 app.delete('/api/comprobantes-generales/:id', async (req, res) => {
     const { id } = req.params;
@@ -68,7 +70,6 @@ app.delete('/api/comprobantes-generales/:id', async (req, res) => {
         });
     }
 });
-// Deployed: 2026-02-20 15:15 UTC - Force rebuild with lastVisitTime query
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
