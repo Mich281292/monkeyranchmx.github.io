@@ -1,54 +1,3 @@
-// Deployed: 2026-02-20 15:15 UTC - Force rebuild with lastVisitTime query
-// ...existing code...
-
-// ...existing code...
-
-// ...existing code...
-
-// ...existing code...
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const { Pool } = require('pg');
-const path = require('path');
-const multer = require('multer');
-const fs = require('fs');
-
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Crear carpeta de uploads si no existe
-const uploadDir = 'uploads';
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-}
-
-// Configuración de multer
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, uploadDir);
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname);
-    }
-});
-
-const upload = multer({ 
-    storage: storage,
-    limits: { fileSize: 10 * 1024 * 1024 }, // 10MB max
-    fileFilter: (req, file, cb) => {
-        const allowed = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
-        if (allowed.includes(file.mimetype)) {
-            cb(null, true);
-        } else {
-            cb(new Error('Tipo de archivo no permitido'));
-        }
-    }
-});
-
-// ...existing code...
-
 // DELETE endpoint for comprobantes VIP
 app.delete('/api/comprobantes-vip/:id', async (req, res) => {
     const { id } = req.params;
@@ -120,6 +69,58 @@ app.delete('/api/comprobantes-generales/:id', async (req, res) => {
         });
     }
 });
+// Deployed: 2026-02-20 15:15 UTC - Force rebuild with lastVisitTime query
+// ...existing code...
+
+// ...existing code...
+
+// ...existing code...
+
+// ...existing code...
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const { Pool } = require('pg');
+const path = require('path');
+const multer = require('multer');
+const fs = require('fs');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Crear carpeta de uploads si no existe
+const uploadDir = 'uploads';
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+}
+
+// Configuración de multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname);
+    }
+});
+
+const upload = multer({ 
+    storage: storage,
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10MB max
+    fileFilter: (req, file, cb) => {
+        const allowed = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
+        if (allowed.includes(file.mimetype)) {
+            cb(null, true);
+        } else {
+            cb(new Error('Tipo de archivo no permitido'));
+        }
+    }
+});
+
+// ...existing code...
+
+// ...existing code...
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
