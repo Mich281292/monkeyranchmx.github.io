@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Confirmado - Monkey Ranch</title>
+    <link rel="icon" type="image/png" href="icono-monkey.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="logo1.png" alt="Monkey Ranch Logo">
+                    </a>
+                </div>
+                <a href="boletos.html" class="header-accesos-btn" title="Boletos">
+                    <i class="fa fa-ticket-alt"></i>
+                    <span>Boletos</span>
+                </a>
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html#home">Inicio</a></li>
+                    <li><a href="index.html#about">Acerca de</a></li>
+                    <li><a href="index.html#services">Servicios</a></li>
+                    <li><a href="vip.html">Experiencia VIP</a></li>
+                    <li><a href="index.html#contact">Contacto</a></li>
+                    <li><button class="theme-toggle" id="themeToggle">🌙</button></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <nav class="contact-bar" id="contactBar" role="region" aria-label="Barra de contacto">
+        <div class="contact-bar-inner">
+            <div class="contact-info">
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/MonkeyRanchqro" class="social-icon" title="Facebook" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="https://www.instagram.com/monkeyranchrideclub" class="social-icon" title="Instagram" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://wa.me/4422222222" class="social-icon whatsapp-icon" title="WhatsApp" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="contact-actions-right">
+                <a class="contact-cta email" href="mailto:monkeyranchmx@gmail.com" title="Email">
+                    <i class="fa fa-envelope"></i>
+                    <span>monkeyranchmx@gmail.com</span>
+                </a>
+                <button class="contact-action-phone" id="callBtn" aria-label="Llamar">
+                    <i class="fa fa-phone"></i>
+                    <span>+52 442 222 2222</span>
+                </button>
+                <a href="inscripcion.html" class="contact-action inscripcion-btn" title="Inscribirse"></a>
+                <button class="contact-close" id="closeContact" aria-label="Cerrar barra de contacto">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="contact-tab" id="contactTab" role="button" tabindex="0" aria-label="Abrir barra de contacto">
+        <i class="fa fa-phone"></i>
+        <span>Contacto</span>
+    </div>
+
+    <main>
+        <section id="club" class="club-section">
+            <div class="container">
+                <div class="club-success-message confirmacion-bg">
+                    <i class="fas fa-check-circle"></i>
+                    <h1>¡Pago Confirmado!</h1>
+                    <p class="section-description">
+                        Tu pago ha sido confirmado exitosamente.<br>
+                        El equipo de Monkey Ranch te dará seguimiento para tu acceso y beneficios.
+                    </p>
+                    <p class="section-description">
+                        ¿Tienes dudas? <a href="index.html#contact" style="color:#ff6b35;text-decoration:underline;">Contáctanos aquí</a>.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Monkey Ranch. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

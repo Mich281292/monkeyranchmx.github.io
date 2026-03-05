@@ -1,3 +1,17 @@
+const { exec } = require('child_process');
+
+function backupDatabase() {
+    exec('bash backup_database.sh', (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error al respaldar la base de datos: ${error.message}`);
+            return;
+        }
+        if (stderr) {
+            console.error(`stderr: ${stderr}`);
+        }
+        console.log(`stdout: ${stdout}`);
+    });
+}
 // DELETE endpoint for comprobantes VIP
 app.delete('/api/comprobantes-vip/:id', async (req, res) => {
     const { id } = req.params;
@@ -13,6 +27,7 @@ app.delete('/api/comprobantes-vip/:id', async (req, res) => {
             success: true,
             message: 'Comprobante VIP eliminado exitosamente'
         });
+        backupDatabase();
     } catch (err) {
         console.error('Error deleting comprobante VIP:', err);
         return res.status(500).json({
@@ -37,6 +52,7 @@ app.delete('/api/comprobantes-estacionamiento/:id', async (req, res) => {
             success: true,
             message: 'Comprobante de estacionamiento eliminado exitosamente'
         });
+        backupDatabase();
     } catch (err) {
         console.error('Error deleting comprobante de estacionamiento:', err);
         return res.status(500).json({
@@ -61,6 +77,7 @@ app.delete('/api/comprobantes-generales/:id', async (req, res) => {
             success: true,
             message: 'Comprobante general eliminado exitosamente'
         });
+        backupDatabase();
     } catch (err) {
         console.error('Error deleting comprobante general:', err);
         return res.status(500).json({

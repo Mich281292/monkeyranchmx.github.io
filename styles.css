@@ -1,3 +1,12 @@
+.club-success-message.confirmacion-bg {
+    background: rgba(0,0,0,0.7);
+    border-radius: 18px;
+    padding: 2.5rem 2rem;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.25);
+    color: #fff;
+    max-width: 500px;
+    margin: 2rem auto;
+}
 /* Estilos para sección de ubicación (idénticos al respaldo) */
 .contact#ubicacion {
     background: #111;
