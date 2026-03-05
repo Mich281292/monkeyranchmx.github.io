@@ -1,4 +1,6 @@
 // Deployed: 2026-02-20 15:15 UTC - Force rebuild with lastVisitTime query
+// ...existing code...
+
 // DELETE endpoint for comprobantes VIP
 app.delete('/api/comprobantes-vip/:id', async (req, res) => {
     const { id } = req.params;
