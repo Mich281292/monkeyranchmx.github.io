@@ -195,8 +195,17 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="file-name" id="fileName">
-                                </div>
+                                <div class="file-name" id="fileName" style="color: #28a745; font-weight: bold; margin-top: 8px;"></div>
+                                            // Mostrar leyenda cuando el archivo está listo para subirse
+                                            document.getElementById('comprobante').addEventListener('change', function(e) {
+                                                const file = e.target.files[0];
+                                                const fileNameDiv = document.getElementById('fileName');
+                                                if (file) {
+                                                    fileNameDiv.textContent = `✔️ Archivo listo para subir: ${file.name}`;
+                                                } else {
+                                                    fileNameDiv.textContent = '';
+                                                }
+                                            });
                             </div> <button type="submit" class="submit-btn cta-button">Inscribirse</button>
                         </div>
                     </div>
