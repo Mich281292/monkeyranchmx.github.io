@@ -79,7 +79,6 @@ app.delete('/api/comprobantes-generales/:id', async (req, res) => {
 // ...existing code...
 // ...existing code...
 
-const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Crear carpeta de uploads si no existe
