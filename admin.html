@@ -1394,6 +1394,7 @@ async function deleteProofParking(id) {
                     transponderLabel = 'No especificado';
                 }
 
+                const qrGenerated = insc.qr_code && insc.qr_code.length > 0;
                 return `
                 <div class="inscription-card" data-id="${insc.id}">
                     <div class="contact-header">
@@ -1418,9 +1419,35 @@ async function deleteProofParking(id) {
                         ${proofButtonHtml}
                     </div>
                     <button class="generate-qr-btn" onclick="generateQRInscripcion(${insc.id}, '${escapeHtml(insc.nombre)}', '${insc.email}', '${insc.telefono}')">🔐 Generar QR</button>
+                    <button class="send-code-btn" onclick="sendCodigoEmail('${insc.email}', '${insc.qr_code}');" ${qrGenerated ? '' : 'disabled'}>✉️ Enviar código</button>
                     <button class="delete-btn" onclick="deleteInscripcion(${insc.id})">🗑️ Eliminar</button>
                 </div>
             `}).join('');
+// Enviar código por email
+async function sendCodigoEmail(email, qrCode) {
+    if (!qrCode) {
+        alert('El código QR aún no ha sido generado.');
+        return;
+    }
+    try {
+        // Aquí deberías llamar a tu endpoint backend que envía el email
+        // Ejemplo:
+        const response = await fetch(`${API_BASE_URL}/api/send-codigo-email`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, qrCode })
+        });
+        const data = await response.json();
+        if (data.success) {
+            alert('Código enviado exitosamente al correo del usuario.');
+        } else {
+            alert('Error al enviar el código: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error al enviar el código por email.');
+    }
+}
 
             contentDiv.innerHTML = `<div class="contacts-grid">${inscripcionesHTML}</div>`;
         }

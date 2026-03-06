@@ -1,3 +1,32 @@
+// Endpoint para enviar código QR por email
+app.post('/api/send-codigo-email', async (req, res) => {
+    const { email, qrCode } = req.body;
+    if (!email || !qrCode) {
+        return res.status(400).json({ success: false, message: 'Faltan datos: email o código.' });
+    }
+    try {
+        // Configuración de nodemailer
+        const nodemailer = require('nodemailer');
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
+            }
+        });
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: 'Tu código QR para Monkey Ranch',
+            html: `<h2>¡Gracias por tu inscripción!</h2><p>Adjunto tu código QR para acceso:</p><img src="${qrCode}" alt="QR" style="max-width:220px;">`
+        };
+        await transporter.sendMail(mailOptions);
+        res.json({ success: true, message: 'Email enviado correctamente.' });
+    } catch (err) {
+        console.error('Error enviando email:', err);
+        res.status(500).json({ success: false, message: 'Error al enviar el email.' });
+    }
+});
 const { exec } = require('child_process');
 
 function backupDatabase() {

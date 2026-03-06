@@ -1,3 +1,17 @@
+.club-section .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+}
+.club-success-message.confirmacion-bg {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2;
+}
 .club-success-message.confirmacion-bg {
     background: rgba(0,0,0,0.7);
     border-radius: 18px;
