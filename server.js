@@ -1,3 +1,4 @@
+// ...existing code...
 // Endpoint para guardar el QR generado en la inscripción
 app.post('/api/save-qr-inscripcion', async (req, res) => {
     const { inscripcion_id, qr_code } = req.body;
