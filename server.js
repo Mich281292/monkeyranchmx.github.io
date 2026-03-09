@@ -1,3 +1,20 @@
+// Endpoint para guardar el QR generado en la inscripción
+app.post('/api/save-qr-inscripcion', async (req, res) => {
+    const { inscripcion_id, qr_code } = req.body;
+    if (!inscripcion_id || !qr_code) {
+        return res.status(400).json({ success: false, message: 'Faltan datos: id o qr_code.' });
+    }
+    try {
+        const update = await pool.query('UPDATE inscriptions SET qr_code = $1 WHERE id = $2', [qr_code, inscripcion_id]);
+        if (update.rowCount === 0) {
+            return res.status(404).json({ success: false, message: 'Inscripción no encontrada.' });
+        }
+        res.json({ success: true, message: 'QR guardado correctamente.' });
+    } catch (err) {
+        console.error('Error guardando QR:', err);
+        res.status(500).json({ success: false, message: 'Error al guardar el QR.' });
+    }
+});
 // Endpoint para enviar código QR por email
 app.post('/api/send-codigo-email', async (req, res) => {
     const { email, qrCode } = req.body;

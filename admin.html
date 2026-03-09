@@ -426,33 +426,11 @@ async function deleteProofParking(id) {
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        from {
+            opacity: 0;
+            transform: translateY(20px);
         }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8em;
-            }
-
-            .stat-card h3 {
-                font-size: 2em;
-            }
-
-            .controls {
-                flex-direction: column;
-            }
-
-            .search-box {
-                width: 100%;
-            }
-        }
+    }
 
         .tabs {
             display: flex;
@@ -681,6 +659,36 @@ async function deleteProofParking(id) {
         }
     </style>
 </head>
+<script>
+// Función para generar y guardar QR de inscripción
+async function generateAndSaveQR(nombre, email, telefono, codigoId) {
+    try {
+        // Crear datos para el QR
+        const qrData = `Nombre: ${nombre}\nEmail: ${email}\nTelefono: ${telefono}\nCodigo: ${codigoId}`;
+        // Generar QR usando API externa (QRServer)
+        const encodedData = encodeURIComponent(qrData);
+        const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=${encodedData}`;
+
+        // Guardar QR en la base de datos
+        let inscripcion_id = null;
+        if (codigoId.startsWith('Inscripcion-')) {
+            inscripcion_id = codigoId.replace('Inscripcion-', '');
+        }
+        if (inscripcion_id) {
+            await fetch(`${API_BASE_URL}/api/save-qr-inscripcion`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ inscripcion_id, qr_code: qrImageUrl })
+            });
+        }
+        // Recargar inscripciones para habilitar el botón
+        if (typeof loadInscripciones === 'function') await loadInscripciones();
+        alert('QR generado y guardado exitosamente.');
+    } catch (error) {
+        alert('Error al generar el QR.');
+    }
+}
+</script>
 <body>
     <!-- Botón flotante inferior con imagen mv.png -->
     <a href="#" id="mv-float-btn" title="MV Logo">
@@ -1360,69 +1368,69 @@ async function deleteProofParking(id) {
                 return;
             }
 
-            const inscripcionesHTML = inscripciones.map(insc => {
-                let proofButtonHtml = '';
-                if (insc.comprobante) {
-                    const proofId = `proof_${proofCounter++}`;
-                    proofsMap[proofId] = {
-                        data: insc.comprobante,
-                        type: insc.comprobante_tipo || 'image/png'
-                    };
-                    proofButtonHtml = `<br><button class="btn-view-proof" onclick="viewProofById('${proofId}')">📸 Ver comprobante</button>`;
-                } else {
-                    proofButtonHtml = `<br><button class="btn-view-proof" onclick="uploadInscripcionProof(${insc.id}, '${escapeHtml(insc.nombre)}', '${insc.email}', '${insc.telefono}')">⬆️ Subir comprobante</button>`;
-                }
+    const inscripcionesHTML = inscripciones.map(insc => {
+        let proofButtonHtml = '';
+        if (insc.comprobante) {
+            const proofId = `proof_${proofCounter++}`;
+            proofsMap[proofId] = {
+                data: insc.comprobante,
+                type: insc.comprobante_tipo || 'image/png'
+            };
+            proofButtonHtml = `<br><button class="btn-view-proof" onclick="viewProofById('${proofId}')">📸 Ver comprobante</button>`;
+        } else {
+            proofButtonHtml = `<br><button class="btn-view-proof" onclick="uploadInscripcionProof(${insc.id}, '${escapeHtml(insc.nombre)}', '${insc.email}', '${insc.telefono}')">⬆️ Subir comprobante</button>`;
+        }
 
-                // Mostrar la respuesta de transponder (usar transponder_option si existe, si no fallback a transponder)
-                let transponderLabel = '';
-                // Usar el valor de transponder_option del objeto base si existe, si no el del JOIN, si no el campo transponder
-                let transponderValue = (insc.transponder_option !== undefined && insc.transponder_option !== null && insc.transponder_option !== '')
-                    ? insc.transponder_option
-                    : (insc.transponder !== undefined && insc.transponder !== null && insc.transponder !== '')
-                        ? insc.transponder
-                        : null;
+        let transponderLabel = '';
+        let transponderValue = (insc.transponder_option !== undefined && insc.transponder_option !== null && insc.transponder_option !== '')
+            ? insc.transponder_option
+            : (insc.transponder !== undefined && insc.transponder !== null && insc.transponder !== '')
+                ? insc.transponder
+                : null;
 
-                if (transponderValue) {
-                    if (transponderValue === 'own' || transponderValue === 'si') {
-                        transponderLabel = 'Sí, cuenta con transponder';
-                    } else if (transponderValue === 'rent' || transponderValue === 'no') {
-                        transponderLabel = 'No cuenta con transponder (renta)';
-                    } else {
-                        transponderLabel = escapeHtml(transponderValue);
-                    }
-                } else {
-                    transponderLabel = 'No especificado';
-                }
+        if (transponderValue) {
+            if (transponderValue === 'own' || transponderValue === 'si') {
+                transponderLabel = 'Sí, cuenta con transponder';
+            } else if (transponderValue === 'rent' || transponderValue === 'no') {
+                transponderLabel = 'No cuenta con transponder (renta)';
+            } else {
+                transponderLabel = escapeHtml(transponderValue);
+            }
+        } else {
+            transponderLabel = 'No especificado';
+        }
 
-                const qrGenerated = insc.qr_code && insc.qr_code.length > 0;
-                return `
-                <div class="inscription-card" data-id="${insc.id}">
-                    <div class="contact-header">
-                        <div class="contact-name">🏍️ ${escapeHtml(insc.nombre)}</div>
-                        <div class="contact-date">📅 ${formatDate(insc.fecha_creacion)}</div>
-                    </div>
-                    <div class="contact-email">📧 ${escapeHtml(insc.email)}</div>
-                    <div class="contact-phone">📱 <a href="https://wa.me/${insc.telefono}" target="_blank">${escapeHtml(insc.telefono)}</a></div>
-                    ${insc.instagram ? `<div class="contact-phone">📷 Instagram: ${escapeHtml(insc.instagram)}</div>` : ''}
-                    ${insc.facebook ? `<div class="contact-phone">👥 Facebook: ${escapeHtml(insc.facebook)}</div>` : ''}
-                    ${insc.club_exclusivo ? `<div class="contact-phone">⭐ Club exclusivo: ${escapeHtml(insc.club_exclusivo)}</div>` : ''}
-                    <div class="inscription-details">
-                        <strong>👤 Edad:</strong> ${insc.edad || 'N/A'}<br>
-                        <strong>🏍️ Número de Moto:</strong> ${escapeHtml(insc.numero_moto || 'N/A')}<br>
-                        <strong>📜 Número de Licencia:</strong> ${escapeHtml(insc.numero_licencia || 'N/A')}<br>
-                        <strong>🏆 Categoría:</strong> ${escapeHtml(insc.categoria || 'N/A')}<br>
-                        <strong>🔌 Transponder:</strong> ${transponderLabel}<br>
-                        <strong>👥 Cantidad de Personas:</strong> ${escapeHtml(insc.cantidad_personas || 'N/A')}<br>
-                        <strong>🚗 Cantidad de Vehículos:</strong> ${escapeHtml(insc.cantidad_vehiculos || 'N/A')}<br>
-                        <strong>💬 Mensaje:</strong> ${escapeHtml(insc.mensaje || 'N/A')}<br>
-                        <strong>💰 Costo Total:</strong> ${escapeHtml(insc.total_cost || 'N/A')}<br>
-                        ${proofButtonHtml}
-                    </div>
-                    <button class="generate-qr-btn" onclick="generateQRInscripcion(${insc.id}, '${escapeHtml(insc.nombre)}', '${insc.email}', '${insc.telefono}')">🔐 Generar QR</button>
-                    <button class="send-code-btn" onclick="sendCodigoEmail('${insc.email}', '${insc.qr_code}');" ${qrGenerated ? '' : 'disabled'}>✉️ Enviar código</button>
-                    <button class="delete-btn" onclick="deleteInscripcion(${insc.id})">🗑️ Eliminar</button>
-                </div>
-            `}).join('');
+        const qrGenerated = insc.qr_code && insc.qr_code.length > 0;
+        return `
+        <div class="inscription-card" data-id="${insc.id}">
+            <div class="contact-header">
+                <div class="contact-name">🏍️ ${escapeHtml(insc.nombre)}</div>
+                <div class="contact-date">📅 ${formatDate(insc.fecha_creacion)}</div>
+            </div>
+            <div class="contact-email">📧 ${escapeHtml(insc.email)}</div>
+            <div class="contact-phone">📱 <a href="https://wa.me/${insc.telefono}" target="_blank">${escapeHtml(insc.telefono)}</a></div>
+            ${insc.instagram ? `<div class="contact-phone">📷 Instagram: ${escapeHtml(insc.instagram)}</div>` : ''}
+            ${insc.facebook ? `<div class="contact-phone">👥 Facebook: ${escapeHtml(insc.facebook)}</div>` : ''}
+            ${insc.club_exclusivo ? `<div class="contact-phone">⭐ Club exclusivo: ${escapeHtml(insc.club_exclusivo)}</div>` : ''}
+            <div class="inscription-details">
+                <strong>👤 Edad:</strong> ${insc.edad || 'N/A'}<br>
+                <strong>🏍️ Número de Moto:</strong> ${escapeHtml(insc.numero_moto || 'N/A')}<br>
+                <strong>📜 Número de Licencia:</strong> ${escapeHtml(insc.numero_licencia || 'N/A')}<br>
+                <strong>🏆 Categoría:</strong> ${escapeHtml(insc.categoria || 'N/A')}<br>
+                <strong>🔌 Transponder:</strong> ${transponderLabel}<br>
+                <strong>👥 Cantidad de Personas:</strong> ${escapeHtml(insc.cantidad_personas || 'N/A')}<br>
+                <strong>🚗 Cantidad de Vehículos:</strong> ${escapeHtml(insc.cantidad_vehiculos || 'N/A')}<br>
+                <strong>💬 Mensaje:</strong> ${escapeHtml(insc.mensaje || 'N/A')}<br>
+                <strong>💰 Costo Total:</strong> ${escapeHtml(insc.total_cost || 'N/A')}<br>
+                ${proofButtonHtml}
+            </div>
+            <button class="generate-qr-btn" onclick="generateQRInscripcion(${insc.id}, '${escapeHtml(insc.nombre)}', '${insc.email}', '${insc.telefono}')">🔐 Generar QR</button>
+            <button class="generate-confirm-btn" onclick="generateQRConfirmacion(${insc.id})">🟢 Generar QR Confirmación</button>
+            <button class="send-code-btn" onclick="sendCodigoEmail('${insc.email}', '${insc.qr_code}');" ${qrGenerated ? '' : 'disabled'}>✉️ Enviar código</button>
+            <button class="delete-btn" onclick="deleteInscripcion(${insc.id})">🗑️ Eliminar</button>
+        </div>
+        `;
+    }).join('');
 // Enviar código por email
 async function sendCodigoEmail(email, qrCode) {
     if (!qrCode) {
@@ -1460,37 +1468,37 @@ async function sendCodigoEmail(email, qrCode) {
                 return;
             }
 
-            const ticketsHTML = tickets.map((ticket, idx) => {
-                let proofButtonHtml = '';
-                if (ticket.comprobante) {
-                    const proofId = `proof_${proofCounter++}`;
-                    proofsMap[proofId] = {
-                        data: ticket.comprobante,
-                        type: ticket.comprobante_tipo || 'image/png'
-                    };
-                    proofButtonHtml = `<br><button class="btn-view-proof" onclick="viewProofById('${proofId}')">📸 Ver comprobante</button>`;
-                } else {
-                    proofButtonHtml = `<br><button class="btn-view-proof" onclick="uploadTicketProof(${ticket.id}, '${escapeHtml(ticket.nombre)}', '${ticket.email}', '${ticket.telefono}', '${ticket.cantidad}', '${ticket.fecha_evento}', '${ticket.precio}')">⬆️ Subir comprobante</button>`;
-                }
-
-                return `
-                <div class="contact-card">
-                    <div class="contact-header">
-                        <div class="contact-name">🎫 ${escapeHtml(ticket.nombre)}</div>
-                        <div class="contact-date">📅 ${formatDate(ticket.fecha_compra)}</div>
-                    </div>
-                    <div class="contact-email">📧 ${escapeHtml(ticket.email)}</div>
-                    <div class="contact-phone">📱 <a href="https://wa.me/${ticket.telefono}" target="_blank">${escapeHtml(ticket.telefono)}</a></div>
-                    <div class="inscription-details">
-                        <strong>Cantidad:</strong> ${ticket.cantidad}<br>
-                        <strong>Fecha Evento:</strong> ${ticket.fecha_evento}<br>
-                        <strong>Precio:</strong> ${escapeHtml(ticket.precio)}
-                        ${proofButtonHtml}
-                    </div>
-                    <button class="generate-qr-btn" onclick="generateQRTicket(${ticket.id}, '${escapeHtml(ticket.nombre)}', '${ticket.email}', '${ticket.telefono}')">🔐 Generar QR</button>
-                    <button class="delete-btn" onclick="deleteTicket(${ticket.id})">🗑️ Eliminar</button>
-                </div>
-            `}).join('');
+    const ticketsHTML = tickets.map((ticket, idx) => {
+        let proofButtonHtml = '';
+        if (ticket.comprobante) {
+            const proofId = `proof_${proofCounter++}`;
+            proofsMap[proofId] = {
+                data: ticket.comprobante,
+                type: ticket.comprobante_tipo || 'image/png'
+            };
+            proofButtonHtml = `<br><button class="btn-view-proof" onclick="viewProofById('${proofId}')">📸 Ver comprobante</button>`;
+        } else {
+            proofButtonHtml = `<br><button class="btn-view-proof" onclick="uploadTicketProof(${ticket.id}, '${escapeHtml(ticket.nombre)}', '${ticket.email}', '${ticket.telefono}', '${ticket.cantidad}', '${ticket.fecha_evento}', '${ticket.precio}')">⬆️ Subir comprobante</button>`;
+        }
+        return `
+        <div class="contact-card">
+            <div class="contact-header">
+                <div class="contact-name">🎫 ${escapeHtml(ticket.nombre)}</div>
+                <div class="contact-date">📅 ${formatDate(ticket.fecha_compra)}</div>
+            </div>
+            <div class="contact-email">📧 ${escapeHtml(ticket.email)}</div>
+            <div class="contact-phone">📱 <a href="https://wa.me/${ticket.telefono}" target="_blank">${escapeHtml(ticket.telefono)}</a></div>
+            <div class="inscription-details">
+                <strong>Cantidad:</strong> ${ticket.cantidad}<br>
+                <strong>Fecha Evento:</strong> ${ticket.fecha_evento}<br>
+                <strong>Precio:</strong> ${escapeHtml(ticket.precio)}<br>
+                ${proofButtonHtml}
+            </div>
+            <button class="generate-qr-btn" onclick="generateQRTicket(${ticket.id}, '${escapeHtml(ticket.nombre)}', '${ticket.email}', '${ticket.telefono}')">🔐 Generar QR</button>
+            <button class="delete-btn" onclick="deleteTicket(${ticket.id})">🗑️ Eliminar</button>
+        </div>
+        `;
+    }).join('');
 
             contentDiv.innerHTML = `<div class="contacts-grid">${ticketsHTML}</div>`;
         }
@@ -1947,6 +1955,49 @@ async function sendCodigoEmail(email, qrCode) {
 
         async function generateQRInscripcion(id, nombre, email, telefono) {
             await generateAndSaveQR(nombre, email, telefono, `Inscripcion-${id}`);
+        }
+
+        // Genera QR de confirmación para inscripciones
+        async function generateQRConfirmacion(id) {
+            try {
+                // Buscar inscripción por ID
+                const insc = allInscripciones.find(i => i.id === id);
+                if (!insc) {
+                    alert('❌ Inscripción no encontrada');
+                    return;
+                }
+                // Datos para QR de confirmación
+                const qrData = `Pago confirmado\nNombre: ${insc.nombre}\nEmail: ${insc.email}\nTeléfono: ${insc.telefono}\nID: ${id}`;
+                const encodedData = encodeURIComponent(qrData);
+                const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=${encodedData}`;
+                const response = await fetch(qrImageUrl);
+                const blob = await response.blob();
+                const reader = new FileReader();
+                const qrBase64 = await new Promise((resolve, reject) => {
+                    reader.onload = () => {
+                        const base64 = reader.result.split(',')[1];
+                        resolve(base64);
+                    };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(blob);
+                });
+                // Guardar QR en inscripción usando el endpoint correcto
+                const saveResponse = await fetch(`${API_BASE_URL}/api/save-qr-inscripcion`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ inscripcion_id: id, qr_code: qrBase64 })
+                });
+                const saveData = await saveResponse.json();
+                if (saveData.success) {
+                    alert('✅ QR de confirmación generado y guardado');
+                    await loadInscripciones();
+                } else {
+                    alert('❌ Error al guardar QR: ' + saveData.message);
+                }
+            } catch (error) {
+                console.error('Error al generar QR confirmación:', error);
+                alert('❌ Error al generar QR de confirmación');
+            }
         }
 
         function uploadInscripcionProof(id, nombre, email, telefono) {
