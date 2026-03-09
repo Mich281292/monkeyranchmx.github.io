@@ -142,7 +142,7 @@ app.delete('/api/comprobantes-generales/:id', async (req, res) => {
 // ...existing code...
 // ...existing code...
 
-const PORT = process.env.PORT || 3000;
+// ...eliminado, ya está declarado más abajo
 
 // Crear carpeta de uploads si no existe
 const uploadDir = 'uploads';
