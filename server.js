@@ -145,10 +145,7 @@ app.delete('/api/comprobantes-generales/:id', async (req, res) => {
 // ...eliminado, ya está declarado más abajo
 
 // Crear carpeta de uploads si no existe
-const uploadDir = 'uploads';
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-}
+// ...eliminado, ya está declarado más arriba
 
 // Configuración de multer
 const storage = multer.diskStorage({
