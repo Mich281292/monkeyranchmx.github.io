@@ -1,4 +1,19 @@
 // ...existing code...
+// Inicialización de app y middlewares
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const { Pool } = require('pg');
+const path = require('path');
+const multer = require('multer');
+const fs = require('fs');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// ...middlewares y configuración...
+
 // Endpoint para guardar el QR generado en la inscripción
 app.post('/api/save-qr-inscripcion', async (req, res) => {
     const { inscripcion_id, qr_code } = req.body;
@@ -16,6 +31,7 @@ app.post('/api/save-qr-inscripcion', async (req, res) => {
         res.status(500).json({ success: false, message: 'Error al guardar el QR.' });
     }
 });
+
 // Endpoint para enviar código QR por email
 app.post('/api/send-codigo-email', async (req, res) => {
     const { email, qrCode } = req.body;
@@ -45,6 +61,10 @@ app.post('/api/send-codigo-email', async (req, res) => {
         res.status(500).json({ success: false, message: 'Error al enviar el email.' });
     }
 });
+// ...existing code...
+// Endpoint para guardar el QR generado en la inscripción
+// Endpoint para enviar código QR por email
+// (Mover estos endpoints después de la inicialización de app)
 const { exec } = require('child_process');
 
 function backupDatabase() {
