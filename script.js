@@ -71,7 +71,7 @@ if (inscriptionForm) {
 // Theme toggle functionality
 const API_BASE_URL = window.location.hostname === 'localhost'
     ? 'http://localhost:3000'
-    : 'https://monkey-ranch-api.onrender.com';
+    : 'https://monkey-ranch-backend.onrender.com';
 const themeToggle = document.getElementById('themeToggle');
 const htmlElement = document.documentElement;
 const body = document.body;

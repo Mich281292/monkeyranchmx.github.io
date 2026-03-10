@@ -996,7 +996,7 @@ async function generateAndSaveQR(nombre, email, telefono, codigoId) {
         // Detectar si estamos en desarrollo y usar localhost, de lo contrario usar API remota
         const API_BASE_URL = window.location.hostname === 'localhost' 
             ? 'http://localhost:3000'
-            : 'https://monkey-ranch-api.onrender.com';
+            : 'https://monkey-ranch-backend.onrender.com';
 
         let allContacts = [];
         let allVip = [];
