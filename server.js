@@ -1,13 +1,7 @@
 // ...existing code...
 // Inicialización de app y middlewares
 require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const { Pool } = require('pg');
-const path = require('path');
-const multer = require('multer');
-const fs = require('fs');
+// ...declaraciones eliminadas, ya están arriba
 
 const app = express();
 const PORT = process.env.PORT || 3000;
