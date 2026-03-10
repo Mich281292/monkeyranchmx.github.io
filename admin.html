@@ -1579,12 +1579,11 @@ async function sendCodigoEmail(email, qrCode) {
                     <div class="inscription-details">
                         <strong>Placas:</strong> ${escapeHtml(park.placas)}<br>
                         <strong>Cantidad de Espacios:</strong> ${park.cantidad}<br>
+                        <strong>Total:</strong> ${escapeHtml(park.total)}<br>
                         <strong>Fecha Evento:</strong> ${park.fecha_evento}<br>
-                        <strong>Precio:</strong> ${escapeHtml(park.precio)}
-                        ${proofButtonHtml}
+                        <strong>Comprobante:</strong> <a href="${park.comprobante_url}" target="_blank">📎 Ver archivo</a>
+                        <button class="delete-btn" onclick="deleteProofParking(${park.id})">🗑️ Eliminar</button>
                     </div>
-                    <button class="generate-qr-btn" onclick="generateQRParking(${park.id}, '${escapeHtml(park.nombre)}', '${park.email}', '${park.telefono}')">🔐 Generar QR</button>
-                    <button class="delete-btn" onclick="deleteParking(${park.id})">🗑️ Eliminar</button>
                 </div>
             `}).join('');
 
@@ -1633,8 +1632,7 @@ async function sendCodigoEmail(email, qrCode) {
                 </div>
             `).join('');
 
-            contentDiv.innerHTML = `<div class="contacts-grid">${proofsHTML}</div>`;
-        }
+
 
         async function loadProofsVIP() {
             try {
@@ -1722,6 +1720,9 @@ async function sendCodigoEmail(email, qrCode) {
                     </div>
                 </div>
             `).join('');
+    contentDiv.innerHTML = `<div class="contacts-grid">${proofsHTML}</div>`;
+        }
+
         async function deleteProofGeneral(id) {
             if (!confirm('¿Estás seguro de que deseas eliminar este comprobante general? Esta acción no puede ser revertida.')) {
                 return;
