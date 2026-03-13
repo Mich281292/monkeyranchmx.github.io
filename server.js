@@ -149,6 +149,18 @@ app.delete('/api/comprobantes-generales/:id', async (req, res) => {
 });
 // Deployed: 2026-02-20 15:15 UTC - Force rebuild with lastVisitTime query
 // ...existing code...
+// Endpoint para obtener el fondo base64
+app.get('/api/fondo', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT imagen_base64 FROM fondos WHERE nombre = $1 LIMIT 1', ['moviles']);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Fondo no encontrado' });
+        }
+        res.json({ imagen_base64: result.rows[0].imagen_base64 });
+    } catch (err) {
+        res.status(500).json({ error: 'Error al obtener fondo' });
+    }
+});
 
 // ...existing code...
 

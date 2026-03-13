@@ -83,40 +83,61 @@
 
                 <div class="purchase-form-container">
                     <div class="purchase-form">
-                        <h2>Formulario de Apartar Estacionamiento</h2>
-                        <form id="purchaseForm">
-                            <div class="form-group">
-                                <label for="nombre">Nombre Completo:</label>
-                                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo" required>
+                        <div style="position: relative;">
+                            <!-- Overlay blur con muchas leyendas -->
+                            <div style="position: absolute; z-index: 10; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">
+                                <div style="width:100%;height:100%;position:absolute;top:0;left:0;backdrop-filter: blur(6px);background:rgba(0,0,0,0.45);"></div>
+                                <div style="width:100%;height:100%;position:absolute;top:0;left:0;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(6,1fr);align-items:center;justify-items:center;pointer-events:none;">
+                                    <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(-18deg);">Estacionamiento lleno</span>
+                                    <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(12deg);">Estacionamiento lleno</span>
+                                    <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(-8deg);">Estacionamiento lleno</span>
+                                    <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(8deg);">Estacionamiento lleno</span>
+                                    <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(-12deg);">Estacionamiento lleno</span>
+                                    <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(18deg);">Estacionamiento lleno</span>
+                                    <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(-18deg);">Estacionamiento lleno</span>
+                                    <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(12deg);">Estacionamiento lleno</span>
+                                    <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(-8deg);">Estacionamiento lleno</span>
+                                    <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(8deg);">Estacionamiento lleno</span>
+                                    <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(-12deg);">Estacionamiento lleno</span>
+                                    <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(18deg);">Estacionamiento lleno</span>
+                                    <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(-18deg);">Estacionamiento lleno</span>
+                                    <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(12deg);">Estacionamiento lleno</span>
+                                    <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(-8deg);">Estacionamiento lleno</span>
+                                    <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(8deg);">Estacionamiento lleno</span>
+                                    <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(-12deg);">Estacionamiento lleno</span>
+                                    <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(18deg);">Estacionamiento lleno</span>
+                                </div>
                             </div>
-                            
-                            <div class="form-group">
-                                <label for="email">Email:</label>
-                                <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+                            <div style="filter: blur(2px); pointer-events: none; user-select: none;">
+                                <h2>Formulario de Apartar Estacionamiento</h2>
+                                <form id="purchaseForm">
+                                    <div class="form-group">
+                                        <label for="nombre">Nombre Completo:</label>
+                                        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email:</label>
+                                        <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="telefono">Teléfono:</label>
+                                        <input type="tel" id="telefono" name="telefono" placeholder="+52 442 222 2222" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cantidad">Cantidad de Espacios:</label>
+                                        <input type="number" id="cantidad" name="cantidad" min="1" value="1" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="total">Total:</label>
+                                        <div id="total" class="total-display">$150.00</div>
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="submit-btn">Apartar Lugar</button>
+                                        <a href="boletos.html" class="cancel-btn">Volver</a>
+                                    </div>
+                                </form>
                             </div>
-                            
-                            <div class="form-group">
-                                <label for="telefono">Teléfono:</label>
-                                <input type="tel" id="telefono" name="telefono" placeholder="+52 442 222 2222" required>
-                            </div>
-
-                            
-                            <div class="form-group">
-                                <label for="cantidad">Cantidad de Espacios:</label>
-                                <input type="number" id="cantidad" name="cantidad" min="1" value="1" required>
-                            </div>
-                            
-
-                            <div class="form-group">
-                                <label for="total">Total:</label>
-                                <div id="total" class="total-display">$150.00</div>
-                            </div>
-                            
-                            <div class="form-actions">
-                                <button type="submit" class="submit-btn">Apartar Lugar</button>
-                                <a href="boletos.html" class="cancel-btn">Volver</a>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>

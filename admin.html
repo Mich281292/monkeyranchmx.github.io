@@ -1,6 +1,166 @@
-<!-- Mover funciones globales al final del archivo -->
-</body>
 <script>
+// Utilidad para cargar imágenes como objeto Image
+function loadImageAsync(src) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = src;
+    });
+}
+
+// Restaurar función para generar QR con logo
+async function generateAndSaveQR(nombre, email, telefono, codigoId) {
+    try {
+        // Crear datos para el QR
+        const qrData = `Nombre: ${nombre}\nEmail: ${email}\nTelefono: ${telefono}\nCodigo: ${codigoId}`;
+        // Generar QR usando API externa (QRServer)
+        const encodedData = encodeURIComponent(qrData);
+        const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=${encodedData}`;
+        // Obtener la imagen del QR y convertir a Base64
+        const response = await fetch(qrImageUrl);
+        const blob = await response.blob();
+        // Convertir blob a Base64
+        const reader = new FileReader();
+        const qrBase64 = await new Promise((resolve, reject) => {
+            reader.onload = () => {
+                const base64 = reader.result.split(',')[1];
+                resolve(base64);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        });
+        // Agregar logo1 en la parte superior del QR
+        let finalBase64 = qrBase64;
+        try {
+            const qrDataUrl = `data:image/png;base64,${qrBase64}`;
+            const [qrImg, logoImg] = await Promise.all([
+                loadImageAsync(qrDataUrl),
+                loadImageAsync('logo1.png')
+            ]);
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const maxLogoWidth = Math.min(qrImg.width, 140);
+            const logoScale = maxLogoWidth / logoImg.width;
+            const logoWidth = maxLogoWidth;
+            const logoHeight = Math.round(logoImg.height * logoScale);
+            const padding = 10;
+            canvas.width = qrImg.width;
+            canvas.height = logoHeight + padding + qrImg.height;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(logoImg, (canvas.width - logoWidth) / 2, 0, logoWidth, logoHeight);
+            ctx.drawImage(qrImg, 0, logoHeight + padding);
+            finalBase64 = canvas.toDataURL('image/png').split(',')[1];
+        } catch (err) {
+            console.warn('No se pudo agregar logo al QR:', err);
+        }
+        // Guardar en la tabla codigos via API
+        const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://monkey-ranch-api.onrender.com';
+        const saveResponse = await fetch(`${API_BASE_URL}/api/codigos`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                imagen: `data:image/png;base64,${finalBase64}`,
+                nombre,
+                correo: email,
+                telefono
+            })
+        });
+        const saveResult = await saveResponse.json();
+        if (saveResult.success) {
+            alert('QR guardado correctamente con logo.');
+        } else {
+            alert('Error al guardar QR: ' + (saveResult.message || '')); 
+        }
+    } catch (err) {
+        alert('Error al generar o guardar QR: ' + err);
+    }
+}
+</script>
+<script>
+// Nueva función: Generar PDF con fondo desde API
+async function generarPDFConFondo(qrBase64, insc) {
+    const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://monkey-ranch-api.onrender.com';
+    try {
+        const fondoResp = await fetch(`${API_URL}/api/fondo`);
+        const fondoData = await fondoResp.json();
+        const fondoBase64 = fondoData.imagen_base64; // debe ser 'data:image/png;base64,...'
+        generarPDFQR(qrBase64, insc, fondoBase64);
+    } catch (e) {
+        generarPDFQR(qrBase64, insc, null);
+    }
+}
+</script>
+<!-- Mover funciones globales al final del archivo -->
+
+<!-- ...existing code... -->
+
+<script>
+// Función global para generar PDF con QR
+// Actualizada: Genera PDF con datos completos y QR en la esquina superior derecha
+function generarPDFQR(qrBase64, insc) {
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+        alert('jsPDF no está disponible.');
+        return;
+    }
+    const doc = new window.jspdf.jsPDF();
+    if (arguments.length > 2 && arguments[2] && arguments[2].startsWith('data:image')) {
+        doc.addImage(arguments[2], 'PNG', 0, 0, 210, 297);
+    }
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(22);
+    doc.setTextColor(255,255,255);
+    doc.text('Inscripción Monkey Ranch', 20, 20);
+    if (qrBase64 && qrBase64.startsWith('data:image')) {
+        doc.addImage(qrBase64, 'PNG', 130, 10, 65, 65);
+    } else {
+        doc.setFontSize(14);
+        doc.text('QR no disponible', 140, 40);
+    }
+
+    // Ajustar email si es muy largo
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(18);
+    doc.setTextColor(255,255,255);
+    let y = 40;
+    const datos = [
+        ['Nombre', insc.nombre],
+        ['Email', insc.email],
+        ['Teléfono', insc.telefono],
+        ['Edad', insc.edad],
+        ['Número de Moto', insc.numero_moto],
+        ['Número de Licencia', insc.numero_licencia],
+        ['Categoría', insc.categoria],
+        ['Transponder', insc.transponder_option || insc.transponder],
+        ['Costo Total', insc.total_cost]
+    ];
+    datos.forEach(([label, value]) => {
+        // Si es email y es muy largo, dividir en dos líneas
+        let lines = [];
+        if (label === 'Email' && value && value.length > 30) {
+            // Divide el email en dos partes
+            const mid = Math.floor(value.length / 2);
+            const splitIndex = value.indexOf('@') > 0 ? value.indexOf('@') : mid;
+            lines = [value.slice(0, splitIndex), value.slice(splitIndex)];
+        } else {
+            lines = [value || 'N/A'];
+        }
+        lines.forEach((line, idx) => {
+            doc.setTextColor(0,0,0);
+            doc.text(`${label}${lines.length > 1 ? (idx === 0 ? ':' : '') : ': '} ${line}`, 20, y+0.5);
+            doc.setTextColor(255,255,255);
+            doc.text(`${label}${lines.length > 1 ? (idx === 0 ? ':' : '') : ': '} ${line}`, 20, y);
+            y += 12;
+            if (idx > 0) label = ''; // Solo mostrar el label en la primera línea
+        });
+    });
+    doc.save('monkeyranch-inscripcion.pdf');
+    mostrarBotonEnviarPDF();
+}
+
 // Función global para eliminar contacto
 async function deleteContacto(id) {
     console.log('deleteContacto llamado con id:', id);
@@ -93,6 +253,7 @@ async function deleteProofParking(id) {
     }
 }
 </script>
+</body>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -100,6 +261,7 @@ async function deleteProofParking(id) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Monkey Ranch MX</title>
     <link rel="icon" type="image/png" href="icono-monkey.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
                 @media (max-width: 600px) {
                     #mv-float-btn {
@@ -888,6 +1050,7 @@ async function generateAndSaveQR(nombre, email, telefono, codigoId) {
                 <button class="tab-btn" onclick="switchTab('comprobantes_vip')">🧾👑 Comprobantes VIP</button>
                 <button class="tab-btn" onclick="switchTab('comprobantes_parking')">🧾🅿️ Comprobantes Estacionamiento</button>
                 <button class="tab-btn" onclick="switchTab('codigos')">🔐 Códigos</button>
+                <button class="tab-btn" onclick="switchTab('confirmacion')">✅ Confirmación</button>
             </div>
 
             <div id="contactsContent" class="tab-content">
@@ -928,6 +1091,11 @@ async function generateAndSaveQR(nombre, email, telefono, codigoId) {
 
             <div id="codigosContent" class="tab-content" style="display:none;">
                 <div class="loading">⏳ Cargando códigos...</div>
+            </div>
+            <div id="confirmacionContent" class="tab-content" style="display:none;">
+                <h2>Confirmación</h2>
+                <p>Visualiza registros que requieren confirmación.</p>
+                <div class="loading">⏳ Cargando confirmaciones...</div>
             </div>
         </div>
     </div>
@@ -1294,9 +1462,143 @@ async function generateAndSaveQR(nombre, email, telefono, codigoId) {
                 document.getElementById('codigosContent').style.display = 'block';
                 document.getElementById('searchInput').placeholder = '🔍 Buscar códigos...';
                 loadCodigos();
+            } else if (tab === 'confirmacion') {
+                document.getElementById('confirmacionContent').style.display = 'block';
+                document.getElementById('searchInput').placeholder = '🔍 Buscar confirmaciones...';
+                loadConfirmaciones();
             }
-            
             document.getElementById('searchInput').value = '';
+        // Cargar confirmaciones (placeholder)
+        function loadConfirmaciones() {
+            const confirmacionContent = document.getElementById('confirmacionContent');
+            confirmacionContent.innerHTML = `
+                <h2>Confirmación</h2>
+                <p style="font-size:1.2em; margin-bottom:10px;">¿Qué quieres visualizar?</p>
+                <select id="confirmacionSelect" style="padding:10px; font-size:1em; border-radius:8px; margin-bottom:10px;">
+                    <option value="inscripciones">Inscripciones</option>
+                    <option value="estacionamiento">Estacionamiento</option>
+                    <option value="generales">Tickets Generales</option>
+                    <option value="vip">Tickets VIP</option>
+                </select>
+                <br>
+                <label style="font-size:1em; margin-top:10px;">Ordenar por:</label>
+                <select id="confirmacionOrden" style="padding:10px; font-size:1em; border-radius:8px; margin-bottom:20px;">
+                    <option value="fecha">Fecha de registro</option>
+                    <option value="nombre">Orden alfabético</option>
+                    <option value="correo">Correos por orden alfabético</option>
+                </select>
+                <div id="confirmacionResultados"></div>
+            `;
+            // Mostrar resultados según selección
+            const select = document.getElementById('confirmacionSelect');
+            const ordenSelect = document.getElementById('confirmacionOrden');
+            select.addEventListener('change', mostrarConfirmacionResultados);
+            ordenSelect.addEventListener('change', mostrarConfirmacionResultados);
+            document.getElementById('searchInput').addEventListener('input', mostrarConfirmacionResultados);
+            // Por defecto: inscripciones y orden fecha
+            select.value = 'inscripciones';
+            ordenSelect.value = 'fecha';
+            mostrarConfirmacionResultados();
+            function mostrarConfirmacionResultados() {
+                const tipo = select.value;
+                const orden = ordenSelect.value;
+                const search = document.getElementById('searchInput').value.toLowerCase();
+                let resultados = [];
+                if (tipo === 'inscripciones') {
+                    resultados = allInscripciones.filter(i => i.comprobante);
+                } else if (tipo === 'estacionamiento') {
+                    resultados = allParking.filter(e => e.comprobante);
+                } else if (tipo === 'generales') {
+                    resultados = allTickets.filter(t => t.comprobante);
+                } else if (tipo === 'vip') {
+                    resultados = allTicketsVip.filter(v => v.comprobante);
+                }
+                // Filtrar por búsqueda
+                if (search) {
+                    resultados = resultados.filter(r => {
+                        return (
+                            (r.nombre && r.nombre.toLowerCase().includes(search)) ||
+                            (r.email && r.email.toLowerCase().includes(search)) ||
+                            (r.telefono && r.telefono.toLowerCase().includes(search)) ||
+                            (r.placas && r.placas.toLowerCase().includes(search))
+                        );
+                    });
+                }
+                // Ordenar
+                if (orden === 'nombre') {
+                    resultados.sort((a, b) => (a.nombre || '').localeCompare(b.nombre || ''));
+                } else if (orden === 'correo') {
+                    resultados.sort((a, b) => (a.email || '').localeCompare(b.email || ''));
+                } else if (orden === 'fecha') {
+                    // Por fecha de registro
+                    let fechaKey = 'fecha_creacion';
+                    if (tipo === 'generales' || tipo === 'vip' || tipo === 'estacionamiento') fechaKey = 'fecha_compra';
+                    resultados.sort((a, b) => new Date(b[fechaKey] || 0) - new Date(a[fechaKey] || 0));
+                }
+                const contenedor = document.getElementById('confirmacionResultados');
+                if (resultados.length === 0) {
+                    contenedor.innerHTML = '<div class="loading">No hay registros con comprobante.</div>';
+                    return;
+                }
+                contenedor.innerHTML = resultados.map((r, idx) => {
+                    let info = '';
+                    let proofButtonHtml = '';
+                    let proofId = `proof_${proofCounter++}`;
+                    proofsMap[proofId] = {
+                        data: r.comprobante,
+                        type: r.comprobante_tipo || 'image/png'
+                    };
+                    proofButtonHtml = `<br><button class="btn-view-proof" onclick="viewProofById('${proofId}')">📸 Ver comprobante</button>`;
+                    // Botón PDF QR usando codigos
+                    let pdfBtnHtml = '';
+                    if (allCodigos && allCodigos.length > 0) {
+                        const codigo = allCodigos.find(c => c.nombre === r.nombre && c.correo === r.email);
+                        if (codigo && codigo.imagen) {
+                            const codigoQR = 'data:image/png;base64,' + codigo.imagen;
+                            pdfBtnHtml = `<button class='btn-view-proof' style='margin-left:8px;' onclick='generarPDFConFondo("${codigoQR}", ${JSON.stringify(r)})'>📄 Generar PDF QR</button>`;
+                            pdfBtnHtml += `<button class='btn-send-pdf' style='margin-left:8px; display:none;' onclick='enviarPDFPorCorreo("${r.email}", ${JSON.stringify(r)})'>✉️ Enviar PDF por correo</button>`;
+                        // Mostrar el botón de enviar PDF solo si el PDF está creado
+                        function mostrarBotonEnviarPDF() {
+                            const btn = document.querySelector('.btn-send-pdf');
+                            if (btn) btn.style.display = 'inline-block';
+                        }
+
+                        // Llama mostrarBotonEnviarPDF después de crear el PDF
+                        // En generarPDFQR, justo antes de doc.save:
+                        // mostrarBotonEnviarPDF();
+
+                        // Función placeholder para enviar PDF por correo
+                        function enviarPDFPorCorreo(email, insc) {
+                            alert('Funcionalidad de envío de PDF por correo pendiente de integración. Email destino: ' + email);
+                        }
+                        }
+                    }
+                    proofButtonHtml += pdfBtnHtml;
+                    // Checkbox persistente
+                    let revisadoKey = `confirmacion_revisado_${tipo}_${r.id}`;
+                    let revisado = localStorage.getItem(revisadoKey) === 'true';
+                    let checkboxHtml = `<label style='margin-top:8px; display:block;'><input type='checkbox' class='confirmacion-checkbox' data-key='${revisadoKey}' ${revisado ? 'checked' : ''}> Revisado</label>`;
+                    if (tipo === 'inscripciones') {
+                        info = `<b>Nombre:</b> ${r.nombre} <br><b>Email:</b> ${r.email} <br><b>Teléfono:</b> ${r.telefono}`;
+                    } else if (tipo === 'estacionamiento') {
+                        info = `<b>Nombre:</b> ${r.nombre} <br><b>Email:</b> ${r.email} <br><b>Placas:</b> ${r.placas}`;
+                    } else if (tipo === 'generales') {
+                        info = `<b>Nombre:</b> ${r.nombre} <br><b>Email:</b> ${r.email}`;
+                    } else if (tipo === 'vip') {
+                        info = `<b>Nombre:</b> ${r.nombre} <br><b>Email:</b> ${r.email}`;
+                    }
+                    return `<div style="background:#fff; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.08); padding:16px; margin-bottom:12px;"><b>${idx+1}.</b> ${info}${proofButtonHtml}${checkboxHtml}</div>`;
+                }).join('');
+                // Evento para guardar checkbox
+                setTimeout(() => {
+                    document.querySelectorAll('.confirmacion-checkbox').forEach(cb => {
+                        cb.addEventListener('change', function() {
+                            localStorage.setItem(this.dataset.key, this.checked);
+                        });
+                    });
+                }, 100);
+            }
+        }
         }
 
         function displayContacts(contacts) {
@@ -1377,6 +1679,10 @@ async function generateAndSaveQR(nombre, email, telefono, codigoId) {
                 type: insc.comprobante_tipo || 'image/png'
             };
             proofButtonHtml = `<br><button class="btn-view-proof" onclick="viewProofById('${proofId}')">📸 Ver comprobante</button>`;
+            // Botón PDF QR
+            let qrCode = insc.qr_code || insc.qrCode || '';
+            let pdfBtnHtml = `<button class='btn-view-proof' style='margin-left:8px;' onclick='generarPDFConFondo("${qrCode}", ${JSON.stringify(insc)})'>📄 Generar PDF QR</button>`;
+            proofButtonHtml += pdfBtnHtml;
         } else {
             proofButtonHtml = `<br><button class="btn-view-proof" onclick="uploadInscripcionProof(${insc.id}, '${escapeHtml(insc.nombre)}', '${insc.email}', '${insc.telefono}')">⬆️ Subir comprobante</button>`;
         }

@@ -88,116 +88,140 @@
                 <form class="contact-form inscription-form" id="inscriptionForm">
                     <div class="boletos-cards-grid">
                         <div class="vip-card vip-card-mobile">
-                            <h2 style="color:#b8242f; text-align:center; margin-bottom:1.5rem;">Formulario de
-                                Inscripción</h2>
-                            <div class="form-fields">
-                                <!-- ...existing questions and fields... -->
-                                <input type="text" name="nombre" placeholder="Tu nombre" required>
-                                <input type="email" name="email" placeholder="Tu email" required>
-                                <input type="tel" name="telefono" placeholder="Tu teléfono" required>
-                                <input type="text" name="cc" placeholder="Cilindrada (C.C) Ejemplo: 50cc, 65cc, 85cc, 125cc, 250cc, 450cc" required>
-                                <input type="number" name="edad" placeholder="Tu edad" min="1" max="120" required>
-                                <input type="text" name="numero_moto" placeholder="Número de moto" required>
-                                <input type="text" name="numero_licencia" placeholder="Número de licencia" required>
-                                <div class="question-block">
-                                    <label for="categoriaSelect" style="color:#fff;">¿Categoría a la que
-                                        ingresas?</label>
-                                    <small class="question-help" style="color:#ccc;">Selecciona la categoría principal
-                                        con la que competirás.</small>
-                                    <select id="categoriaSelect" name="categoria" required style="margin-top:0.5rem;">
-                                        <option value="">Selecciona una opción</option>
-                                        <option value="50cc mini 1 (4 a 6 años)">50cc mini 1 (4 a 6 años)</option>
-                                        <option value="50cc mini 2 (7 a 8 años)">50cc mini 2 (7 a 8 años)</option>
-                                        <option value="50cc junior (Open de 4 a 8 años)">50cc junior (Open de 4 a 8
-                                            años)</option>
-                                        <option value="65cc mini 1 (7 a 8 años)">65cc mini 1 (7 a 8 años)</option>
-                                        <option value="65cc mini 2 (9 a 10 años)">65cc mini 2 (9 a 10 años)</option>
-                                        <option value="65cc junior (Open)">65cc junior (Open)</option>
-                                        <option value="85cc mini 1 (10 a 12 años)">85cc mini 1 (10 a 12 años)</option>
-                                        <option value="85cc mini 2 (13 a 15 años)">85cc mini 2 (13 a 15 años)</option>
-                                        <option value="85cc junior (Open)">85cc junior (Open)</option>
-                                        <option value="125cc B (15 a 23 años)">125cc B (15 a 23 años)</option>
-                                        <option value="125cc A (18 años mínimo)">125cc A (18 años mínimo)</option>
-                                        <option value="Femenil Juvenil">Femenil Juvenil</option>
-                                        <option value="Femenil Elite">Femenil Elite</option>
-                                        <option value="N3">N3</option>
-                                        <option value="N2">N2</option>
-                                        <option value="MXB Open">MXB Open</option>
-                                        <option value="Veteranos 30 (30 años mínimo)">Veteranos 30 (30 años mínimo)
-                                        </option>
-                                        <option value="Veteranos 40 (40 años mínimo)">Veteranos 40 (40 años mínimo)
-                                        </option>
-                                        <option value="Veteranos 50 (50 años mínimo)">Veteranos 50 (50 años mínimo)
-                                        </option>
-                                        <option value="Mx2 (15 a 23 años)">Mx2 (15 a 23 años)</option>
-                                        <option value="Mx1 Open (18 años mínimo)">Mx1 Open (18 años mínimo)</option>
-                                    </select>
+                            <div style="position: relative;">
+                                <!-- Overlay blur con muchas leyendas -->
+                                <div style="position: absolute; z-index: 10; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">
+                                    <div style="width:100%;height:100%;position:absolute;top:0;left:0;backdrop-filter: blur(6px);background:rgba(0,0,0,0.45);"></div>
+                                    <div style="width:100%;height:100%;position:absolute;top:0;left:0;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(6,1fr);align-items:center;justify-items:center;pointer-events:none;">
+                                        <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(-18deg);">Inscripciones llenas</span>
+                                        <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(12deg);">Inscripciones llenas</span>
+                                        <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(-8deg);">Inscripciones llenas</span>
+                                        <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(8deg);">Inscripciones llenas</span>
+                                        <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(-12deg);">Inscripciones llenas</span>
+                                        <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(18deg);">Inscripciones llenas</span>
+                                        <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(-18deg);">Inscripciones llenas</span>
+                                        <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(12deg);">Inscripciones llenas</span>
+                                        <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(-8deg);">Inscripciones llenas</span>
+                                        <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(8deg);">Inscripciones llenas</span>
+                                        <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(-12deg);">Inscripciones llenas</span>
+                                        <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(18deg);">Inscripciones llenas</span>
+                                        <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(-18deg);">Inscripciones llenas</span>
+                                        <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(12deg);">Inscripciones llenas</span>
+                                        <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(-8deg);">Inscripciones llenas</span>
+                                        <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(8deg);">Inscripciones llenas</span>
+                                        <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(-12deg);">Inscripciones llenas</span>
+                                        <span style="color:#fff;opacity:0.35;font-size:2rem;font-weight:bold;text-shadow:0 2px 8px #000,0 0 2px #b8242f;letter-spacing:2px;transform:rotate(18deg);">Inscripciones llenas</span>
+                                    </div>
                                 </div>
-                                <!-- ...existing code... -->
-                                <!-- ...existing code... -->
-                                <div class="question-block">
-                                    <label for="clubExclusivoSelect" style="color:#fff;">¿Te gustaría pertenecer a
-                                        nuestro club exclusivo para practicar en nuestras instalaciones?</label>
-                                    <small class="question-help" style="color:#ccc;">Respuesta opcional, solo para
-                                        interés general.</small>
-                                    <select id="clubExclusivoSelect" name="club_exclusivo" style="margin-top:0.5rem;">
-                                        <option value="">Selecciona una opción</option>
-                                        <option value="si">Sí</option>
-                                        <option value="no">Por ahora no</option>
-                                    </select>
-                                </div>
-                                <!-- ...existing code... -->
-                                <!-- Pregunta sobre transponder justo antes del botón -->
-                                <div class="question-block">
-                                    <label for="transponderSelect" style="color:#fff;">¿Cuenta con transponder?</label>
-                                    <small class="question-help" style="color:#ccc;">Para competir necesitas un
-                                        transponder. Si no cuentas con uno, puedes rentarlo por <b>$300</b>. Si ya
-                                        tienes tu transponder, el registro cuesta <b>$150</b>.<br>El transponder es un
-                                        dispositivo necesario para registrar tus tiempos en la pista. Si no tienes uno,
-                                        podrás rentarlo el día del evento.</small>
-                                    <select id="transponderSelect" name="transponder" required
-                                        style="margin-top:0.5rem;">
-                                        <option value="">Selecciona una opción</option>
-                                        <option value="si">Sí, cuento con transponder</option>
-                                        <option value="no">No cuento con transponder</option>
-                                    </select>
-                                </div>
+                                <div class="form-fields" style="filter: blur(2px); pointer-events: none; user-select: none;">
+                                    <!-- ...existing questions and fields... -->
+                                    <input type="text" name="nombre" placeholder="Tu nombre" required>
+                                    <input type="email" name="email" placeholder="Tu email" required>
+                                    <input type="tel" name="telefono" placeholder="Tu teléfono" required>
+                                    <input type="text" name="cc" placeholder="Cilindrada (C.C) Ejemplo: 50cc, 65cc, 85cc, 125cc, 250cc, 450cc" required>
+                                    <input type="number" name="edad" placeholder="Tu edad" min="1" max="120" required>
+                                    <input type="text" name="numero_moto" placeholder="Número de moto" required>
+                                    <input type="text" name="numero_licencia" placeholder="Número de licencia" required>
+                                    <div class="question-block">
+                                        <label for="categoriaSelect" style="color:#fff;">¿Categoría a la que
+                                            ingresas?</label>
+                                        <small class="question-help" style="color:#ccc;">Selecciona la categoría principal
+                                            con la que competirás.</small>
+                                        <select id="categoriaSelect" name="categoria" required style="margin-top:0.5rem;">
+                                            <option value="">Selecciona una opción</option>
+                                            <option value="50cc mini 1 (4 a 6 años)">50cc mini 1 (4 a 6 años)</option>
+                                            <option value="50cc mini 2 (7 a 8 años)">50cc mini 2 (7 a 8 años)</option>
+                                            <option value="50cc junior (Open de 4 a 8 años)">50cc junior (Open de 4 a 8
+                                                años)</option>
+                                            <option value="65cc mini 1 (7 a 8 años)">65cc mini 1 (7 a 8 años)</option>
+                                            <option value="65cc mini 2 (9 a 10 años)">65cc mini 2 (9 a 10 años)</option>
+                                            <option value="65cc junior (Open)">65cc junior (Open)</option>
+                                            <option value="85cc mini 1 (10 a 12 años)">85cc mini 1 (10 a 12 años)</option>
+                                            <option value="85cc mini 2 (13 a 15 años)">85cc mini 2 (13 a 15 años)</option>
+                                            <option value="85cc junior (Open)">85cc junior (Open)</option>
+                                            <option value="125cc B (15 a 23 años)">125cc B (15 a 23 años)</option>
+                                            <option value="125cc A (18 años mínimo)">125cc A (18 años mínimo)</option>
+                                            <option value="Femenil Juvenil">Femenil Juvenil</option>
+                                            <option value="Femenil Elite">Femenil Elite</option>
+                                            <option value="N3">N3</option>
+                                            <option value="N2">N2</option>
+                                            <option value="MXB Open">MXB Open</option>
+                                            <option value="Veteranos 30 (30 años mínimo)">Veteranos 30 (30 años mínimo)
+                                            </option>
+                                            <option value="Veteranos 40 (40 años mínimo)">Veteranos 40 (40 años mínimo)
+                                            </option>
+                                            <option value="Veteranos 50 (50 años mínimo)">Veteranos 50 (50 años mínimo)
+                                            </option>
+                                            <option value="Mx2 (15 a 23 años)">Mx2 (15 a 23 años)</option>
+                                            <option value="Mx1 Open (18 años mínimo)">Mx1 Open (18 años mínimo)</option>
+                                        </select>
+                                    </div>
+                                    <!-- ...existing code... -->
+                                    <!-- ...existing code... -->
+                                    <div class="question-block">
+                                        <label for="clubExclusivoSelect" style="color:#fff;">¿Te gustaría pertenecer a
+                                            nuestro club exclusivo para practicar en nuestras instalaciones?</label>
+                                        <small class="question-help" style="color:#ccc;">Respuesta opcional, solo para
+                                            interés general.</small>
+                                        <select id="clubExclusivoSelect" name="club_exclusivo" style="margin-top:0.5rem;">
+                                            <option value="">Selecciona una opción</option>
+                                            <option value="si">Sí</option>
+                                            <option value="no">Por ahora no</option>
+                                        </select>
+                                    </div>
+                                    <!-- ...existing code... -->
+                                    <!-- Pregunta sobre transponder justo antes del botón -->
+                                    <div class="question-block">
+                                        <label for="transponderSelect" style="color:#fff;">¿Cuenta con transponder?</label>
+                                        <small class="question-help" style="color:#ccc;">Para competir necesitas un
+                                            transponder. Si no cuentas con uno, puedes rentarlo por <b>$300</b>. Si ya
+                                            tienes tu transponder, el registro cuesta <b>$150</b>.<br>El transponder es un
+                                            dispositivo necesario para registrar tus tiempos en la pista. Si no tienes uno,
+                                            podrás rentarlo el día del evento.</small>
+                                        <select id="transponderSelect" name="transponder" required
+                                            style="margin-top:0.5rem;">
+                                            <option value="">Selecciona una opción</option>
+                                            <option value="si">Sí, cuento con transponder</option>
+                                            <option value="no">No cuento con transponder</option>
+                                        </select>
+                                    </div>
 
-                                <!-- Datos bancarios para inscripción -->
-                                <div class="deposit-info">
-                                    <p><strong>Por favor realiza la siguiente transferencia:</strong></p>
-                                    <p>Depositar <span id="depositAmount" class="deposit-amount"
-                                            style="font-size: 1.2rem; font-weight: bold; color: #ff4444;">$1800.00</span>
-                                        al siguiente número de cuenta:</p>
-                                    <div class="bank-account">
-                                        <span class="bank-account-number"
-                                            style="display:block; font-size:1.3rem; font-weight:700;">2705661307</span>
-                                        <span class="bank-account-name"
-                                            style="display:block; font-size:1rem; margin-top:6px;">Monserrat Araceli
-                                            Perez Rubio</span>
-                                        <span class="bank-account-bank"
-                                            style="display:block; font-size:1.1rem; font-weight:700; letter-spacing:2px; margin-top:6px;">BBVA</span>
-                                        <span class="bank-account-clabe"
-                                            style="display:block; font-size:0.95rem; margin-top:6px;">Transferencia
-                                            interbancaria clave: 012680027056613078</span>
+                                    <!-- Datos bancarios para inscripción -->
+                                    <div class="deposit-info">
+                                        <p><strong>Por favor realiza la siguiente transferencia:</strong></p>
+                                        <p>Depositar <span id="depositAmount" class="deposit-amount"
+                                                style="font-size: 1.2rem; font-weight: bold; color: #ff4444;">$1800.00</span>
+                                            al siguiente número de cuenta:</p>
+                                        <div class="bank-account">
+                                            <span class="bank-account-number"
+                                                style="display:block; font-size:1.3rem; font-weight:700;">2705661307</span>
+                                            <span class="bank-account-name"
+                                                style="display:block; font-size:1rem; margin-top:6px;">Monserrat Araceli
+                                                Perez Rubio</span>
+                                            <span class="bank-account-bank"
+                                                style="display:block; font-size:1.1rem; font-weight:700; letter-spacing:2px; margin-top:6px;">BBVA</span>
+                                            <span class="bank-account-clabe"
+                                                style="display:block; font-size:0.95rem; margin-top:6px;">Transferencia
+                                                interbancaria clave: 012680027056613078</span>
+                                        </div>
+                                        <p style="margin-top: 20px; font-size: 0.95rem; color: #7f8c8d;"><i
+                                                class="fas fa-info-circle"></i> Después de realizar la transferencia, sube
+                                            la captura o ticket de pago.</p>
                                     </div>
-                                    <p style="margin-top: 20px; font-size: 0.95rem; color: #7f8c8d;"><i
-                                            class="fas fa-info-circle"></i> Después de realizar la transferencia, sube
-                                        la captura o ticket de pago.</p>
-                                </div>
-                                <!-- Contenedor para subir comprobante de pago -->
-                                <div class="file-upload-group">
-                                    <div class="file-input-wrapper">
-                                        <label for="comprobante" class="file-input-label">
-                                            <i class="fas fa-cloud-upload-alt" style="margin-right: 10px; font-size: 24px;"></i>
-                                            <input type="file" id="comprobante" name="comprobante" accept="image/*,.pdf" required style="opacity:0;position:absolute;width:0;height:0;pointer-events:none;">
-                                            <span>Haz clic o arrastra tu archivo aquí</span>
-                                        </label>
+                                    <!-- Contenedor para subir comprobante de pago -->
+                                    <div class="file-upload-group">
+                                        <div class="file-input-wrapper">
+                                            <label for="comprobante" class="file-input-label">
+                                                <i class="fas fa-cloud-upload-alt" style="margin-right: 10px; font-size: 24px;"></i>
+                                                <input type="file" id="comprobante" name="comprobante" accept="image/*,.pdf" required style="opacity:0;position:absolute;width:0;height:0;pointer-events:none;">
+                                                <span>Haz clic o arrastra tu archivo aquí</span>
+                                            </label>
+                                        </div>
                                     </div>
+                                    <div class="file-name" id="fileName" style="color: #28a745; font-weight: bold; margin-top: 8px;"></div>
                                 </div>
-                                <div class="file-name" id="fileName" style="color: #28a745; font-weight: bold; margin-top: 8px;"></div>
-        <!-- El script para mostrar la leyenda va al final del archivo -->
-                            </div> <button type="submit" class="submit-btn cta-button">Inscribirse</button>
+                                <button type="submit" class="submit-btn cta-button" style="filter: blur(2px); pointer-events: none; user-select: none;">Inscribirse</button>
+                            </div>
                         </div>
                     </div>
 
