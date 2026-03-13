@@ -83,9 +83,9 @@ async function generateAndSaveQR(nombre, email, telefono, codigoId) {
 <script>
 // Nueva función: Generar PDF con fondo desde API
 async function generarPDFConFondo(qrBase64, insc) {
-    const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://monkey-ranch-api.onrender.com';
+    const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://monkey-ranch-api.onrender.com';
     try {
-        const fondoResp = await fetch(`${API_URL}/api/fondo`);
+        const fondoResp = await fetch(`${API_BASE_URL}/api/fondo`);
         const fondoData = await fondoResp.json();
         const fondoBase64 = fondoData.imagen_base64; // debe ser 'data:image/png;base64,...'
         generarPDFQR(qrBase64, insc, fondoBase64);
@@ -926,7 +926,8 @@ async function generateAndSaveQR(nombre, email, telefono, codigoId) {
                         html2canvas(qrContainer, {backgroundColor: null}).then(async function(canvas) {
                             var base64 = canvas.toDataURL('image/png'); // dataURL completo
                             // Guardar en la tabla codigos via API
-                            const saveResponse = await fetch(`${window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://monkey-ranch-api.onrender.com'}/api/codigos`, {
+                            const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://monkey-ranch-api.onrender.com';
+                            const saveResponse = await fetch(`${API_BASE_URL}/api/codigos`, {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -1164,7 +1165,7 @@ async function generateAndSaveQR(nombre, email, telefono, codigoId) {
         // Detectar si estamos en desarrollo y usar localhost, de lo contrario usar API remota
         const API_BASE_URL = window.location.hostname === 'localhost' 
             ? 'http://localhost:3000'
-            : 'https://monkey-ranch-backend.onrender.com';
+            : 'https://monkey-ranch-api.onrender.com';
 
         let allContacts = [];
         let allVip = [];
@@ -1212,7 +1213,7 @@ async function generateAndSaveQR(nombre, email, telefono, codigoId) {
 
         async function loadVip() {
             try {
-                const response = await fetch('/api/vip');
+                const response = await fetch(`${API_BASE_URL}/api/vip`);
                 const data = await response.json();
 
                 if (data.success) {
