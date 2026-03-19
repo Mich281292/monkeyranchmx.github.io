@@ -1732,7 +1732,6 @@ async function generateAndSaveQR(nombre, email, telefono, codigoId) {
                 ${proofButtonHtml}
             </div>
             <button class="generate-qr-btn" onclick="generateQRInscripcion(${insc.id}, '${escapeHtml(insc.nombre)}', '${insc.email}', '${insc.telefono}')">🔐 Generar QR</button>
-            <button class="generate-confirm-btn" onclick="generateQRConfirmacion(${insc.id})">🟢 Generar QR Confirmación</button>
             <button class="send-code-btn" onclick="sendCodigoEmail('${insc.email}', '${insc.qr_code}');" ${qrGenerated ? '' : 'disabled'}>✉️ Enviar código</button>
             <button class="delete-btn" onclick="deleteInscripcion(${insc.id})">🗑️ Eliminar</button>
         </div>
