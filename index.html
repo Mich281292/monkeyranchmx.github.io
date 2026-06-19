@@ -9,13 +9,157 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="logo1.png" alt="Monkey Ranch Logo">
+                    </a>
+                </div>
+                <a href="boletos.html" class="header-accesos-btn" title="Boletos">
+                    <i class="fa fa-ticket-alt"></i>
+                    <span>Boletos</span>
+                </a>
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#home">Inicio</a></li>
+                    <li><a href="#about">Acerca de</a></li>
+                    <li><a href="#services">Servicios</a></li>
+                    <li><a href="vip.html">Experiencia VIP</a></li>
+                    <li><a href="#contact">Contacto</a></li>
+                    <li><button class="theme-toggle" id="themeToggle">🌙</button></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <nav class="contact-bar" id="contactBar" role="region" aria-label="Barra de contacto">
+        <div class="contact-bar-inner">
+            <div class="contact-info">
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/MonkeyRanchqro" class="social-icon" title="Facebook" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="https://www.instagram.com/monkeyranchrideclub" class="social-icon" title="Instagram" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://wa.me/4422222222" class="social-icon whatsapp-icon" title="WhatsApp" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="contact-actions-right">
+                <a class="contact-cta email" href="mailto:monkeyranchmx@gmail.com" title="Email">
+                    <i class="fa fa-envelope"></i>
+                    <span>monkeyranchmx@gmail.com</span>
+                </a>
+                <button class="contact-action-phone" id="callBtn" aria-label="Llamar">
+                    <i class="fa fa-phone"></i>
+                    <span>+52 442 222 2222</span>
+                </button>
+                <a href="inscripcion.html" class="contact-action inscripcion-btn" title="Inscribirse"></a>
+                <button class="contact-close" id="closeContact" aria-label="Cerrar barra de contacto">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="contact-tab" id="contactTab" role="button" tabindex="0" aria-label="Abrir barra de contacto">
+        <i class="fa fa-phone"></i>
+        <span>Contacto</span>
+    </div>
+
     <main>
-        <section style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #fff;">
-            <div style="text-align: center; width: 100%;">
-                <h1 style="font-size: 3rem; color: #b8242f; text-shadow: 0 2px 8px #000,0 0 2px #fff; letter-spacing: 2px;">Próximamente...</h1>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <!-- <button class="cta-button">Explorar</button> -->
+            </div>
+        </section>
+
+        <section id="flyer" class="flyer-section">
+            <div class="container">
+                <div class="flyer-box">
+                    <img src="monkey-qro.jpeg" alt="Monkey Ranch Flyer">
+                </div>
+                <div class="flyer-action">
+                    <a href="inscripcion.html" class="cta-button">Inscribirse</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="container">
+                <h2>Acerca de Monkey Ranch</h2>
+                <p>Monkey Ranch es un parque motor destinado al aprendizaje y la práctica de motociclismo de manera segura y en un ambiente Familia.</p>
+            </div>
+        </section>
+
+        <section id="services" class="services">
+            <div class="container">
+                <h2>Nuestros Servicios</h2>
+                <div class="services-grid">
+                    <div class="service-card motocross-card" onclick="location.href='motocross.html';" style="cursor: pointer;">
+                        <h3>Pista de Motocross</h3>
+                        <p>Practica en nuestra pista de motocross.</p>
+                    </div>
+                    <div class="service-card trackday-card">
+                        <h3>Pista de Asfalto</h3>
+                        <p>Practica en nuestra pista asfaltada</p>
+                    </div>
+                    <div class="service-card terraza-card" onclick="location.href='vip.html';" style="cursor: pointer;">
+                        <h3>Terraza </h3>
+                        <p>Disfruta de bebidas y alimentos en nuestra terraza.</p>
+                    </div>
+                    <div class="service-card palco-card" style="cursor: pointer;">
+                        <h3>Palco</h3>
+                        <p>Proximamente...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2>Contacto</h2>
+                <p class="section-description">Déjanos tus datos y te contactaremos pronto.</p>
+                <form class="contact-form" id="contactForm">
+                    <input type="text" name="nombre" placeholder="Tu nombre" required>
+                    <input type="email" name="email" placeholder="Tu email" required>
+                    <input type="tel" name="telefono" placeholder="Tu teléfono" required>
+                    <input type="text" name="instagram" placeholder="Instagram (opcional)">
+                    <input type="text" name="facebook" placeholder="Facebook (opcional)">
+                    <textarea name="mensaje" placeholder="Tu mensaje" rows="5" required></textarea>
+                    <div class="question-block">
+                        <label for="clubExclusivoContact">¿Te gustaría pertenecer a nuestro club exclusivo para practicar en nuestras instalaciones?</label>
+                        <select id="clubExclusivoContact" name="club_exclusivo">
+                            <option value="">Selecciona una opción</option>
+                            <option value="si">Sí</option>
+                            <option value="no">Por ahora no</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="submit-btn">Enviar</button>
+                </form>
             </div>
         </section>
     </main>
+    <!-- Ubicación Section -->
+    <section id="ubicacion" class="contact">
+        <div class="container">
+            <h2>Ubicación</h2>
+            <p class="section-description">Encuentra Monkey Ranch MX en el siguiente mapa:</p>
+            <div class="contact-form" style="align-items:center;">
+                <div class="ubicacion-map-box">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3738.6432519897667!2d-100.37530112388104!3d20.438756907779656!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d3471873174f55%3A0xc4f303e5d2ca7dac!2sMonkey%20Ranch%20MX!5e0!3m2!1ses-419!2smx!4v1772056983521!5m2!1ses-419!2smx" width="100%" height="450" style="border:0;display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <footer>
         <div class="social-media">
