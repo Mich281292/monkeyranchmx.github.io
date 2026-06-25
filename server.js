@@ -287,9 +287,28 @@ app.use('/uploads', express.static('uploads'));
 // This ensures /api/* requests don't try to find static files first
 
 // PostgreSQL Database setup
+function getDatabaseConnectionString() {
+    if (process.env.DATABASE_URL) {
+        return process.env.DATABASE_URL;
+    }
+
+    const host = process.env.DATABASE_HOST;
+    const user = process.env.DATABASE_USER;
+    const database = process.env.DATABASE_NAME;
+    const password = process.env.DATABASE_PASSWORD;
+
+    if (host && user && database) {
+        const encodedUser = encodeURIComponent(user);
+        const encodedPassword = password ? encodeURIComponent(password) : '';
+        return `postgresql://${encodedUser}${password ? `:${encodedPassword}` : ''}@${host}/${database}`;
+    }
+
+    return 'postgresql://localhost:5432/monkey_ranch';
+}
+
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/monkey_ranch',
-    ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
+    connectionString: getDatabaseConnectionString(),
+    ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : (process.env.DATABASE_HOST && !['localhost', '127.0.0.1', '::1'].includes(process.env.DATABASE_HOST) ? { rejectUnauthorized: false } : false)
 });
 
 // Test connection and initialize
