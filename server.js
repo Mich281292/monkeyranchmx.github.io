@@ -1,7 +1,12 @@
-// ...existing code...
-// Inicialización de app y middlewares
 require('dotenv').config();
-// ...declaraciones eliminadas, ya están arriba
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const { Pool } = require('pg');
+const path = require('path');
+const multer = require('multer');
+const fs = require('fs');
+const { exec } = require('child_process');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -59,7 +64,6 @@ app.post('/api/send-codigo-email', async (req, res) => {
 // Endpoint para guardar el QR generado en la inscripción
 // Endpoint para enviar código QR por email
 // (Mover estos endpoints después de la inicialización de app)
-const { exec } = require('child_process');
 
 function backupDatabase() {
     exec('bash backup_database.sh', (error, stdout, stderr) => {
@@ -176,21 +180,6 @@ app.get('/api/fondo', async (req, res) => {
 
 // Configuración de multer
 // ...eliminado, ya está declarado más arriba
-
-// ...existing code...
-
-// ...existing code...
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const { Pool } = require('pg');
-const path = require('path');
-const multer = require('multer');
-const fs = require('fs');
-
-const app = express();
-const PORT = process.env.PORT || 3000;
 
 // Crear carpeta de uploads si no existe
 const uploadDir = 'uploads';
